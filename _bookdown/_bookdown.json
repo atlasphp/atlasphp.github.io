@@ -1,0 +1,10 @@
+{
+    "title": "Atlas",
+    "content": [
+        {"mapper": "https://raw.githubusercontent.com/atlasphp/Atlas.Orm/1.x/docs/_bookdown.json"},
+        {"skeleton": "https://raw.githubusercontent.com/atlasphp/Atlas.Cli/1.x/docs/_bookdown.json"}
+    ],
+    "target": "../",
+    "template": "./vendor/tobiju/bookdown-bootswatch-templates/templates/main.php",
+    "tocDepth": "1"
+}
