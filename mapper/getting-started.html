@@ -485,9 +485,16 @@ do so. Instead, use the <code>atlas-skeleton</code> command to read the table in
 from the database. You can read more about that in the
 <a href="https://github.com/atlasphp/Atlas.Cli/blob/1.x/README.md">atlas/cli docs</a>.</p>
 <h2 id="1-1-3">1.1.3. Instantiating Atlas</h2>
-<p>Create an Atlas instance using the AtlasContainer, passing along the default
-ExtendedPdo connection parameters:</p>
+<p>Create an Atlas instance using the AtlasContainer.</p>
+<p>The container accepts a PDO, ExtendedPdo or ConnectionLocator instance or you
+can enter connection parameters and the container creates a connection for you.</p>
 <pre><code class="language-php">&lt;?php
+$atlasContainer = new AtlasContainer(new PDO(...));
+// or
+$atlasContainer = new AtlasContainer(new ExtendedPdo(...));
+// or
+$atlasContainer = new AtlasContainer(new ConnectionLocator(...));
+// or
 $atlasContainer = new AtlasContainer(
     'mysql:host=localhost;dbname=testdb',
     'username',

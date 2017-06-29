@@ -454,7 +454,10 @@
                 <a href="#1-6-1" title="Individual&#x20;Writes">Individual Writes</a>
             </li>
                                 <li>
-                <a href="#1-6-2" title="Unit&#x20;of&#x20;Work">Unit of Work</a>
+                <a href="#1-6-2" title="Persisting&#x20;Related&#x20;Records">Persisting Related Recor...</a>
+            </li>
+                                <li>
+                <a href="#1-6-3" title="Unit&#x20;of&#x20;Work">Unit of Work</a>
             </li>
             </ul>
 </nav>
@@ -474,12 +477,49 @@ if ($success) {
     echo "Did not write the Record: " . $atlas-&gt;getException();
 }
 </code></pre>
-<p>Note that this will write only the Row for that Record back to the database.
-These methods will not do anything with the Related fields on the Record; you
-will need to write them individually.</p>
-<p>Note also that inserting a Record with an auto-incrementing primary key will
-automatically update the Record with that last-inserted ID.</p>
-<h2 id="1-6-2">1.6.2. Unit of Work</h2>
+<p>Inserting a Record with an auto-incrementing primary key will automatically
+modify the Record to set the last-inserted ID.</p>
+<p>Inserting or updating a Record will automatically set the foreign key fields on
+the native Record, and on all the loaded relationships for that Record.</p>
+<p>The <code>insert()</code>, <code>update()</code>, and <code>delete()</code> methods write only the one Row for
+that Record back to the database. They will not automatically operate on related
+fields.</p>
+<h2 id="1-6-2">1.6.2. Persisting Related Records</h2>
+<p>If you like, you can persist a Record and all of its loaded relationships (and
+all of <em>their</em> loaded relationships, etc.) back to the database using the Atlas
+<code>persist()</code> method. This is good for straightforward relationship structures
+where the order of write operations does not need to be closely managed.</p>
+<p>The <code>persist()</code> method will:</p>
+<ul>
+<li>persist many-to-one and many-to-many relateds loaded on the native Record;</li>
+<li>persist the native Record by ...
+<ul>
+<li>inserting the Row for the Record if it is new; or,</li>
+<li>updating the Row for the Record if it has been modified; or,</li>
+<li>deleting the Row for the Record if the Record has been marked for deletion
+using the Record::markForDeletion() method;</li>
+</ul>
+</li>
+<li>persist one-to-one and one-to-many relateds loaded on the native Record.</li>
+</ul>
+<pre><code class="language-php">&lt;?php
+$success = $atlas-&gt;persist($record);
+if ($success) {
+    echo "Wrote the Record and all of its relateds back to the database.";
+} else {
+    echo "Did not write the Record: " . $atlas-&gt;getException();
+}
+</code></pre>
+<p>As with insert and update, this will automatically set the foreign key fields on
+the native Record, and on all the loaded relationships for that Record.</p>
+<p>If a related field is not loaded, it cannot be persisted automatically.</p>
+<p>Note that whether or not the Row for the Record is inserted/updated/deleted, the
+<code>persist()</code> method will still recursively traverse all the related fields and
+persist them as well.</p>
+<p>The <code>delete()</code> method <strong>will not</strong> attempt to cascade deletion or nullification
+across relateds at the ORM level. Your database may have cascading set up at the
+database level; Atlas has no control over this.</p>
+<h2 id="1-6-3">1.6.3. Unit of Work</h2>
 <p>If you make changes to several Records, you can write them back to the database
 using a unit-of-work Transaction. You can plan for Records to be inserted,
 updated, and deleted, in whatever order you like, and then execute the entire
@@ -492,6 +532,9 @@ $transaction = $atlas-&gt;newTransaction();
 $transaction-&gt;insert($record1);
 $transaction-&gt;update($record2);
 $transaction-&gt;delete($record3);
+
+// or persist an entire record and its relateds
+$transaction-&gt;persist($record4);
 
 // execute the transaction plan
 $success = $transaction-&gt;exec();
@@ -512,9 +555,6 @@ if ($success) {
     echo $work-&gt;getLabel() . ' threw ' . $e-&gt;getMessage();
 }
 </code></pre>
-<p>Note that this will write only the Row for each Record back to the database.
-These methods will not do anything with the Related fields on each Record; you
-will need to write them individually, perhaps as part of the same Transaction.</p>
 </div>        </div>
     </div>
 </div>
