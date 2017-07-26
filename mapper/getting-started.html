@@ -393,19 +393,27 @@
 
     </li>
                         <li>
-    <a href="/mapper/reading.html">Reading Records From The Database</a>
+    <a href="/mapper/reading.html">Fetching Records and RecordSets</a>
 
     </li>
                         <li>
-    <a href="/mapper/records.html">Working With Records</a>
+    <a href="/mapper/records.html">Working with Records</a>
 
     </li>
                         <li>
-    <a href="/mapper/record-sets.html">Working With RecordSets</a>
+    <a href="/mapper/record-sets.html">Working with RecordSets</a>
 
     </li>
                         <li>
-    <a href="/mapper/writing.html">Writing Records To The Database</a>
+    <a href="/mapper/transactions.html">Transactions (Unit of Work)</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/behavior.html">Record and RecordSet Behaviors</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/events.html">Events</a>
 
     </li>
                         <li>
@@ -483,10 +491,10 @@ help create skeleton classes for the mapper.)</p>
 <p>You can create your data source classes by hand, but it's going to be tedious to
 do so. Instead, use the <code>atlas-skeleton</code> command to read the table information
 from the database. You can read more about that in the
-<a href="https://github.com/atlasphp/Atlas.Cli/blob/1.x/README.md">atlas/cli docs</a>.</p>
+<a href="https://github.com/atlasphp/Atlas.Cli/blob/1.x/docs/getting-started.md">atlas/cli docs</a>.</p>
 <h2 id="1-1-3">1.1.3. Instantiating Atlas</h2>
 <p>Create an Atlas instance using the AtlasContainer.</p>
-<p>The container accepts a PDO, ExtendedPdo or ConnectionLocator instance or you
+<p>The container accepts a <a href="http://php.net/manual/en/pdo.construct.php">PDO</a>, <a href="https://github.com/auraphp/Aura.Sql/blob/3.x/docs/getting-started.md">ExtendedPdo</a> or <a href="https://github.com/auraphp/Aura.Sql/blob/3.x/docs/connection-locator.md">ConnectionLocator</a> instance or you
 can enter connection parameters and the container creates a connection for you.</p>
 <pre><code class="language-php">&lt;?php
 $atlasContainer = new AtlasContainer(new PDO(...));

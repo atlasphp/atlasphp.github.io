@@ -393,19 +393,27 @@
 
     </li>
                         <li>
-    <a href="/mapper/reading.html">Reading Records From The Database</a>
+    <a href="/mapper/reading.html">Fetching Records and RecordSets</a>
 
     </li>
                         <li>
-    <a href="/mapper/records.html">Working With Records</a>
+    <a href="/mapper/records.html">Working with Records</a>
 
     </li>
                         <li>
-    <a href="/mapper/record-sets.html">Working With RecordSets</a>
+    <a href="/mapper/record-sets.html">Working with RecordSets</a>
 
     </li>
                         <li>
-    <a href="/mapper/writing.html">Writing Records To The Database</a>
+    <a href="/mapper/transactions.html">Transactions (Unit of Work)</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/behavior.html">Record and RecordSet Behaviors</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/events.html">Events</a>
 
     </li>
                         <li>
@@ -521,10 +529,26 @@ class ThreadMapper extends AbstractMapper
 {
     protected function setRelated()
     {
-        $this-&gt;oneToOne('author', AuthorMapper::CLASS)
+        $this-&gt;manyToOne('author', AuthorMapper::CLASS)
             -&gt;on([
                 // native (threads) column =&gt; foreign (authors) column
                 'author_id' =&gt; 'id',
+            ]);
+        // ...
+    }
+}
+</code></pre>
+<p>And on the <code>oneToMany</code> side of the relationship, you use the native author table
+<code>id</code> column with the foreign threads table <code>author_id</code> column.</p>
+<pre><code class="language-php">&lt;?php
+class AuthorMapper extends AbstractMapper
+{
+    protected function setRelated()
+    {
+        $this-&gt;oneToMany('threads', ThreadMapper::CLASS)
+            -&gt;on([
+                // native (author) column =&gt; foreign (threads) column
+                'id' =&gt; 'author_id',
             ]);
         // ...
     }
@@ -551,7 +575,8 @@ class FooMapper
 </code></pre>
 <h2 id="1-2-3">1.2.3. Case-Sensitivity</h2>
 <blockquote>
-<p>N.b.: This applies only to <strong>string-based</strong> relationship keys. If you are
+<p><strong>Note:</strong>
+This applies only to <strong>string-based</strong> relationship keys. If you are
 using numeric relationship keys, this section does not apply.</p>
 </blockquote>
 <p>Atlas will match records related by string keys in a case-senstive manner. If
