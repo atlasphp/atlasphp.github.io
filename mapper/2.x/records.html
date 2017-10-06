@@ -1,352 +1,18 @@
+
 <!DOCTYPE html>
 <html>
-    <head>
+<head>
     <meta charset="utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
-<title>Working with RecordSets</title>
-    <link rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/yeti/bootstrap.min.css">
-<link rel="stylesheet"
-      href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css"/>
-<link rel="stylesheet"
-      href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css"/>
-<style>
-    body, html {
-        height: 100%;
-        padding-top: 36px;
-        position: relative;
-    }
-
-    img {
-        max-width: 100%;
-    }
-
-    code span {
-        white-space: nowrap;
-    }
-
-    .highlight {
-        background: #FFFF88;
-    }
-
-    .page-wrapper {
-        min-height: 100%;
-        padding-bottom: 170px;
-        position: relative;
-    }
-
-    .box-header {
-        position: relative;
-    }
-
-    /* Header Section */
-    header {
-        background: white;
-        color: black;
-        font-size: 16px;
-        font-weight: 300;
-    }
-
-    h1:first-child {
-        margin-top: 0;
-    }
-
-    /* anchor link will be displayed after the static top nav */
-    h1:before,
-    h2:before,
-    h3:before,
-    h4:before,
-    h5:before,
-    h6:before {
-        display: block;
-        content: " ";
-        margin-top: -64px;
-        height: 64px;
-        visibility: hidden;
-    }
-
-    .navbar-brand {
-        padding: 0;
-    }
-
-    .navbar-brand img {
-        max-height: 100%;
-    }
-
-    /* Content Section */
-    #content {
-        margin-bottom: 17px;
-        font-size: 17px;
-        min-height: 200px;
-    }
-
-    .breadcrumb {
-        position: relative;
-        z-index: 999;
-    }
-
-    .links {
-        background: #f8f8f8;
-        border-top: 1px solid #e5e5e5;
-        border-bottom: 1px solid #e5e5e5;
-        padding: 16px 0;
-    }
-
-    .links .prev {
-        text-align: left;
-    }
-
-    .links .parent {
-        text-align: center;
-    }
-
-    .links .next {
-        text-align: right;
-    }
-
-    /* Search */
-    .form-search {
-        position: absolute;
-        right: 0;
-        top: 0;
-        z-index: 999;
-    }
-
-    @media (max-width: 767px) {
-        .form-search {
-            position: relative;
-            margin-top: 0;
-        }
-    }
-
-    .form-search .form-control {
-        border: 0;
-        width: 80px;
-    }
-
-    @media (max-width: 767px) {
-        .form-search .form-control {
-            width: 100% !important;
-        }
-    }
-
-    .form-search .list-search-results {
-        position: relative;
-    }
-
-    .form-search .list-search-results ul {
-        background: #eee;
-        border: 1px solid inherit;
-        list-style: none;
-        max-height: 300px;
-        overflow: auto;
-        padding: 0;
-        position: absolute;
-        width: 100%;
-        z-index: 999;
-    }
-
-    .form-search .list-search-results ul li:nth-child(even) {
-        background: rgba(255, 255, 255, 0.3)
-    }
-
-    .form-search .list-search-results ul li.selected {
-        background: #ccc;
-    }
-
-    .form-search .list-search-results ul li a {
-        display: block;
-        padding: 4px 8px;
-    }
-
-    /* TOC */
-    .list-toc .list-group-item {
-        background: 0 none;
-        position: relative;
-        font-weight: bold;
-        padding: 0;
-    }
-
-    .list-toc .list-group-item .row {
-        padding: 7px 0;
-    }
-
-    .list-toc .list-group-item .text-number {
-        padding-left: 10px;
-    }
-
-    .list-toc .list-toc-nested .list-group-item {
-        font-weight: normal;
-        border: 0 none !important;
-    }
-
-    .list-toc .list-toc-nested {
-        margin-bottom: 0;
-        padding-bottom: 10px;
-    }
-
-    .list-toc .list-group-item .bbt-toc-toggle {
-        display: block;
-        position: absolute;
-        top: 5px;
-        right: 10px;
-        font-weight: normal;
-    }
-
-    .list-toc .list-group-item .bbt-toc-toggle:before {
-        content: "";
-        display: block;
-    }
-
-    .list-toc .list-group-item .bbt-toc-toggle.collapsed:before {
-        content: "";
-        display: block;
-    }
-
-    .list-toc > li:nth-child(2n+1) {
-        background: rgba(0, 0, 0, 0.03);
-    }
-
-    .bbt-theme-cyborg .list-toc > li:nth-child(2n+1),
-    .bbt-theme-darkly .list-toc > li:nth-child(2n+1),
-    .bbt-theme-slate .list-toc > li:nth-child(2n+1),
-    .bbt-theme-superhero .list-toc > li:nth-child(2n+1) {
-        background: rgba(255, 255, 255, 0.05);
-    }
-
-    .list-toc .list-group-item {
-        border-bottom: 0 none;
-        border-left: 0 none;
-        border-right: 0 none;
-        font-size: inherit;
-    }
-
-    .list-toc .list-group-item:first-child {
-        border-top-right-radius: 0;
-        border-top-left-radius: 0;
-    }
-
-    .list-toc .list-group-item:last-child {
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-
-    /* Left navigation */
-    .nav-left ul li a {
-        padding-top: 3px;
-        padding-bottom: 3px;
-        border-left: 1px solid transparent;
-    }
-
-    .nav-left ul li.active a,
-    .nav-left ul li a:hover {
-        background: none !important;
-        color: inherit;
-        border-color: inherit;
-    }
-
-    .navbar-top {
-        position: relative;
-    }
-
-    .affix {
-        top: 60px;
-    }
-
-    .badge {
-        border-radius: 4px;
-        padding: 5px;
-    }
-
-    /* Footer Section */
-    footer {
-        color: black;
-        background: white;
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-    }
-
-    footer #copyright {
-        padding: 30px;
-        text-align: center;
-        color: #444;
-    }
-
-    footer #copyright p {
-        margin: 0;
-    }
-
-    footer #copyright span a {
-        color: white;
-    }
-
-    /* Top Navigation */
-    @media (max-width: 767px) {
-        ul.navbar-nav {
-            margin: 0 -15px
-        }
-
-        ul.navbar-nav li {
-            border-radius: 0;
-        }
-
-        ul.navbar-nav li ul {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 0;
-            box-shadow: none;
-            display: block;
-            float: none;
-            left: auto;
-            padding: 0;
-            position: static;
-        }
-
-        ul.navbar-nav li ul li a {
-            padding: 8px 30px;
-        }
-
-        ul.navbar-nav li ul li ul li a {
-            padding: 6px 40px;
-        }
-    }
-
-    @media (min-width: 768px) {
-
-        ul.navbar-nav li {
-            display: block;
-            position: relative;
-            float: left;
-        }
-
-        ul.navbar-nav li ul {
-            display: none;
-        }
-
-        ul.navbar-nav li a {
-            display: block;
-        }
-
-        ul.navbar-nav li:hover > ul {
-            display: block;
-            position: absolute;
-        }
-
-        ul.navbar-nav li:hover li {
-            float: none;
-        }
-
-        ul.navbar-nav ul ul {
-            left: 100%;
-            top: 0;
-        }
-    }
-</style>
+<title>Working with Records</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
+<link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
+<link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
+<link rel="stylesheet" href="/style.css" />
 </head>
-    <body data-spy="scroll" data-target="#sideNav" data-offset="50" class="bbt-theme-yeti">
+<body data-spy="scroll" data-target="#sideNav" data-offset="50" class="bbt-theme-cerulean">
 <div class="page-wrapper">
     <header>
     
@@ -385,43 +51,97 @@
     
     <ul class="dropdown-menu">
                         <li>
-    <a href="/mapper/getting-started.html">Getting Started</a>
+    <a href="/mapper/2.x/">Atlas.Orm 2.x</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/mapper/2.x/getting-started.html">Getting Started</a>
 
     </li>
                         <li>
-    <a href="/mapper/relationships.html">Mapper Relationships</a>
+    <a href="/mapper/2.x/relationships.html">Mapper Relationships</a>
 
     </li>
                         <li>
-    <a href="/mapper/reading.html">Fetching Records and RecordSets</a>
+    <a href="/mapper/2.x/reading.html">Fetching Records and RecordSets</a>
 
     </li>
                         <li>
-    <a href="/mapper/records.html">Working with Records</a>
+    <a href="/mapper/2.x/records.html">Working with Records</a>
 
     </li>
                         <li>
-    <a href="/mapper/record-sets.html">Working with RecordSets</a>
+    <a href="/mapper/2.x/record-sets.html">Working with RecordSets</a>
 
     </li>
                         <li>
-    <a href="/mapper/transactions.html">Transactions (Unit of Work)</a>
+    <a href="/mapper/2.x/transactions.html">Transactions (Unit of Work)</a>
 
     </li>
                         <li>
-    <a href="/mapper/behavior.html">Record and RecordSet Behaviors</a>
+    <a href="/mapper/2.x/behavior.html">Record and RecordSet Behaviors</a>
 
     </li>
                         <li>
-    <a href="/mapper/events.html">Events</a>
+    <a href="/mapper/2.x/events.html">Events</a>
 
     </li>
                         <li>
-    <a href="/mapper/direct.html">Direct Queries</a>
+    <a href="/mapper/2.x/direct.html">Direct Queries</a>
 
     </li>
                         <li>
-    <a href="/mapper/domain.html">Domain Models</a>
+    <a href="/mapper/2.x/domain.html">Domain Models</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/">Atlas.Orm 1.x</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/mapper/1.x/getting-started.html">Getting Started</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/relationships.html">Mapper Relationships</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/reading.html">Fetching Records and RecordSets</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/records.html">Working with Records</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/record-sets.html">Working with RecordSets</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/transactions.html">Transactions (Unit of Work)</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/behavior.html">Record and RecordSet Behaviors</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/events.html">Events</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/direct.html">Direct Queries</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/domain.html">Domain Models</a>
+
+    </li>
+            </ul>
 
     </li>
             </ul>
@@ -432,7 +152,7 @@
     
     <ul class="dropdown-menu">
                         <li>
-    <a href="/skeleton/getting-started.html">Skeleton Generator</a>
+    <a href="/skeleton/getting-started.html">Atlas.Cli 1.x</a>
 
     </li>
             </ul>
@@ -448,7 +168,8 @@
     <ol class="breadcrumb">
                         <li><a href="/">Atlas</a></li>
                                 <li><a href="/mapper/">Persistence Mapper</a></li>
-                                <li class="active">Working with RecordSets</li>
+                                <li><a href="/mapper/2.x/">Atlas.Orm 2.x</a></li>
+                                <li class="active">Working with Records</li>
             </ol>
     <div class="row">
 
@@ -456,110 +177,209 @@
             <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
     <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
                                 <li>
-                <a href="#1-5" title="Working&#x20;with&#x20;RecordSets">Working with RecordSets</a>
+                <a href="#1-1-4" title="Working&#x20;with&#x20;Records">Working with Records</a>
             </li>
                                 <li>
-                <a href="#1-5-1" title="New&#x20;RecordSets">New RecordSets</a>
+                <a href="#1-1-4-1" title="Creating&#x20;and&#x20;Inserting&#x20;a&#x20;Record">Creating and Inserting a...</a>
             </li>
                                 <li>
-                <a href="#1-5-2" title="Appending&#x20;Records&#x20;to&#x20;a&#x20;RecordSet">Appending Records to a R...</a>
+                <a href="#1-1-4-2" title="Updating&#x20;an&#x20;Existing&#x20;Record">Updating an Existing Rec...</a>
             </li>
                                 <li>
-                <a href="#1-5-3" title="Array&#x20;Access">Array Access</a>
+                <a href="#1-1-4-3" title="Deleting&#x20;a&#x20;Record">Deleting a Record</a>
             </li>
                                 <li>
-                <a href="#1-5-4" title="Searching&#x20;within&#x20;RecordSets">Searching within RecordS...</a>
+                <a href="#1-1-4-4" title="Persisting&#x20;a&#x20;Record">Persisting a Record</a>
             </li>
                                 <li>
-                <a href="#1-5-5" title="Removing&#x20;Records&#x20;from&#x20;RecordSets">Removing Records from Re...</a>
+                <a href="#1-1-4-5" title="Marking&#x20;Records&#x20;for&#x20;Deletion">Marking Records for Dele...</a>
             </li>
             </ul>
 </nav>
         </div>
                 <div class="col-md-9">
-<div id="section-main"><h1 id="1-5">1.5. Working with RecordSets</h1>
-<h2 id="1-5-1">1.5.1. New RecordSets</h2>
-<p>Create a new RecordSet using the <code>newRecordSet()</code> method.</p>
+<div id="section-main"><h1 id="1-1-4">1.1.4. Working with Records</h1>
+<h2 id="1-1-4-1">1.1.4.1. Creating and Inserting a Record</h2>
+<p>Create a new Record using the <code>newRecord()</code> method. You can assign data using
+properties, or pass an array of initial data to populate into the Record.</p>
 <pre><code class="language-php">&lt;?php
-$threadRecordSet = $atlas-&gt;newRecordSet(ThreadMapper::CLASS);
-</code></pre>
-<h2 id="1-5-2">1.5.2. Appending Records to a RecordSet</h2>
-<p>You can append a new Record to an existing RecordSet using <code>appendNew()</code>, optionally passing any
-data you want to initially populate into the Record:</p>
-<pre><code class="language-php">&lt;?php
-$newThread = $threadRecordSet-&gt;appendNew([
-    'title' =&gt; 'New Title',
-]);
-</code></pre>
-<p>Additionally, you can append foreign Records to a native Record's relateds.</p>
-<pre><code class="language-php">&lt;?php
-$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 1,
+$thread = $atlas-&gt;newRecord(ThreadMapper::CLASS,
     [
-        'comments',
+        'title'=&gt;'New Thread Title',
     ]
 );
-
-// Ensure we have a RecordSet to append to
-if (! $thread-&gt;comments) {
-    $thread-&gt;comments = $atlas-&gt;newRecordSet(CommentMapper::CLASS);
+</code></pre>
+<p>You can assign a value via a property, which maps to a column name.</p>
+<pre><code class="language-php">&lt;?php
+$date = new \DateTime();
+$thread-&gt;date_added = $date-&gt;format('Y-m-d H:i:s');
+</code></pre>
+<p>You can insert a single Record back to the database by using the <code>Atlas::insert()</code>
+method. This will use the appropriate Mapper for the Record to perform the
+write within a transaction, and capture any exceptions that occur along the way.</p>
+<pre><code class="language-php">&lt;?php
+$success = $atlas-&gt;insert($thread);
+if ($success) {
+    echo "Wrote the Record back to the database.";
+} else {
+    echo "Did not write the Record: " . $atlas-&gt;getException();
 }
-
-$comment = $thread-&gt;comments-&gt;appendNew([
-    'thread_id' =&gt; $thread-&gt;thread_id,
-    'comment' =&gt; 'Lorem ipsum dolor sit amet...'
-]);
-
-// plan to insert the new comment
-$transaction-&gt;insert($comment);
-
-// Or persist the thread
-$atlas-&gt;persist($thread);
-
 </code></pre>
-<h2 id="1-5-3">1.5.3. Array Access</h2>
-<p>The RecordSet also acts as an array, so you can get/set/unset Records by their
-sequential keys in the RecordSet.</p>
+<p>Inserting a Record with an auto-incrementing primary key will automatically
+modify the Record to set the last-inserted ID.</p>
+<p>Inserting a Record will automatically set the foreign key fields on the native
+Record, and on all the loaded relationships for that Record.</p>
+<p>In the following example, assume a Thread Record has a <code>manyToOne</code> relationship
+with an Author Record using the <code>author_id</code> column. The relationship is named
+<code>author</code>. (See the section on relationships for more information.)</p>
 <pre><code class="language-php">&lt;?php
-// address the second record in the set
-$threadRecordSet[1]-&gt;title = 'Changed Title';
+$author = $atlas-&gt;fetchRecord(AuthorMapper::CLASS, 4);
+$thread = $atlas-&gt;newRecord(ThreadMapper::CLASS,
+    [
+        'title'=&gt;'New Thread Title',
+        'author'=&gt;$author
+    ]
+);
+// If the insert is successful, the `author_id` column will automatically be
+// set to the Author Record's primary key value. In this case, 4.
+$success = $atlas-&gt;insert($thread);
 
-// unset the first record in the set
-unset($threadRecordSet[0]);
-
-// push a new record onto the set
-$threadRecordSet[] = $atlas-&gt;newRecord(ThreadMapper::CLASS);
-</code></pre>
-<h2 id="1-5-4">1.5.4. Searching within RecordSets</h2>
-<p>You can search for Records within an existing RecordSet by their column values:</p>
-<pre><code class="language-php">&lt;?php
-$threadRecordSet = $atlas-&gt;select(ThreadMapper::CLASS)
-    -&gt;where('published=?', 1)
-    -&gt;fetchRecordSet();
-
-// returns one matching Record object from the RecordSet,
-// or false if there is no match
-$matchingRecord = $threadRecordSet-&gt;getOneBy(['subject' =&gt; 'Subject One']);
-
-// returns an array of matching Record objects from the RecordSet
-$matchingRecords = $threadRecordSet-&gt;getAllBy(['author_id' =&gt; '5']);
-</code></pre>
-<h2 id="1-5-5">1.5.5. Removing Records from RecordSets</h2>
-<p>You can remove Records from a RecordSet by their column values. This does NOT
-delete the Record from the database; only from the RecordSet.</p>
-<pre><code class="language-php">&lt;?php
-// unsets and returns one matching Record from the Record Set,
-// or false if there is no match
-$removedRecord = $threadRecordSet-&gt;removeOneBy(['subject' =&gt; 'Subject One']);
-
-// unsets and returns an array of matching Record objects from the Record Set
-$removedRecords = $threadRecordSet-&gt;removeAllBy(['author_id' =&gt; '5']);
+echo $thread-&gt;author_id; // 4
 </code></pre>
 <blockquote>
 <p><strong>Note:</strong>
-This only removes them from the RecordSet; it does not delete them
-from the database. If you need to delete a record from the database, see the
-sections on Marking Records for Deletion and deleting Records.</p>
+If the Author Record is new, Atlas will NOT automatically insert the
+new Author and set the foreign key on the new Author Record via the <code>insert()</code>
+method. This can, however, be achieved using the <code>persist()</code> method. This is
+discussed later in this chapter.</p>
 </blockquote>
+<p>The following will fail.</p>
+<pre><code class="language-php">&lt;?php
+$author = $atlas-&gt;newRecord(AuthorMapper::CLASS,
+    [
+        'first_name'=&gt;'Sterling',
+        'last_name'=&gt;'Archer'
+    ]
+);
+$thread = $atlas-&gt;newRecord(ThreadMapper::CLASS,
+    [
+        'title'=&gt;'New Thread Title',
+        'author'=&gt;$author
+    ]
+);
+// Insert will not create the related Author Record. Use persist() instead.
+$success = $atlas-&gt;insert($thread);
+</code></pre>
+<h2 id="1-1-4-2">1.1.4.2. Updating an Existing Record</h2>
+<p>Updating an existing record works the same as <code>insert()</code>.</p>
+<pre><code class="language-php">&lt;?php
+// fetch an existing record by primary key
+$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 3);
+
+// Modify the title
+$thread-&gt;title = 'This title is better than the last one';
+
+// Save the record back to the database.
+$success = $atlas-&gt;update($thread);
+if ($success) {
+    echo "Wrote the Record back to the database.";
+} else {
+    echo "Did not write the Record: " . $atlas-&gt;getException();
+}
+</code></pre>
+<p>As with <code>insert()</code>, foreign keys are also updated, but only for existing related
+records.</p>
+<pre><code class="language-php">&lt;?php
+$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 3);
+$author = $atlas-&gt;fetchRecord(AuthorMapper::CLASS, 4);
+
+// Modify the author
+$thread-&gt;author = $author;
+
+// Save the record back to the database.
+$success = $atlas-&gt;update($thread);
+if ($success) {
+    echo "Wrote the Record back to the database.";
+} else {
+    echo "Did not write the Record: " . $atlas-&gt;getException();
+}
+</code></pre>
+<h2 id="1-1-4-3">1.1.4.3. Deleting a Record</h2>
+<p>Deleting a record works the same as inserting or updating.</p>
+<pre><code class="language-php">&lt;?php
+$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 3);
+
+$success = $atlas-&gt;delete($thread);
+if ($success) {
+    echo "Removed record from the database.";
+} else {
+    echo "Did not remove the Record: " . $atlas-&gt;getException();
+}
+</code></pre>
+<h2 id="1-1-4-4">1.1.4.4. Persisting a Record</h2>
+<p>If you like, you can persist a Record and all of its loaded relationships (and
+all of <em>their</em> loaded relationships, etc.) back to the database using the Atlas
+<code>persist()</code> method. This is good for straightforward relationship structures
+where the order of write operations does not need to be closely managed.</p>
+<p>The <code>persist()</code> method will:</p>
+<ul>
+<li>persist many-to-one and many-to-many relateds loaded on the native Record;</li>
+<li>persist the native Record by ...
+<ul>
+<li>inserting the Row for the Record if it is new; or,</li>
+<li>updating the Row for the Record if it has been modified; or,</li>
+<li>deleting the Row for the Record if the Record has been marked for deletion
+using the Record::markForDeletion() method;</li>
+</ul>
+</li>
+<li>persist one-to-one and one-to-many relateds loaded on the native Record.</li>
+</ul>
+<pre><code class="language-php">&lt;?php
+$success = $atlas-&gt;persist($record);
+if ($success) {
+    echo "Wrote the Record and all of its relateds back to the database.";
+} else {
+    echo "Did not write the Record: " . $atlas-&gt;getException();
+}
+</code></pre>
+<p>As with insert and update, this will automatically set the foreign key fields on
+the native Record, and on all the loaded relationships for that Record.</p>
+<p>If a related field is not loaded, it cannot be persisted automatically.</p>
+<p>Note that whether or not the Row for the Record is inserted/updated/deleted, the
+<code>persist()</code> method will still recursively traverse all the related fields and
+persist them as well.</p>
+<p>The <code>delete()</code> method <strong>will not</strong> attempt to cascade deletion or nullification
+across relateds at the ORM level. Your database may have cascading set up at the
+database level; Atlas has no control over this.</p>
+<h2 id="1-1-4-5">1.1.4.5. Marking Records for Deletion</h2>
+<p>You may also mark records for deletion and they will be removed from the database
+after a transaction is completed via <code>persist()</code>.</p>
+<pre><code class="language-php">&lt;?php
+$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 3);
+// Mark the record for deletion
+$thread-&gt;markForDeletion();
+$atlas-&gt;persist($thread);
+</code></pre>
+<p>You can also mark several related Records for deletion and when the native
+Record is persisted, they will be deleted from the database.</p>
+<pre><code class="language-php">&lt;?php
+// Assume a oneToMany relationship between a thread and its comments
+// Select the thread and related comments
+$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 3,
+    [
+        'comments'
+    ]
+);
+
+// Mark each related comment for deletion
+foreach ($thread-&gt;comments as $comment) {
+    $comment-&gt;markForDeletion();
+}
+
+// Persist the thread and the comments are also deleted
+$atlas-&gt;persist($thread);
+
+</code></pre>
 </div>        </div>
     </div>
 </div>
@@ -569,9 +389,9 @@ sections on Marking Records for Deletion and deleting Records.</p>
         <div class="container">
             <div class="row">
                 <div class="prev col-xs-6">
-                                            <a href="/mapper/records.html">Previous</a>                                    </div>
+                                            <a href="/mapper/2.x/reading.html">Previous</a>                                    </div>
                 <div class="next col-xs-6">
-                                            <a href="/mapper/transactions.html">Next</a>                                    </div>
+                                            <a href="/mapper/2.x/record-sets.html">Next</a>                                    </div>
             </div>
         </div>
     </div>
@@ -579,7 +399,7 @@ sections on Marking Records for Deletion and deleting Records.</p>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <p>Powered by <a href="https://github.com/tobiju/bookdown-bootswatch-templates" title="Visit project to generate your own docs">Bookdown Bootswatch Templates</a>.</p>
+                    <p>&copy; 2015-2017, Atlas for PHP</p>
                 </div>
             </div>
         </div>

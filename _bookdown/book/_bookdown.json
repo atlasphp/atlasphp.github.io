@@ -1,0 +1,11 @@
+{
+    "title": "Atlas",
+    "content": [
+        {"mapper": "mapper/_bookdown.json"},
+        {"skeleton": "https://raw.githubusercontent.com/atlasphp/Atlas.Cli/1.x/docs/_bookdown.json"}
+    ],
+    "target": "../../",
+    "template": "../templates/main.php",
+    "copyright": "&copy; 2015-2017, Atlas for PHP",
+    "tocDepth": "2"
+}

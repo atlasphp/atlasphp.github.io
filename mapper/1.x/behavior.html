@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
-<title>Atlas</title>
+<title>Record and RecordSet Behaviors</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
@@ -166,15 +166,104 @@
 </header>
 <div class="container">
     <ol class="breadcrumb">
-                        <li class="active">Atlas</li>
+                        <li><a href="/">Atlas</a></li>
+                                <li><a href="/mapper/">Persistence Mapper</a></li>
+                                <li><a href="/mapper/1.x/">Atlas.Orm 1.x</a></li>
+                                <li class="active">Record and RecordSet Behaviors</li>
             </ol>
     <div class="row">
 
-                <div class="col-md-12">
+                <div class="col-md-3">
+            <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
+    <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
+                                <li>
+                <a href="#1-2-7" title="Record&#x20;and&#x20;RecordSet&#x20;Behaviors">Record and RecordSet Beh...</a>
+            </li>
+            </ul>
+</nav>
+        </div>
+                <div class="col-md-9">
+<div id="section-main"><h1 id="1-2-7">1.2.7. Record and RecordSet Behaviors</h1>
+<p>Atlas makes it easy to add your own behaviors to both Records and RecordSets. To
+accomplish this, you need a Record class for custom Record logic, and a
+RecordSet class for custom RecordSet logic. The Atlas CLI script
+(installable via composer using <code>atlas/cli</code>), can create these classes for you,
+saving you from manually writing them.</p>
+<p>Consult the <a href="https://github.com/atlasphp/Atlas.Cli/blob/1.x/README.md">Atlas CLI documentation</a>.</p>
+<p>It's important to note that the Record and RecordSet objects described below
+<strong>should only be used for very simple behaviors</strong>. Any non-trivial domain work
+may be an indication that you need a domain layer. See the documentation on
+<a href="domain.html">Domain Models</a> for examples of how you can use Atlas to build a
+domain layer.</p>
+<p>Here is an example using the <code>atlas/cli</code> package and the <code>--full</code> option.</p>
+<pre><code>./vendor/bin/atlas-skeleton.php \
+    --conn=/path/to/conn.php \
+    --dir=src/App/DataSource \
+    --table=threads \
+    --full \
+    App\\DataSource\\Thread
+</code></pre>
+<p>Upon completion, you will have a folder layout as follows:</p>
+<pre><code>-- src
+   -- App
+      -- DataSource
+         -- Thread
+            -- ThreadMapper.php
+            -- ThreadMapperEvents.php
+            -- ThreadRecord.php
+            -- ThreadRecordSet.php
+            -- ThreadTable.php
+            -- ThreadTableEvents.php
+</code></pre>
+<p>Once you have a Record Class (<code>ThreadRecord.php</code>), you can create custom methods
+to call from your Record object.</p>
+<pre><code class="language-php">&lt;?php
+namespace App\DataSource\Thread;
 
-<h1>Atlas</h1>
+use Atlas\Orm\Mapper\Record;
 
-<ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.</span>&nbsp;&nbsp;<a href="/mapper/">Persistence Mapper</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.1.</span>&nbsp;&nbsp;<a href="/mapper/2.x/">Atlas.Orm 2.x</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.2.</span>&nbsp;&nbsp;<a href="/mapper/1.x/">Atlas.Orm 1.x</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.</span>&nbsp;&nbsp;<a href="/skeleton/">Skeleton Generator</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.1.</span>&nbsp;&nbsp;<a href="/skeleton/getting-started.html#2-1">Atlas.Cli 1.x</a></div></div></li></ul></li></ul><div id="section-main"></div>        </div>
+/**
+ * @inheritdoc
+ */
+class ThreadRecord extends Record
+{
+    // Format the date_created property
+    public function formatDate($format = 'M jS, Y')
+    {
+        $dateTime = new \DateTime($this-&gt;date_created);
+        return $dateTime-&gt;format($format);
+    }
+}
+$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, $id);
+echo $thread-&gt;formatDate(); // outputs something like `Aug 21st, 2017`
+</code></pre>
+<p>The same concept is available for RecordSets using the RecordSet class. In our
+example <code>ThreadRecordSet.php</code>.</p>
+<pre><code class="language-php">&lt;?php
+namespace App\DataSource\Thread;
+
+use Atlas\Orm\Mapper\RecordSet;
+
+/**
+ * @inheritdoc
+ */
+class ThreadRecordSet extends RecordSet
+{
+    public function foo()
+    {
+        $data = []
+        foreach ($this as $record) {
+            $data[] = $record-&gt;title;
+        }
+
+        return implode('; ', $data);
+    }
+}
+$threads = $atlas-&gt;fetchRecordSet(ThreadMapper::CLASS, [1, 2, 3]);
+
+echo $threads-&gt;foo();
+</code></pre>
+</div>        </div>
     </div>
 </div>
 
@@ -183,9 +272,9 @@
         <div class="container">
             <div class="row">
                 <div class="prev col-xs-6">
-                                    </div>
+                                            <a href="/mapper/1.x/transactions.html">Previous</a>                                    </div>
                 <div class="next col-xs-6">
-                                            <a href="/mapper/">Next</a>                                    </div>
+                                            <a href="/mapper/1.x/events.html">Next</a>                                    </div>
             </div>
         </div>
     </div>

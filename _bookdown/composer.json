@@ -18,9 +18,7 @@
         }
     ],
     "require": {
-        "bookdown/bookdown": "~1.0"
-    },
-    "require-dev": {
-        "tobiju/bookdown-bootswatch-templates": "~1.0"
+        "bookdown/bookdown": "1.x-dev",
+        "bookdown/themes": "~1.0"
     }
 }

@@ -1,352 +1,18 @@
+
 <!DOCTYPE html>
 <html>
-    <head>
+<head>
     <meta charset="utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
 <title>Persistence Mapper</title>
-    <link rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/yeti/bootstrap.min.css">
-<link rel="stylesheet"
-      href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css"/>
-<link rel="stylesheet"
-      href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css"/>
-<style>
-    body, html {
-        height: 100%;
-        padding-top: 36px;
-        position: relative;
-    }
-
-    img {
-        max-width: 100%;
-    }
-
-    code span {
-        white-space: nowrap;
-    }
-
-    .highlight {
-        background: #FFFF88;
-    }
-
-    .page-wrapper {
-        min-height: 100%;
-        padding-bottom: 170px;
-        position: relative;
-    }
-
-    .box-header {
-        position: relative;
-    }
-
-    /* Header Section */
-    header {
-        background: white;
-        color: black;
-        font-size: 16px;
-        font-weight: 300;
-    }
-
-    h1:first-child {
-        margin-top: 0;
-    }
-
-    /* anchor link will be displayed after the static top nav */
-    h1:before,
-    h2:before,
-    h3:before,
-    h4:before,
-    h5:before,
-    h6:before {
-        display: block;
-        content: " ";
-        margin-top: -64px;
-        height: 64px;
-        visibility: hidden;
-    }
-
-    .navbar-brand {
-        padding: 0;
-    }
-
-    .navbar-brand img {
-        max-height: 100%;
-    }
-
-    /* Content Section */
-    #content {
-        margin-bottom: 17px;
-        font-size: 17px;
-        min-height: 200px;
-    }
-
-    .breadcrumb {
-        position: relative;
-        z-index: 999;
-    }
-
-    .links {
-        background: #f8f8f8;
-        border-top: 1px solid #e5e5e5;
-        border-bottom: 1px solid #e5e5e5;
-        padding: 16px 0;
-    }
-
-    .links .prev {
-        text-align: left;
-    }
-
-    .links .parent {
-        text-align: center;
-    }
-
-    .links .next {
-        text-align: right;
-    }
-
-    /* Search */
-    .form-search {
-        position: absolute;
-        right: 0;
-        top: 0;
-        z-index: 999;
-    }
-
-    @media (max-width: 767px) {
-        .form-search {
-            position: relative;
-            margin-top: 0;
-        }
-    }
-
-    .form-search .form-control {
-        border: 0;
-        width: 80px;
-    }
-
-    @media (max-width: 767px) {
-        .form-search .form-control {
-            width: 100% !important;
-        }
-    }
-
-    .form-search .list-search-results {
-        position: relative;
-    }
-
-    .form-search .list-search-results ul {
-        background: #eee;
-        border: 1px solid inherit;
-        list-style: none;
-        max-height: 300px;
-        overflow: auto;
-        padding: 0;
-        position: absolute;
-        width: 100%;
-        z-index: 999;
-    }
-
-    .form-search .list-search-results ul li:nth-child(even) {
-        background: rgba(255, 255, 255, 0.3)
-    }
-
-    .form-search .list-search-results ul li.selected {
-        background: #ccc;
-    }
-
-    .form-search .list-search-results ul li a {
-        display: block;
-        padding: 4px 8px;
-    }
-
-    /* TOC */
-    .list-toc .list-group-item {
-        background: 0 none;
-        position: relative;
-        font-weight: bold;
-        padding: 0;
-    }
-
-    .list-toc .list-group-item .row {
-        padding: 7px 0;
-    }
-
-    .list-toc .list-group-item .text-number {
-        padding-left: 10px;
-    }
-
-    .list-toc .list-toc-nested .list-group-item {
-        font-weight: normal;
-        border: 0 none !important;
-    }
-
-    .list-toc .list-toc-nested {
-        margin-bottom: 0;
-        padding-bottom: 10px;
-    }
-
-    .list-toc .list-group-item .bbt-toc-toggle {
-        display: block;
-        position: absolute;
-        top: 5px;
-        right: 10px;
-        font-weight: normal;
-    }
-
-    .list-toc .list-group-item .bbt-toc-toggle:before {
-        content: "";
-        display: block;
-    }
-
-    .list-toc .list-group-item .bbt-toc-toggle.collapsed:before {
-        content: "";
-        display: block;
-    }
-
-    .list-toc > li:nth-child(2n+1) {
-        background: rgba(0, 0, 0, 0.03);
-    }
-
-    .bbt-theme-cyborg .list-toc > li:nth-child(2n+1),
-    .bbt-theme-darkly .list-toc > li:nth-child(2n+1),
-    .bbt-theme-slate .list-toc > li:nth-child(2n+1),
-    .bbt-theme-superhero .list-toc > li:nth-child(2n+1) {
-        background: rgba(255, 255, 255, 0.05);
-    }
-
-    .list-toc .list-group-item {
-        border-bottom: 0 none;
-        border-left: 0 none;
-        border-right: 0 none;
-        font-size: inherit;
-    }
-
-    .list-toc .list-group-item:first-child {
-        border-top-right-radius: 0;
-        border-top-left-radius: 0;
-    }
-
-    .list-toc .list-group-item:last-child {
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-
-    /* Left navigation */
-    .nav-left ul li a {
-        padding-top: 3px;
-        padding-bottom: 3px;
-        border-left: 1px solid transparent;
-    }
-
-    .nav-left ul li.active a,
-    .nav-left ul li a:hover {
-        background: none !important;
-        color: inherit;
-        border-color: inherit;
-    }
-
-    .navbar-top {
-        position: relative;
-    }
-
-    .affix {
-        top: 60px;
-    }
-
-    .badge {
-        border-radius: 4px;
-        padding: 5px;
-    }
-
-    /* Footer Section */
-    footer {
-        color: black;
-        background: white;
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-    }
-
-    footer #copyright {
-        padding: 30px;
-        text-align: center;
-        color: #444;
-    }
-
-    footer #copyright p {
-        margin: 0;
-    }
-
-    footer #copyright span a {
-        color: white;
-    }
-
-    /* Top Navigation */
-    @media (max-width: 767px) {
-        ul.navbar-nav {
-            margin: 0 -15px
-        }
-
-        ul.navbar-nav li {
-            border-radius: 0;
-        }
-
-        ul.navbar-nav li ul {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 0;
-            box-shadow: none;
-            display: block;
-            float: none;
-            left: auto;
-            padding: 0;
-            position: static;
-        }
-
-        ul.navbar-nav li ul li a {
-            padding: 8px 30px;
-        }
-
-        ul.navbar-nav li ul li ul li a {
-            padding: 6px 40px;
-        }
-    }
-
-    @media (min-width: 768px) {
-
-        ul.navbar-nav li {
-            display: block;
-            position: relative;
-            float: left;
-        }
-
-        ul.navbar-nav li ul {
-            display: none;
-        }
-
-        ul.navbar-nav li a {
-            display: block;
-        }
-
-        ul.navbar-nav li:hover > ul {
-            display: block;
-            position: absolute;
-        }
-
-        ul.navbar-nav li:hover li {
-            float: none;
-        }
-
-        ul.navbar-nav ul ul {
-            left: 100%;
-            top: 0;
-        }
-    }
-</style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
+<link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
+<link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
+<link rel="stylesheet" href="/style.css" />
 </head>
-    <body data-spy="scroll" data-target="#sideNav" data-offset="50" class="bbt-theme-yeti">
+<body data-spy="scroll" data-target="#sideNav" data-offset="50" class="bbt-theme-cerulean">
 <div class="page-wrapper">
     <header>
     
@@ -385,43 +51,97 @@
     
     <ul class="dropdown-menu">
                         <li>
-    <a href="/mapper/getting-started.html">Getting Started</a>
+    <a href="/mapper/2.x/">Atlas.Orm 2.x</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/mapper/2.x/getting-started.html">Getting Started</a>
 
     </li>
                         <li>
-    <a href="/mapper/relationships.html">Mapper Relationships</a>
+    <a href="/mapper/2.x/relationships.html">Mapper Relationships</a>
 
     </li>
                         <li>
-    <a href="/mapper/reading.html">Fetching Records and RecordSets</a>
+    <a href="/mapper/2.x/reading.html">Fetching Records and RecordSets</a>
 
     </li>
                         <li>
-    <a href="/mapper/records.html">Working with Records</a>
+    <a href="/mapper/2.x/records.html">Working with Records</a>
 
     </li>
                         <li>
-    <a href="/mapper/record-sets.html">Working with RecordSets</a>
+    <a href="/mapper/2.x/record-sets.html">Working with RecordSets</a>
 
     </li>
                         <li>
-    <a href="/mapper/transactions.html">Transactions (Unit of Work)</a>
+    <a href="/mapper/2.x/transactions.html">Transactions (Unit of Work)</a>
 
     </li>
                         <li>
-    <a href="/mapper/behavior.html">Record and RecordSet Behaviors</a>
+    <a href="/mapper/2.x/behavior.html">Record and RecordSet Behaviors</a>
 
     </li>
                         <li>
-    <a href="/mapper/events.html">Events</a>
+    <a href="/mapper/2.x/events.html">Events</a>
 
     </li>
                         <li>
-    <a href="/mapper/direct.html">Direct Queries</a>
+    <a href="/mapper/2.x/direct.html">Direct Queries</a>
 
     </li>
                         <li>
-    <a href="/mapper/domain.html">Domain Models</a>
+    <a href="/mapper/2.x/domain.html">Domain Models</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/">Atlas.Orm 1.x</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/mapper/1.x/getting-started.html">Getting Started</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/relationships.html">Mapper Relationships</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/reading.html">Fetching Records and RecordSets</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/records.html">Working with Records</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/record-sets.html">Working with RecordSets</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/transactions.html">Transactions (Unit of Work)</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/behavior.html">Record and RecordSet Behaviors</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/events.html">Events</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/direct.html">Direct Queries</a>
+
+    </li>
+                        <li>
+    <a href="/mapper/1.x/domain.html">Domain Models</a>
+
+    </li>
+            </ul>
 
     </li>
             </ul>
@@ -432,7 +152,7 @@
     
     <ul class="dropdown-menu">
                         <li>
-    <a href="/skeleton/getting-started.html">Skeleton Generator</a>
+    <a href="/skeleton/getting-started.html">Atlas.Cli 1.x</a>
 
     </li>
             </ul>
@@ -454,9 +174,8 @@
                 <div class="col-md-12">
 
 <h1>1. Persistence Mapper</h1>
-<ul class="list-toc list-group">
-<li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.1.</span></div><div class="col-sm-10"><a href="/mapper/getting-started.html#1-1">Getting Started</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.1.1.</span></div><div class="col-sm-10"><a href="/mapper/getting-started.html#1-1-1">Installation</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.1.2.</span></div><div class="col-sm-10"><a href="/mapper/getting-started.html#1-1-2">Creating Data Source Classes</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.1.3.</span></div><div class="col-sm-10"><a href="/mapper/getting-started.html#1-1-3">Instantiating Atlas</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.2.</span></div><div class="col-sm-10"><a href="/mapper/relationships.html#1-2">Mapper Relationships</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.2.1.</span></div><div class="col-sm-10"><a href="/mapper/relationships.html#1-2-1">Relationship Key Columns</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.2.2.</span></div><div class="col-sm-10"><a href="/mapper/relationships.html#1-2-2">Composite Relationship Keys</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.2.3.</span></div><div class="col-sm-10"><a href="/mapper/relationships.html#1-2-3">Case-Sensitivity</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.2.4.</span></div><div class="col-sm-10"><a href="/mapper/relationships.html#1-2-4">Simple WHERE Conditions</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.3.</span></div><div class="col-sm-10"><a href="/mapper/reading.html#1-3">Fetching Records and RecordSets</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.3.1.</span></div><div class="col-sm-10"><a href="/mapper/reading.html#1-3-1">Fetching a Record</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.3.1.1.</span></div><div class="col-sm-10"><a href="/mapper/reading.html#1-3-1-1">Accessing/Reading Record Data</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.3.2.</span></div><div class="col-sm-10"><a href="/mapper/reading.html#1-3-2">Fetching A RecordSet</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.3.2.1.</span></div><div class="col-sm-10"><a href="/mapper/reading.html#1-3-2-1">Accessing/Reading RecordSet Data</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.3.3.</span></div><div class="col-sm-10"><a href="/mapper/reading.html#1-3-3">Fetching Related Records</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.3.3.1.</span></div><div class="col-sm-10"><a href="/mapper/reading.html#1-3-3-1">Accessing/Reading Related Data</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.3.4.</span></div><div class="col-sm-10"><a href="/mapper/reading.html#1-3-4">Returning Data in Other Formats</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.3.5.</span></div><div class="col-sm-10"><a href="/mapper/reading.html#1-3-5">Reading Record Counts</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.4.</span></div><div class="col-sm-10"><a href="/mapper/records.html#1-4">Working with Records</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.4.1.</span></div><div class="col-sm-10"><a href="/mapper/records.html#1-4-1">Creating and Inserting a Record</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.4.2.</span></div><div class="col-sm-10"><a href="/mapper/records.html#1-4-2">Updating an Existing Record</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.4.3.</span></div><div class="col-sm-10"><a href="/mapper/records.html#1-4-3">Deleting a Record</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.4.4.</span></div><div class="col-sm-10"><a href="/mapper/records.html#1-4-4">Persisting a Record</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.4.5.</span></div><div class="col-sm-10"><a href="/mapper/records.html#1-4-5">Marking Records for Deletion</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.5.</span></div><div class="col-sm-10"><a href="/mapper/record-sets.html#1-5">Working with RecordSets</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.5.1.</span></div><div class="col-sm-10"><a href="/mapper/record-sets.html#1-5-1">New RecordSets</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.5.2.</span></div><div class="col-sm-10"><a href="/mapper/record-sets.html#1-5-2">Appending Records to a RecordSet</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.5.3.</span></div><div class="col-sm-10"><a href="/mapper/record-sets.html#1-5-3">Array Access</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.5.4.</span></div><div class="col-sm-10"><a href="/mapper/record-sets.html#1-5-4">Searching within RecordSets</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.5.5.</span></div><div class="col-sm-10"><a href="/mapper/record-sets.html#1-5-5">Removing Records from RecordSets</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.6.</span></div><div class="col-sm-10"><a href="/mapper/transactions.html#1-6">Transactions (Unit of Work)</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.7.</span></div><div class="col-sm-10"><a href="/mapper/behavior.html#1-7">Record and RecordSet Behaviors</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.8.</span></div><div class="col-sm-10"><a href="/mapper/events.html#1-8">Events</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.8.1.</span></div><div class="col-sm-10"><a href="/mapper/events.html#1-8-1">Record Events</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.8.1.1.</span></div><div class="col-sm-10"><a href="/mapper/events.html#1-8-1-1">Available Events</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9">Direct Queries</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.1.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-1">Fetching</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.1.1.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-1-1">Fetch Value</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.1.2.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-1-2">Fetch Column</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.1.3.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-1-3">Fetch Pairs</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.1.4.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-1-4">Fetch One</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.1.5.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-1-5">Fetch Assoc</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.1.6.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-1-6">Fetch All</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.2.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-2">Yielding Data</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.2.1.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-2-1">Yield Col</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.2.2.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-2-2">Yield Pairs</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.2.3.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-2-3">Yield Assoc</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.2.4.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-2-4">Yield All</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.3.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-3">Complex Queries</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.9.4.</span></div><div class="col-sm-10"><a href="/mapper/direct.html#1-9-4">Reusing the Select</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.10.</span></div><div class="col-sm-10"><a href="/mapper/domain.html#1-10">Domain Models</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.10.1.</span></div><div class="col-sm-10"><a href="/mapper/domain.html#1-10-1">Persistence Model</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.10.2.</span></div><div class="col-sm-10"><a href="/mapper/domain.html#1-10-2">Domain Model Interfaces</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.10.3.</span></div><div class="col-sm-10"><a href="/mapper/domain.html#1-10-3">Implement Domain In Persistence</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.10.4.</span></div><div class="col-sm-10"><a href="/mapper/domain.html#1-10-4">Compose Persistence Into Domain</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.10.5.</span></div><div class="col-sm-10"><a href="/mapper/domain.html#1-10-5">Map From Persistence To Domain</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-2"><span class="text-number">1.10.6.</span></div><div class="col-sm-10"><a href="/mapper/domain.html#1-10-6">Which Approach Is Best?</a></div></div></li></ul>
-<div id="section-main"></div>        </div>
+
+<ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.1.</span>&nbsp;&nbsp;<a href="/mapper/2.x/">Atlas.Orm 2.x</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.2.</span>&nbsp;&nbsp;<a href="/mapper/1.x/">Atlas.Orm 1.x</a></div></div></li></ul><div id="section-main"></div>        </div>
     </div>
 </div>
 
@@ -467,7 +186,7 @@
                 <div class="prev col-xs-6">
                                             <a href="/">Previous</a>                                    </div>
                 <div class="next col-xs-6">
-                                            <a href="/mapper/getting-started.html">Next</a>                                    </div>
+                                            <a href="/mapper/2.x/">Next</a>                                    </div>
             </div>
         </div>
     </div>
@@ -475,7 +194,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <p>Powered by <a href="https://github.com/tobiju/bookdown-bootswatch-templates" title="Visit project to generate your own docs">Bookdown Bootswatch Templates</a>.</p>
+                    <p>&copy; 2015-2017, Atlas for PHP</p>
                 </div>
             </div>
         </div>

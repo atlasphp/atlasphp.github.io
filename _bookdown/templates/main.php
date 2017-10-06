@@ -1,20 +1,34 @@
 <?php
-// default library templates
-$library = dirname(__DIR__) . "/vendor/bookdown/bookdown/templates";
+// config
+$config = $this->page->getRoot()->getConfig();
 
-// project-specific templates
-$project = __DIR__;
+// register view helper
+require_once __DIR__ . "/tocListHelper.php";
+$helpers = $this->getHelpers();
+$helpers->set('tocListHelper', function () use ($config) {
+    return new \tocListHelper($this->get('anchorRaw'), $config);
+});
 
 // register the templates
+$templatePath = dirname(__DIR__) . '/vendor/bookdown/themes/templates';
 $templates = $this->getViewRegistry();
-$templates->set("head", "{$project}/head.php");
-$templates->set("body", "{$library}/body.php");
-$templates->set("core", "{$library}/core.php");
-$templates->set("navheader", "{$project}/navheader.php");
-$templates->set("navfooter", "{$project}/navfooter.php");
-$templates->set("toc", "{$library}/toc.php");
+$templates->set('head', $templatePath . '/head.php');
+$templates->set('meta', $templatePath . '/meta.php');
+$templates->set('style', __DIR__ . '/style.php');
+$templates->set('body', $templatePath . '/body.php');
+$templates->set('script', $templatePath . '/script.php');
+$templates->set('nav', $templatePath . '/nav.php');
+$templates->set('core', $templatePath . '/core.php');
+$templates->set('navheader', $templatePath . '/navheader.php');
+$templates->set('navfooter', $templatePath . '/navfooter.php');
+$templates->set('toc', $templatePath . '/toc.php');
+$templates->set('partialTopNav', $templatePath . '/partial/topNav.php');
+$templates->set('partialBreadcrumb', $templatePath . '/partial/breadcrumb.php');
+$templates->set('partialSideNav', $templatePath . '/partial/sideNav.php');
 ?>
+
+<!DOCTYPE html>
 <html>
-<?php echo $this->render("head"); ?>
-<?php echo $this->render("body"); ?>
+<?= $this->render("head"); ?>
+<?= $this->render("body"); ?>
 </html>
