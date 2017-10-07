@@ -255,7 +255,7 @@ $threadRecordSet = $atlas-&gt;select(ThreadMapper::CLASS)
     -&gt;fetchRecordSet();
 
 // returns one matching Record object from the RecordSet,
-// or false if there is no match
+// or null if there is no match
 $matchingRecord = $threadRecordSet-&gt;getOneBy(['subject' =&gt; 'Subject One']);
 
 // returns an array of matching Record objects from the RecordSet
@@ -266,7 +266,7 @@ $matchingRecords = $threadRecordSet-&gt;getAllBy(['author_id' =&gt; '5']);
 delete the Record from the database; only from the RecordSet.</p>
 <pre><code class="language-php">&lt;?php
 // unsets and returns one matching Record from the Record Set,
-// or false if there is no match
+// or null if there is no match
 $removedRecord = $threadRecordSet-&gt;removeOneBy(['subject' =&gt; 'Subject One']);
 
 // unsets and returns an array of matching Record objects from the Record Set

@@ -224,7 +224,7 @@ methods for more.</p>
 from the Table underlying the Mapper.</p>
 <h2 id="1-1-9-1">1.1.9.1. Fetching</h2>
 <h3 id="1-1-9-1-1">1.1.9.1.1. Fetch Value</h3>
-<p>Returns a single value, or false.</p>
+<p>Returns a single value, or null.</p>
 <pre><code class="language-php">&lt;?php
 $subject = $atlas
     -&gt;select(ThreadMapper::CLASS)
@@ -264,7 +264,7 @@ $subjectAndBody = $atlas
 // ]
 </code></pre>
 <h3 id="1-1-9-1-4">1.1.9.1.4. Fetch One</h3>
-<p>Returns an associative array of one row, or false.</p>
+<p>Returns an associative array of one row, or null.</p>
 <pre><code class="language-php">&lt;?php
 $threadData = $atlas
     -&gt;select(ThreadMapper::CLASS)
