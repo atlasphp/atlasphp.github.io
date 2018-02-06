@@ -191,13 +191,16 @@
                                 <li>
                 <a href="#1-1-2-4" title="Simple&#x20;WHERE&#x20;Conditions">Simple WHERE Conditions</a>
             </li>
+                                <li>
+                <a href="#1-1-2-5" title="Relationships&#x20;By&#x20;Reference">Relationships By Referen...</a>
+            </li>
             </ul>
 </nav>
         </div>
                 <div class="col-md-9">
 <div id="section-main"><h1 id="1-1-2">1.1.2. Mapper Relationships</h1>
 <p>You can add relationships to a mapper inside its <code>setRelated()</code> method, calling
-one of the four available relationship-definition methods:</p>
+one of the five available relationship-definition methods:</p>
 <ul>
 <li>
 <code>oneToOne($field, $mapperClass)</code> (aka "has one")</li>
@@ -207,6 +210,8 @@ one of the four available relationship-definition methods:</p>
 <code>oneToMany($field, $mapperClass)</code> (aka "has many")</li>
 <li>
 <code>manyToMany($field, $mapperClass, $throughField)</code> (aka "has many through")</li>
+<li>
+<code>manyToOneByReference($field, $referenceCol)</code> (aka "polymorphic association")</li>
 </ul>
 <p>The <code>$field</code> will become a field name on the returned Record object. That field
 will be populated from the specified <code>$mapperClass</code> in Atlas. (In the case of
@@ -323,24 +328,58 @@ class FooMapper
 when Atlas is stitching together related records.</p>
 <h2 id="1-1-2-4">1.1.2.4. Simple WHERE Conditions</h2>
 <p>You may find it useful to define simple WHERE conditions on the foreign side of
-the relationship. For example, you can handle one side of a so-called
-polymorphic relationship by selecting only related records of a particular type.</p>
+the relationship. For example, you can handle one side of a many-to-one
+relationship by reference (aka "polymorphic association") by selecting only
+related records of a particular type.</p>
 <p>In the following example, a <code>comments</code> table has a <code>commentable_id</code> column as
-the foreign key value, but is restricted to "issue" values on a discriminator
-column named <code>commentable</code>.</p>
+the foreign key value, but is restricted to "video" values on a discriminator
+column named <code>commentable_type</code>.</p>
 <pre><code class="language-php">class IssueMapper extends AbstractMapper
 {
     protected function setRelated()
     {
         $this-&gt;oneToMany('comments', CommentMapper::CLASS)
             -&gt;on([
-                'issue_id' =&gt; 'commentable_id'
+                'video_id' =&gt; 'commentable_id'
             ])
-            -&gt;where('commentable = ?', 'issue');
+            -&gt;where('commentable_type = ?', 'video');
     }
 }
 </code></pre>
 <p>(These conditions will be honored by <code>MapperSelect::*joinWith()</code> as well.)</p>
+<h2 id="1-1-2-5">1.1.2.5. Relationships By Reference</h2>
+<p>The many-to-one relationship by reference is somewhat different from the other
+relationship types. It is identical to a many-to-one relationship, except that
+the relationships vary by a reference column in the native table. This allows
+rows in the native table to "belong to" rows in more than one foreign table. The
+typical example is one of comments that can be created on many different kinds
+of content, such as static pages, blog posts, and video links.</p>
+<pre><code class="language-php">class CommentMapper extends AbstractMapper
+{
+    protected function setRelated()
+    {
+        // The first argument is the field name on the native record;
+        // the second argument is the reference column on the native table.
+        $this-&gt;manyToOneByReference('commentable', 'commentable_type')
+
+            // The first argument is the value of the commentable_type column;
+            // the second is the related foreign mapper class;
+            // the third is the native-to-foreign column mapping.
+            -&gt;to('page', PageMapper::CLASS, ['commentable_id' =&gt; 'page_id'])
+            -&gt;to('post', PostMapper::CLASS, ['commentable_id' =&gt; 'post_id'])
+            -&gt;to('video', VideoMapper::CLASS, ['commentable_id' =&gt; 'video_id']);
+    }
+}
+</code></pre>
+<p>Note that there will be one query per type of reference in the native record
+set. That is, if a native record set (of an arbitrary number of records) refers
+to a total of three different relationships, then Atlas will issue three
+additional queries to fetch the related records.</p>
+<p>The phrase "relationship by reference" is used here instead of "polymorphic
+association" because the latter is an OOP term, not an SQL term. The former is
+more SQL-ish, and is lifted from Postgres; cf.
+<a href="https://www.postgresql.org/docs/9.4/static/sql-createtable.html">https://www.postgresql.org/docs/9.4/static/sql-createtable.html</a> and search for
+"REFERENCES".</p>
 </div>        </div>
     </div>
 </div>
