@@ -238,11 +238,17 @@ trailing backslashes and enter the command on a single line.</p>
     └── ThreadTable.php
 </code></pre>
 <p>The Mapper class will be empty, and the Table class will a description of the
-specified <code>--table</code>.</p>
+specified <code>--table</code>. Note that you should not make changes to the table class,
+as they will be overwritten if you regenerate the skeleton.</p>
 <p>Do that once for each SQL table in your database.</p>
 <p>If you pass <code>--full</code> to <code>atlas-skeleton</code>, it will additionally generate empty
 <code>MapperEvents</code>, <code>Record</code>, <code>RecordSet</code>, and <code>TableEvents</code> classes. (These are
-useful only if you want to add custom behaviors.)</p>
+useful only if you want to add custom behaviors, and will not be overwritten
+if you regenerate the skeleton.)</p>
+<p>The <code>--full</code> option will also add a <code>Fields</code> class with <code>@property</code> annotations
+for table columns on the Record. This file will be overwritten if the table
+class is regenerated, as it is defined from the table columns (which may have
+changed since the last skeleton generation).</p>
 </div>        </div>
     </div>
 </div>

@@ -180,22 +180,28 @@
                 <a href="#1-1-8" title="Events">Events</a>
             </li>
                                 <li>
-                <a href="#1-1-8-1" title="Record&#x20;Events">Record Events</a>
+                <a href="#1-1-8-1" title="Mapper&#x20;Events">Mapper Events</a>
             </li>
-                        </ul>
+                                <li>
+                <a href="#1-1-8-2" title="Table&#x20;Events">Table Events</a>
+            </li>
+            </ul>
 </nav>
         </div>
                 <div class="col-md-9">
 <div id="section-main"><h1 id="1-1-8">1.1.8. Events</h1>
-<h2 id="1-1-8-1">1.1.8.1. Record Events</h2>
+<h2 id="1-1-8-1">1.1.8.1. Mapper Events</h2>
 <p>There are several events that will automatically be called when interacting with a
-Record object. If you used the Atlas CLI tool with the <code>--full</code> option, a
+Mapper object. If you used the Atlas CLI tool with the <code>--full</code> option, a
 MapperEvents class will be created for you. For example, <code>ThreadMapperEvents.php</code>.
 With this class, you can override any of the available mapper events.</p>
-<h3 id="1-1-8-1-1">1.1.8.1.1. Available Events</h3>
 <p>The <code>insert()</code>, <code>update()</code>, and <code>delete()</code> methods all have 3 events associated
-with them. A <code>before*()</code>, a <code>modify*()</code>, and an <code>after*()</code>.</p>
+with them: a <code>before*()</code>, a <code>modify*()</code>, and an <code>after*()</code>. In addition, there
+is a <code>modifySelect()</code> event.</p>
 <pre><code class="language-php">&lt;?php
+// Runs after the Select object is created, but before it is executed
+modifySelect(MapperInterface $mapper, MapperSelect $select)
+
 // Runs before the Insert object is created
 beforeInsert(MapperInterface $mapper, RecordInterface $record)
 
@@ -231,7 +237,6 @@ afterDelete(MapperInterface $mapper,
             RecordInterface $record,
             Delete $delete,
             PDOStatement $pdoStatement)
-
 </code></pre>
 <p>Here is a simple example with the assumption that the Record object has a
 <code>validate()</code> method and a <code>getErrors()</code> method. See the section on <a href="behavior.html">Adding Logic
@@ -250,6 +255,94 @@ use Atlas\Orm\Exception;
 class PostsMapperEvents extends MapperEvents
 {
     public function beforeUpdate(MapperInterface $mapper, RecordInterface $record)
+    {
+        if (! $record-&gt;validate())
+            throw new Exception('Update Error');
+        }
+
+    }
+}
+</code></pre>
+<p>And you might have something like this in your code:</p>
+<pre><code class="language-php">&lt;?php
+$success = $atlas-&gt;update($post);
+if ($sucess) {
+    echo "Post updated";
+} else {
+    foreach ($post-&gt;getErrors as $error) {
+        echo $error . '&lt;br/&gt;';
+    }
+}
+</code></pre>
+<h2 id="1-1-8-2">1.1.8.2. Table Events</h2>
+<p>There are several events that will automatically be called when interacting with a
+Table object. If you used the Atlas CLI tool with the <code>--full</code> option, a
+TableEvents class will be created for you. For example, <code>ThreadTableEvents.php</code>.
+With this class, you can override any of the available mapper events.</p>
+<p>The <code>insert()</code>, <code>update()</code>, and <code>delete()</code> methods all have 3 events associated
+with them: a <code>before*()</code>, a <code>modify*()</code>, and an <code>after*()</code>. In addition, there
+is a <code>modifySelect()</code> event, and a <code>modifySelectedRow()</code> event.</p>
+<pre><code class="language-php">&lt;?php
+// Runs after the Select object is created, but before it is executed
+modifySelect(TableInterface $table, TableSelect $select)
+
+// Runs after a newly-selected row is instantiated, but before it is
+// identity-mapped.
+modifySelectedRow(TableInterface $table, Row $row)
+
+// Runs before the Insert object is created
+beforeInsert(TableInterface $table, Row $row)
+
+// Runs after the Insert object is created, but before it is executed
+modifyInsert(TableInterface $table, Row $row, Insert $insert)
+
+// Runs after the Insert object is executed
+afterInsert(TableInterface $table,
+            Row $row,
+            Insert $insert,
+            PDOStatement $pdoStatement)
+
+// Runs before the Update object is created
+beforeUpdate(TableInterface $table, Row $row)
+
+// Runs after the Update object is created, but before it is executed
+modifyUpdate(TableInterface $table, Row $row, Update $update)
+
+// Runs after the Update object is executed
+afterUpdate(TableInterface $table,
+            Row $row,
+            Update $update,
+            PDOStatement $pdoStatement)
+
+// Runs before the Delete object is created
+beforeDelete(TableInterface $table, Row $row)
+
+// Runs after the Delete object is created, but before it is executed
+modifyDelete(TableInterface $table, Row $row, Delete $delete)
+
+// Runs after the Delete object is executed
+afterDelete(TableInterface $table,
+            Row $row,
+            Delete $delete,
+            PDOStatement $pdoStatement)
+</code></pre>
+<p>Here is a simple example with the assumption that the Record object has a
+<code>validate()</code> method and a <code>getErrors()</code> method. See the section on <a href="behavior.html">Adding Logic
+to Records and RecordSets</a>.</p>
+<pre><code class="language-php">&lt;?php
+namespace Blog\DataSource\Posts;
+
+use Atlas\Orm\Table\TableEvents;
+use Atlas\Orm\Table\TableInterface;
+use Atlas\Orm\Table\Row;
+use Atlas\Orm\Exception;
+
+/**
+ * @inheritdoc
+ */
+class PostsTableEvents extends TableEvents
+{
+    public function beforeUpdate(TableInterface $table, Row $row)
     {
         if (! $record-&gt;validate())
             throw new Exception('Update Error');
