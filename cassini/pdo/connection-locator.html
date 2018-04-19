@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
-<title>Atlas Database Framework for PHP</title>
+<title>Connection Locator</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
@@ -303,15 +303,164 @@
 </header>
 <div class="container">
     <ol class="breadcrumb">
-                        <li class="active">Atlas Database Framework for PHP</li>
+                        <li><a href="/">Atlas Database Framework for PHP</a></li>
+                                <li><a href="/cassini/">Cassini (v3)</a></li>
+                                <li><a href="/cassini/pdo/">PDO Connection</a></li>
+                                <li class="active">Connection Locator</li>
             </ol>
     <div class="row">
 
-                <div class="col-md-12">
+                <div class="col-md-3">
+            <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
+    <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
+                                <li>
+                <a href="#1-4-2" title="Connection&#x20;Locator">Connection Locator</a>
+            </li>
+                                <li>
+                <a href="#1-4-2-1" title="Instantiation">Instantiation</a>
+            </li>
+                                <li>
+                <a href="#1-4-2-2" title="Runtime&#x20;Configuration">Runtime Configuration</a>
+            </li>
+                                <li>
+                <a href="#1-4-2-3" title="Getting&#x20;Connections">Getting Connections</a>
+            </li>
+                                <li>
+                <a href="#1-4-2-4" title="Locking&#x20;To&#x20;The&#x20;Write&#x20;Connection">Locking To The Write Con...</a>
+            </li>
+                                <li>
+                <a href="#1-4-2-5" title="Construction-Time&#x20;Configuration">Construction-Time Config...</a>
+            </li>
+            </ul>
+</nav>
+        </div>
+                <div class="col-md-9">
+<div id="section-main"><h1 id="1-4-2">1.4.2. Connection Locator</h1>
+<p>Some applications may use multiple database servers; for example, one for writes, and one or more for reads. The <em>ConnectionLocator</em> allows you to define multiple <em>Connection</em> objects for lazy-loaded read and write connections. It will create the connections only when they are when called. The <em>Connection</em> creation logic should be wrapped in factory callable.</p>
+<h2 id="1-4-2-1">1.4.2.1. Instantiation</h2>
+<p>The easiest way to create a <em>ConnectionLoctor</em> is to use its static  <code>new()</code> method, either with <em>PDO</em> connection arguments, or with an actual <em>PDO</em> instance:</p>
+<pre><code class="language-php">use Atlas\Pdo\ConnectionLocator;
 
-<h1>Atlas Database Framework for PHP</h1>
+// pass PDO constructor arguments ...
+$connectionLocator = ConnectionLocator::new(
+    'mysql:host=localhost;dbname=testdb',
+    'username',
+    'password'
+);
 
-<ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.</span>&nbsp;&nbsp;<a href="/cassini/">Cassini (v3)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.1.</span>&nbsp;&nbsp;<a href="/cassini/orm/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.2.</span>&nbsp;&nbsp;<a href="/cassini/skeleton/">Skeleton Generator</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.3.</span>&nbsp;&nbsp;<a href="/cassini/query/">Query System</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.4.</span>&nbsp;&nbsp;<a href="/cassini/pdo/">PDO Connection</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.</span>&nbsp;&nbsp;<a href="/boggs/">Boggs (v2)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.1.</span>&nbsp;&nbsp;<a href="/boggs/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.2.</span>&nbsp;&nbsp;<a href="/boggs/skeleton/">Skeleton Generator</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.</span>&nbsp;&nbsp;<a href="/albers/">Albers (v1)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.1.</span>&nbsp;&nbsp;<a href="/albers/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.2.</span>&nbsp;&nbsp;<a href="/albers/skeleton/">Skeleton Generator</a></div></div></li></ul></li></ul><div id="section-main"></div>        </div>
+// ... or a PDO instance.
+$connectionLocator = ConnectionLocator::new($pdo);
+</code></pre>
+<p>Doing so will define the default connection factory for the <em>ConnectionLocator</em>.</p>
+<h2 id="1-4-2-2">1.4.2.2. Runtime Configuration</h2>
+<p>Once you have a <em>ConnectionLocator</em>, you can add as many named read and write connection factories as you like:</p>
+<pre><code class="language-php">// the write (master) server
+$connectionLocator-&gt;setWriteFactory('master', Connection::factory(
+    'mysql:host=master.db.localhost;dbname=database',
+    'username',
+    'password'
+));
+
+// read (slave) #1
+$connectionLocator-&gt;setReadFactory('slave1', Connection::factory(
+    return new Connection(
+        'mysql:host=slave1.db.localhost;dbname=database',
+        'username',
+        'password'
+    );
+});
+
+// read (slave) #2
+$connectionLocator-&gt;setReadFactory('slave2', Connection::factory(
+    'mysql:host=slave2.db.localhost;dbname=database',
+    'username',
+    'password'
+));
+
+// read (slave) #3
+$connectionLocator-&gt;setReadFactory('slave3', Connection::factory(
+    'mysql:host=slave3.db.localhost;dbname=database',
+    'username',
+    'password'
+));
+</code></pre>
+<h2 id="1-4-2-3">1.4.2.3. Getting Connections</h2>
+<p>Retrieve a <em>Connection</em> from the locator when you need it. This will create the <em>Connection</em> (if needed) and then return it.</p>
+<ul>
+<li>
+<p><code>getDefault()</code> will return the default <em>Connection</em>.</p>
+</li>
+<li>
+<p><code>getRead()</code> will return a random read <em>Connection</em>; after the first call, <code>getRead()</code> will always return the same <em>Connection</em>. (If no read <em>Connections</em> are defined, it will return the default connection.)</p>
+</li>
+<li>
+<p><code>getWrite()</code> will return a random write <em>Connection</em>; after the first call, <code>getWrite()</code> will always return the same <em>Connection</em>. (If no read <em>Connections</em> are defined, it will return the default connection.)</p>
+</li>
+</ul>
+<pre><code class="language-php">$read = $connectionLocator-&gt;getRead();
+$results = $read-&gt;fetchAll('SELECT * FROM table_name LIMIT 10');
+
+$readAgain = $connectionLocator-&gt;getRead();
+assert($read === $readAgain); // true
+</code></pre>
+<p>You can get any read or write connection directly by name using the <code>get()</code> method:</p>
+<pre><code class="language-php">$foo = $connectionLocator-&gt;get(ConnectionLocator::READ, 'foo');
+$bar = $connectionLocator-&gt;get(ConnectionLocator::WRITE, 'bar');
+</code></pre>
+<h2 id="1-4-2-4">1.4.2.4. Locking To The Write Connection</h2>
+<p>If you call the <code>lockToWrite()</code> method, calls to <code>getRead()</code> will return the write connection instead of the read connection.</p>
+<pre><code class="language-php">$read = $connectionLocator-&gt;getRead();
+$write = $connectionLocator-&gt;getWrite();
+
+$connectionLocator-&gt;lockToWrite();
+$readAgain = $connectionLocator-&gt;getRead();
+assert($readAgain === $write); // true
+</code></pre>
+<p>You can disable the lock-to-write behavior by calling <code>lockToWrite(false)</code>.</p>
+<h2 id="1-4-2-5">1.4.2.5. Construction-Time Configuration</h2>
+<p>The <em>ConnectionLocator</em> can be configured with all its connections at construction time; this can be useful with dependency injection mechanisms. (Note that this requires using the constructor proper, not the static <code>new()</code> method.)</p>
+<pre><code class="language-php">use Atlas\Pdo\Connection;
+use Atlas\Pdo\ConnectionLocator;
+
+// default connection
+$default = Connection::factory(
+    'mysql:host=default.db.localhost;dbname=database',
+    'username',
+    'password'
+);
+
+// read connections
+$read = [
+    'slave1' =&gt; Connection::factory(
+        'mysql:host=slave1.db.localhost;dbname=database',
+        'username',
+        'password'
+    ),
+    'slave2' =&gt; Connection::factory(
+        'mysql:host=slave2.db.localhost;dbname=database',
+        'username',
+        'password'
+    ),
+    'slave3' =&gt; Connection::factory(
+        'mysql:host=slave3.db.localhost;dbname=database',
+        'username',
+        'password'
+    ),
+];
+
+// write connection
+$write = [
+    'master' =&gt; Connection::factory(
+        'mysql:host=master.db.localhost;dbname=database',
+        'username',
+        'password'
+    ),
+];
+
+// configure locator at construction time
+$connectionLocator = new ConnectionLocator($default, $read, $write);
+</code></pre>
+</div>        </div>
     </div>
 </div>
 
@@ -320,9 +469,9 @@
         <div class="container">
             <div class="row">
                 <div class="prev col-xs-6">
-                                    </div>
+                                            <a href="/cassini/pdo/connection.html">Previous</a>                                    </div>
                 <div class="next col-xs-6">
-                                            <a href="/cassini/">Next</a>                                    </div>
+                                            <a href="/boggs/">Next</a>                                    </div>
             </div>
         </div>
     </div>

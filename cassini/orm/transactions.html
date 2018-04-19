@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
-<title>Atlas Database Framework for PHP</title>
+<title>Transactions</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
@@ -303,15 +303,106 @@
 </header>
 <div class="container">
     <ol class="breadcrumb">
-                        <li class="active">Atlas Database Framework for PHP</li>
+                        <li><a href="/">Atlas Database Framework for PHP</a></li>
+                                <li><a href="/cassini/">Cassini (v3)</a></li>
+                                <li><a href="/cassini/orm/">ORM</a></li>
+                                <li class="active">Transactions</li>
             </ol>
     <div class="row">
 
-                <div class="col-md-12">
+                <div class="col-md-3">
+            <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
+    <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
+                                <li>
+                <a href="#1-1-6" title="Transactions">Transactions</a>
+            </li>
+                                <li>
+                <a href="#1-1-6-1" title="Manual&#x20;Transaction&#x20;Management">Manual Transaction Manag...</a>
+            </li>
+                                <li>
+                <a href="#1-1-6-2" title="Other&#x20;Transaction&#x20;Strategies">Other Transaction Strate...</a>
+            </li>
+            </ul>
+</nav>
+        </div>
+                <div class="col-md-9">
+<div id="section-main"><h1 id="1-1-6">1.1.6. Transactions</h1>
+<p>Atlas always starts in "autocommit" mode, which means that each interaction with
+the database is its own micro-transaction (cf. <a href="https://secure.php.net/manual/en/pdo.transactions.php">https://secure.php.net/manual/en/pdo.transactions.php</a>).</p>
+<h2 id="1-1-6-1">1.1.6.1. Manual Transaction Management</h2>
+<p>You can manage transactions manually by calling these methods on the Atlas object:</p>
+<pre><code class="language-php">&lt;?php
+// begins a transaction on BOTH the read connection
+// AND the write connection
+$atlas-&gt;beginTransaction();
 
-<h1>Atlas Database Framework for PHP</h1>
+// commits the transaction on BOTH connections
+$atlas-&gt;commit();
 
-<ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.</span>&nbsp;&nbsp;<a href="/cassini/">Cassini (v3)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.1.</span>&nbsp;&nbsp;<a href="/cassini/orm/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.2.</span>&nbsp;&nbsp;<a href="/cassini/skeleton/">Skeleton Generator</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.3.</span>&nbsp;&nbsp;<a href="/cassini/query/">Query System</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.4.</span>&nbsp;&nbsp;<a href="/cassini/pdo/">PDO Connection</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.</span>&nbsp;&nbsp;<a href="/boggs/">Boggs (v2)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.1.</span>&nbsp;&nbsp;<a href="/boggs/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.2.</span>&nbsp;&nbsp;<a href="/boggs/skeleton/">Skeleton Generator</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.</span>&nbsp;&nbsp;<a href="/albers/">Albers (v1)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.1.</span>&nbsp;&nbsp;<a href="/albers/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.2.</span>&nbsp;&nbsp;<a href="/albers/skeleton/">Skeleton Generator</a></div></div></li></ul></li></ul><div id="section-main"></div>        </div>
+// rolls back the transaction on BOTH connections
+$atlas-&gt;rollBack();
+</code></pre>
+<p>Once you perform a write operation (insert, update, delete, or persist), Atlas
+will lock to the write connection. That is, all reads will occur against the
+write connection for the rest of the Atlas object's lifetime.</p>
+<h2 id="1-1-6-2">1.1.6.2. Other Transaction Strategies</h2>
+<p>If you find that manually managing transactions proves tedious, Atlas comes with
+three alternative transaction strategy classes:</p>
+<ul>
+<li>
+<p><em>AutoTransact</em> will automatically begin a transaction when you perform a
+write operation, then automatically commit that operation, or roll it back on
+exception. (Note that in the case of <code>persistRecordSet()</code>, each Record in the
+RecordSet will be persisted within its own transaction.)</p>
+</li>
+<li>
+<p><em>BeginOnWrite</em> will automatically begin a transaction when you perform a
+write operation. It will not commit or roll back; you will need to do so
+yourself. Once you do, the next time you perform a write operation, Atlas will
+begin another transaction.</p>
+</li>
+<li>
+<p><em>BeginOnRead</em> will automatically begin a transaction when you perform a
+write operation <strong>or</strong> a read operation. It will not commit or roll back; you
+will need to do so yourself. Once you do, the next time you perform a write or
+read operation, Atlas will begin another transaction.</p>
+</li>
+</ul>
+<p>(As with the manual strategy, the transactions are started on BOTH read and
+write connections, and each of these will lock to the write connection once a
+write operation is performed.)</p>
+<p>To specify which transaction strategy to use, pass it as the last argument to
+the <em>Atlas</em> static <code>new()</code> call ...</p>
+<pre><code class="language-php">&lt;?php
+use Atlas\Orm\Atlas;
+use Atlas\Orm\Transaction\AutoTransact;
+
+// use a MiniTransaction strategy
+$atlas = Atlas::new(
+    'mysql:host=localhost;dbname=testdb',
+    'username',
+    'password',
+    AutoTransact::CLASS
+);
+</code></pre>
+<p>... or call <code>setTransactionClass()</code> on an <em>AtlasBuilder</em> instance:</p>
+<pre><code class="language-php">&lt;?php
+use Atlas\Orm\AtlasBuilder;
+use Atlas\Orm\Transaction\BeginOnRead;
+
+$builder = new AtlasBuilder(
+    'mysql:host=localhost;dbname=testdb',
+    'username',
+    'password'
+);
+
+// use a BeginOnRead strategy
+$builder-&gt;setTransactionClass(BeginOnRead::CLASS);
+
+// get a new Atlas instance
+$atlas = $builder-&gt;newAtlas();
+</code></pre>
+</div>        </div>
     </div>
 </div>
 
@@ -320,9 +411,9 @@
         <div class="container">
             <div class="row">
                 <div class="prev col-xs-6">
-                                    </div>
+                                            <a href="/cassini/orm/record-sets.html">Previous</a>                                    </div>
                 <div class="next col-xs-6">
-                                            <a href="/cassini/">Next</a>                                    </div>
+                                            <a href="/cassini/orm/behavior.html">Next</a>                                    </div>
             </div>
         </div>
     </div>

@@ -1,8 +1,0 @@
-{
-    "title": "Persistence Mapper",
-    "content": [
-        {"2.x": "https://raw.githubusercontent.com/atlasphp/Atlas.Orm/2.x/docs/_bookdown.json"},
-        {"1.x": "https://raw.githubusercontent.com/atlasphp/Atlas.Orm/1.x/docs/_bookdown.json"}
-    ],
-    "tocDepth": "1"
-}

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
-<title>Atlas Database Framework for PHP</title>
+<title>SELECT</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
@@ -303,15 +303,310 @@
 </header>
 <div class="container">
     <ol class="breadcrumb">
-                        <li class="active">Atlas Database Framework for PHP</li>
+                        <li><a href="/">Atlas Database Framework for PHP</a></li>
+                                <li><a href="/cassini/">Cassini (v3)</a></li>
+                                <li><a href="/cassini/query/">Query System</a></li>
+                                <li class="active">SELECT</li>
             </ol>
     <div class="row">
 
-                <div class="col-md-12">
+                <div class="col-md-3">
+            <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
+    <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
+                                <li>
+                <a href="#1-3-3" title="SELECT">SELECT</a>
+            </li>
+                                <li>
+                <a href="#1-3-3-1" title="Building&#x20;The&#x20;Query">Building The Query</a>
+            </li>
+                                                                                                                                                        <li>
+                <a href="#1-3-3-2" title="Resetting&#x20;Query&#x20;Elements">Resetting Query Elements</a>
+            </li>
+                                <li>
+                <a href="#1-3-3-3" title="Subselect&#x20;Objects">Subselect Objects</a>
+            </li>
+                                <li>
+                <a href="#1-3-3-4" title="Performing&#x20;The&#x20;Query">Performing The Query</a>
+            </li>
+            </ul>
+</nav>
+        </div>
+                <div class="col-md-9">
+<div id="section-main"><h1 id="1-3-3">1.3.3. SELECT</h1>
+<h2 id="1-3-3-1">1.3.3.1. Building The Query</h2>
+<h3 id="1-3-3-1-1">1.3.3.1.1. Columns</h3>
+<p>To add columns to the <em>Select</em>, use the <code>columns()</code> method and pass each column as
+a variadic argument.</p>
+<pre><code class="language-php">// SELECT id, name AS namecol, COUNT(foo) AS foo_count
+$select
+    -&gt;columns('id')
+    -&gt;columns('name AS namecol', 'COUNT(foo) AS foo_count');
+</code></pre>
+<h3 id="1-3-3-1-2">1.3.3.1.2. FROM</h3>
+<p>To add a <code>FROM</code> clause, use the <code>from()</code> method:</p>
+<pre><code class="language-php">// FROM foo, bar AS b
+$select
+    -&gt;from('foo')
+    -&gt;from('bar AS b');
+</code></pre>
+<h3 id="1-3-3-1-3">1.3.3.1.3. JOIN</h3>
+<p>(All <code>JOIN</code> methods support inline value binding via optional trailing arguments.)</p>
+<p>To add a <code>JOIN</code> clause, use the <code>join()</code> method:</p>
+<pre><code class="language-php">// LEFT JOIN doom AS d ON foo.id = d.foo_id
+$select-&gt;join(
+    'LEFT',
+    'doom AS d',
+    'foo.id = d.foo_id'
+);
+</code></pre>
+<p>You can concatenate onto the end of the most-recent <code>JOIN</code> using the <code>catJoin()</code>
+method:</p>
+<pre><code class="language-php">// LEFT JOIN doom AS d ON foo.id = d.foo_if AND d.bar = :__1__ AND d.baz = :__2__
+$select
+    -&gt;join(
+        'LEFT',
+        'doom AS d',
+        'foo.id = d.foo_id AND d.bar = ',
+        $bar_value
+    )-&gt;catJoin(' AND d.baz = ', $baz_value);
+</code></pre>
+<h3 id="1-3-3-1-4">1.3.3.1.4. WHERE</h3>
+<p>(All <code>WHERE</code> methods support inline value binding via optional trailing arguments.)</p>
+<p>To add <code>WHERE</code> conditions, use the <code>where()</code> method. Additional calls to
+<code>where()</code> will implicitly AND the subsequent condition.</p>
+<pre><code class="language-php">// WHERE bar &gt; :__1__ AND zim &gt;= :__2__ AND baz :__3__
+$select
+    -&gt;where('bar &gt; 1', $bar_value)
+    -&gt;where('zim &gt;= 2', $zim_value)
+    -&gt;andWhere('baz &lt; 3', $baz_value);
+</code></pre>
+<p>Use <code>orWhere()</code> to OR the subsequent condition.</p>
+<pre><code class="language-php">// WHERE bar &gt; :__1__ OR zim &gt;= :__2__
+$select
+    -&gt;where('bar &gt; ', $bar_value)
+    -&gt;orWhere('zim &gt;= ', $zim_value)
+</code></pre>
+<p>You can concatenate onto the end of the most-recent <code>WHERE</code> condition using the
+<code>catWhere()</code> method:</p>
+<pre><code class="language-php">// WHERE bar &gt; :__1__ OR (foo = 88 AND bar &lt; :__2__)
+$select
+    -&gt;where('bar &gt; ', $bar_value)
+    -&gt;orWhere('(')
+    -&gt;catWhere('foo = 88')
+    -&gt;catWhere(' AND bar &lt; ', $bar_value)
+    -&gt;catWhere(')');
 
-<h1>Atlas Database Framework for PHP</h1>
+</code></pre>
+<h3 id="1-3-3-1-5">1.3.3.1.5. GROUP BY</h3>
+<p>To add <code>GROUP BY</code> expressions, use the <code>groupBy()</code> method and pass each
+expression as a variadic argument.</p>
+<pre><code class="language-php">// GROUP BY foo, bar, baz
+$select
+    -&gt;groupBy('foo')
+    -&gt;groupBy('bar', 'baz');
+</code></pre>
+<h3 id="1-3-3-1-6">1.3.3.1.6. HAVING</h3>
+<p>(All <code>HAVING</code> methods support inline value binding via optional trailing arguments.)</p>
+<p>The <code>HAVING</code> methods work just like their equivalent WHERE methods:</p>
+<ul>
+<li>
+<code>having()</code> and <code>andHaving()</code> AND a HAVING condition</li>
+<li>
+<code>orHaving()</code> ORs a HAVING condition</li>
+<li>
+<code>catHaving()</code> concatenates onto the end of the most-recent HAVING condition.</li>
+</ul>
+<h3 id="1-3-3-1-7">1.3.3.1.7. ORDER BY</h3>
+<p>To add <code>ORDER BY</code> expressions, use the <code>orderBy()</code> method and pass each
+expression as a variadic argument.</p>
+<pre><code class="language-php">// ORDER BY foo, bar, baz
+$select
+    -&gt;orderBy('foo')
+    -&gt;orderBy('bar', 'baz');
+</code></pre>
+<h3 id="1-3-3-1-8">1.3.3.1.8. LIMIT, OFFSET, and Paging</h3>
+<p>To set a <code>LIMIT</code> and <code>OFFSET</code>, use the <code>limit()</code> and <code>offset()</code> methods.</p>
+<pre><code class="language-php">// LIMIT 10 OFFSET 40
+$select
+    -&gt;limit(10)
+    -&gt;offset(40);
+</code></pre>
+<p>Alternatively, you can limit by "pages" using the <code>page()</code> and <code>perPage()</code>
+methods:</p>
+<pre><code class="language-php">// LIMIT 10 OFFSET 40
+$select
+    -&gt;page(5)
+    -&gt;perPage(10);
+</code></pre>
+<h3 id="1-3-3-1-9">1.3.3.1.9. DISTINCT, FOR UPDATE, and Other Flags</h3>
+<p>You can set <code>DISTINCT</code> and <code>FOR UPDATE</code> flags on the query like so:</p>
+<pre><code class="language-php">$select
+    -&gt;distinct()
+    -&gt;forUpdate();
+</code></pre>
+<p>Each of those methods take an option boolean parameter to enable (<code>true</code>) or
+disable (<code>false</code>) the flag.</p>
+<p>You can set flags recognized by your database server using the <code>setFlag()</code>
+method. For example, you can set a MySQL <code>HIGH_PRIORITY</code> flag like so:</p>
+<pre><code class="language-php">// SELECT HIGH_PRIORITY * FROM foo
+$select
+    -&gt;columns('*')
+    -&gt;from('foo')
+    -&gt;setFlag('HIGH_PRIORITY');
+</code></pre>
+<h3 id="1-3-3-1-10">1.3.3.1.10. UNION</h3>
+<p>To <code>UNION</code> or <code>UNION ALL</code> the current <em>Select</em> with a followup query, call one
+the <code>union*()</code> methods:</p>
+<pre><code class="language-php">// SELECT id, name FROM foo
+// UNION
+// SELECT id, name FROM bar
+$select
+    -&gt;columns('id', 'name')
+    -&gt;from('foo')
+    -&gt;union()
+    -&gt;columns('id', 'name')
+    -&gt;from('bar');
 
-<ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.</span>&nbsp;&nbsp;<a href="/cassini/">Cassini (v3)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.1.</span>&nbsp;&nbsp;<a href="/cassini/orm/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.2.</span>&nbsp;&nbsp;<a href="/cassini/skeleton/">Skeleton Generator</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.3.</span>&nbsp;&nbsp;<a href="/cassini/query/">Query System</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.4.</span>&nbsp;&nbsp;<a href="/cassini/pdo/">PDO Connection</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.</span>&nbsp;&nbsp;<a href="/boggs/">Boggs (v2)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.1.</span>&nbsp;&nbsp;<a href="/boggs/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.2.</span>&nbsp;&nbsp;<a href="/boggs/skeleton/">Skeleton Generator</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.</span>&nbsp;&nbsp;<a href="/albers/">Albers (v1)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.1.</span>&nbsp;&nbsp;<a href="/albers/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.2.</span>&nbsp;&nbsp;<a href="/albers/skeleton/">Skeleton Generator</a></div></div></li></ul></li></ul><div id="section-main"></div>        </div>
+// SELECT id, name FROM foo
+// UNION ALL
+// SELECT id, name FROM bar
+$select
+    -&gt;columns('id', 'name')
+    -&gt;from('foo')
+    -&gt;union()
+    -&gt;columns('id', 'name')
+    -&gt;from('bar');
+</code></pre>
+<h2 id="1-3-3-2">1.3.3.2. Resetting Query Elements</h2>
+<p>The <em>Select</em> class comes with the following methods to "reset" various clauses
+a blank state. This can be useful when reusing the same query in different
+variations (e.g., to re-issue a query to get a <code>COUNT(*)</code> without a <code>LIMIT</code>, to
+find the total number of rows to be paginated over).</p>
+<ul>
+<li>
+<code>reset()</code> removes all clauses from the query.</li>
+<li>
+<code>resetColumns()</code> removes all the columns to be selected.</li>
+<li>
+<code>resetFrom()</code> removes the FROM clause, including all JOIN sub-clauses.</li>
+<li>
+<code>resetWhere()</code> removes all WHERE conditions.</li>
+<li>
+<code>resetGroupBy()</code> removes all GROUP BY expressions.</li>
+<li>
+<code>resetHaving()</code> removes all HAVING conditions.</li>
+<li>
+<code>resetOrderBy()</code> removes all ORDER BY expressions.</li>
+<li>
+<code>resetLimit()</code> removes all LIMIT, OFFSET, and paging values.</li>
+<li>
+<code>resetFlags()</code> removes all flags.</li>
+</ul>
+<p>Resetting only works on the current SELECT being built; it has no effect on
+queries that are already part of UNION.</p>
+<h2 id="1-3-3-3">1.3.3.3. Subselect Objects</h2>
+<p>If you want create a subselect, call the <code>subSelect()</code> method:</p>
+<pre><code class="language-php">$subSelect = $select-&gt;subSelect();
+</code></pre>
+<p>The returned object will be a new <em>Select</em> that shares bound values with the
+parent <em>Select</em>.</p>
+<p>When you are done building the subselect, give it an alias using the <code>as()</code>
+method, and call <code>getStatement()</code> to render it (wrapped in parentheses) into the
+desired condition or expression.</p>
+<p>The following is a contrived example:</p>
+<pre><code class="language-php">// SELECT * FROM (
+//     SELECT id, name
+//     FROM foo
+//     WHERE id &gt; :__1__
+// ) AS subfoo
+// WHERE LENGTH(subfoo.name) &gt; :__2__
+$select-&gt;columns('*')
+    -&gt;from(
+        $select-&gt;subSelect()
+            -&gt;columns('id', 'name')
+            -&gt;from('foo')
+            -&gt;where('id &gt; ', $id)
+            -&gt;as('sub_alias')
+            -&gt;getStatement()
+        )
+    )
+    -&gt;where('LENGTH(sub_alias.name) &gt; ', $length);
+</code></pre>
+<p>The above shows how the bound values are shared between the parent and the sub
+<em>Select</em> objects. If you create a new <em>Select</em> and try to use it as a subselect,
+the bound values will not be shared, and you may get unexpected results.</p>
+<p>Other examples include:</p>
+<pre><code class="language-php">$select-&gt;where(
+    'foo IN ',
+    $select-&gt;subSelect()-&gt;...-&gt;as('sub_alias')-&gt;getStatement()
+);
+
+$select-&gt;join(
+    'LEFT',
+    $select-&gt;subSelect()-&gt;...-&gt;as('sub_alias')-&gt;getStatement(),
+    'foo.id = sub_alias.id',
+);
+</code></pre>
+<h2 id="1-3-3-4">1.3.3.4. Performing The Query</h2>
+<p>Once you have built the query, call the <code>perform()</code> method to execute it and
+get back a <em>PDOStatement</em>.</p>
+<pre><code class="language-php">$result = $select-&gt;perform();
+</code></pre>
+<p>The SELECT proxies all <code>fetch*()</code> and <code>yield()</code> method calls to the underlying
+<em>Connection</em> object, which means they are also available to you as well.  The
+proxied <em>Connection</em> <code>fetch*()</code> and <code>yield*()</code> methods are:</p>
+<ul>
+<li>
+<code>fetchAll() : array</code>
+</li>
+<li>
+<code>fetchAffected() : int</code>
+</li>
+<li>
+<code>fetchColumn(int $column = 0) : array</code>
+</li>
+<li>
+<code>fetchGroup(int $style = PDO::FETCH_COLUMN) : array</code>
+</li>
+<li>
+<code>fetchKeyPair() : array</code>
+</li>
+<li>
+<code>fetchObject(string $class = 'stdClass', array $args = []) : object</code>
+</li>
+<li>
+<code>fetchObjects(string $class = 'stdClass', array $args = []) : array</code>
+</li>
+<li>
+<code>fetchOne() : ?array</code>
+</li>
+<li>
+<code>fetchUnique() : array</code>
+</li>
+<li>
+<code>fetchValue() : mixed</code>
+</li>
+<li>
+<code>yieldAll() : Generator</code>
+</li>
+<li>
+<code>yieldColumn(int $column = 0) : Generator</code>
+</li>
+<li>
+<code>yieldKeyPair() : Generator</code>
+</li>
+<li>
+<code>yieldObjects(string $class = 'stdClass', array $args = []) : Generator</code>
+</li>
+<li>
+<code>yieldUnique() : Generator</code>
+</li>
+</ul>
+<p>Note that the <code>$statement</code> and <code>$values</code> parameters are passed automatically by
+the the <em>Select</em> proxy, though parameters after those may still be specified.</p>
+<p>For more information on the <code>fetch*()</code> and <code>yield*()</code> methods, please see the
+<a href="https://github.com/atlasphp/Atlas.Pdo">Atlas.Pdo</a> documentation.</p>
+</div>        </div>
     </div>
 </div>
 
@@ -320,9 +615,9 @@
         <div class="container">
             <div class="row">
                 <div class="prev col-xs-6">
-                                    </div>
+                                            <a href="/cassini/query/binding.html">Previous</a>                                    </div>
                 <div class="next col-xs-6">
-                                            <a href="/cassini/">Next</a>                                    </div>
+                                            <a href="/cassini/query/insert.html">Next</a>                                    </div>
             </div>
         </div>
     </div>

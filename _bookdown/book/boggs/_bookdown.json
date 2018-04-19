@@ -1,0 +1,8 @@
+{
+    "title": "Boggs (v2)",
+    "content": [
+        {"mapper": "https://raw.githubusercontent.com/atlasphp/Atlas.Orm/2.x/docs/_bookdown.json"},
+        {"skeleton": "https://raw.githubusercontent.com/atlasphp/Atlas.Cli/1.x/docs/_bookdown.json"}
+    ],
+    "tocDepth": "2"
+}

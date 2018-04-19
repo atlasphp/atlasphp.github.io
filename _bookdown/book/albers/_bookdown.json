@@ -1,0 +1,8 @@
+{
+    "title": "Albers (v1)",
+    "content": [
+        {"mapper": "https://raw.githubusercontent.com/atlasphp/Atlas.Orm/1.x/docs/_bookdown.json"},
+        {"skeleton": "https://raw.githubusercontent.com/atlasphp/Atlas.Cli/1.x/docs/_bookdown.json"}
+    ],
+    "tocDepth": "2"
+}

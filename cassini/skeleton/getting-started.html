@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
-<title>Atlas Database Framework for PHP</title>
+<title>Atlas.Cli 2.x</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
@@ -303,15 +303,114 @@
 </header>
 <div class="container">
     <ol class="breadcrumb">
-                        <li class="active">Atlas Database Framework for PHP</li>
+                        <li><a href="/">Atlas Database Framework for PHP</a></li>
+                                <li><a href="/cassini/">Cassini (v3)</a></li>
+                                <li><a href="/cassini/skeleton/">Skeleton Generator</a></li>
+                                <li class="active">Atlas.Cli 2.x</li>
             </ol>
     <div class="row">
 
-                <div class="col-md-12">
-
-<h1>Atlas Database Framework for PHP</h1>
-
-<ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.</span>&nbsp;&nbsp;<a href="/cassini/">Cassini (v3)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.1.</span>&nbsp;&nbsp;<a href="/cassini/orm/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.2.</span>&nbsp;&nbsp;<a href="/cassini/skeleton/">Skeleton Generator</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.3.</span>&nbsp;&nbsp;<a href="/cassini/query/">Query System</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.4.</span>&nbsp;&nbsp;<a href="/cassini/pdo/">PDO Connection</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.</span>&nbsp;&nbsp;<a href="/boggs/">Boggs (v2)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.1.</span>&nbsp;&nbsp;<a href="/boggs/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.2.</span>&nbsp;&nbsp;<a href="/boggs/skeleton/">Skeleton Generator</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.</span>&nbsp;&nbsp;<a href="/albers/">Albers (v1)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.1.</span>&nbsp;&nbsp;<a href="/albers/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.2.</span>&nbsp;&nbsp;<a href="/albers/skeleton/">Skeleton Generator</a></div></div></li></ul></li></ul><div id="section-main"></div>        </div>
+                <div class="col-md-3">
+            <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
+    <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
+                                <li>
+                <a href="#1-2-1" title="Atlas.Cli&#x20;2.x">Atlas.Cli 2.x</a>
+            </li>
+                                <li>
+                <a href="#1-2-1-1" title="Installation">Installation</a>
+            </li>
+                                <li>
+                <a href="#1-2-1-2" title="Generating&#x20;Skeleton&#x20;Classes">Generating Skeleton Clas...</a>
+            </li>
+                                <li>
+                <a href="#1-2-1-3" title="Cutom&#x20;Table&#x20;Name&#x20;Transformations">Cutom Table Name Transfo...</a>
+            </li>
+            </ul>
+</nav>
+        </div>
+                <div class="col-md-9">
+<div id="section-main"><h1 id="1-2-1">1.2.1. Atlas.Cli 2.x</h1>
+<p>This is the command-line interface package for Atlas. It is intended for use
+in your development environments, not your production ones.</p>
+<h2 id="1-2-1-1">1.2.1.1. Installation</h2>
+<p>This package is installable and autoloadable via
+<a href="https://getcomposer.org/">Composer</a> as
+<a href="https://packagist.org/packages/atlas/cli">atlas/cli</a>.</p>
+<p>Add it to the <code>require-dev</code> section of your root-level <code>composer.json</code>
+to install the <code>atlas-skeleton</code> command-line tool.</p>
+<pre><code class="language-json">{
+    "require-dev": {
+        "atlas/cli": "~2.0"
+    }
+}
+</code></pre>
+<h2 id="1-2-1-2">1.2.1.2. Generating Skeleton Classes</h2>
+<p>You can write your persistence model classes by hand, but it's going to be
+tedious to do so. Instead, use the <code>atlas-skeleton</code> command to read the table
+information from the database and generate them for you.</p>
+<p>First, create a PHP file to return an array of configuration parameters for
+skeleton generation. Provide an array of PDO connection arguments, a string for
+the namespace prefix, and a directory to write the classes to:</p>
+<pre><code class="language-php">&lt;?php
+// /path/to/skeleton-config.php
+return [
+    'pdo' =&gt; [
+        'mysql:dbname=testdb;host=localhost',
+        'username',
+        'password',
+    ],
+    'namespace' =&gt; 'App\\DataSource',
+    'directory' =&gt; './src/App/DataSource',
+];
+</code></pre>
+<p>You can then invoke the skeleton generator using that config file.</p>
+<pre><code class="language-bash">php ./vendor/bin/atlas-skeleton.php /path/to/skeleton-config.php
+</code></pre>
+<p>That will read every table in the database and create one DataSource directory
+for each of them, each with several classes:</p>
+<pre><code>└── Thread
+    ├── ThreadFields.php                # App\DataSource\Thread\ThreadFields
+    ├── ThreadMapper.php                # App\DataSource\Thread\ThreadMapper
+    ├── ThreadMapperRelationships.php   # App\DataSource\Thread\ThreadMapper
+    ├── ThreadMapperEvents.php          # App\DataSource\Thread\ThreadMapperEvents
+    ├── ThreadRecord.php                # App\DataSource\Thread\ThreadRecord
+    ├── ThreadRecordSet.php             # App\DataSource\Thread\ThreadRecordSet
+    ├── ThreadRow.php                   # App\DataSource\Thread\ThreadRow
+    ├── ThreadTable.php                 # App\DataSource\Thread\ThreadTable
+    ├── ThreadTableEvents.php           # App\DataSource\Thread\ThreadTableEvents
+</code></pre>
+<p>Most of these classes will be empty, and are provided so you can extend their
+behavior if you wish.</p>
+<p>The following classes will be overwritten if you run the skeleton generator
+again:</p>
+<ul>
+<li>Fields.php</li>
+<li>Row.php</li>
+<li>Table.php</li>
+</ul>
+<h2 id="1-2-1-3">1.2.1.3. Cutom Table Name Transformations</h2>
+<p>If you are unsatisfied with how the skeleton generator transforms table names to
+persistence model type names, provide a callable of your own in the config file
+under the key 'transform':</p>
+<pre><code class="language-php">&lt;?php
+// /path/to/skeleton-config.php
+return [
+    'pdo' =&gt; [
+        'mysql:dbname=testdb;host=localhost',
+        'username',
+        'password',
+    ],
+    'namespace' =&gt; 'App\\DataSource',
+    'directory' =&gt; './src/App/DataSource',
+    'transform' =&gt; function (string $table) : ?string {
+        // return the $table name after transforming it into
+        // a persistence model type name, or return null to
+        // skip the table entirely
+    },
+];
+</code></pre>
+<p>(Cf. the <em>Transform</em> class for example behaviors.)</p>
+</div>        </div>
     </div>
 </div>
 
@@ -320,9 +419,9 @@
         <div class="container">
             <div class="row">
                 <div class="prev col-xs-6">
-                                    </div>
+                                            <a href="/cassini/skeleton/">Previous</a>                                    </div>
                 <div class="next col-xs-6">
-                                            <a href="/cassini/">Next</a>                                    </div>
+                                            <a href="/cassini/query/">Next</a>                                    </div>
             </div>
         </div>
     </div>

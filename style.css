@@ -4,6 +4,10 @@ body, html {
     position: relative;
 }
 
+blockquote {
+    font-size: 100%
+}
+
 img {
     max-width: 100%;
 }
@@ -11,8 +15,13 @@ img {
 code span {
     white-space: nowrap;
 }
+
 code span.comment {
     white-space: pre;
+}
+
+code.language-php {
+    font-size: 90%;
 }
 
 .highlight {

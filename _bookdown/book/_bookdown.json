@@ -1,8 +1,9 @@
 {
-    "title": "Atlas",
+    "title": "Atlas Database Framework for PHP",
     "content": [
-        {"mapper": "mapper/_bookdown.json"},
-        {"skeleton": "https://raw.githubusercontent.com/atlasphp/Atlas.Cli/1.x/docs/_bookdown.json"}
+        "cassini/_bookdown.json",
+        "boggs/_bookdown.json",
+        "albers/_bookdown.json"
     ],
     "target": "../../",
     "template": "../templates/main.php",

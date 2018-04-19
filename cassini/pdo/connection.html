@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
-<title>Atlas Database Framework for PHP</title>
+<title>Connection</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
@@ -303,15 +303,163 @@
 </header>
 <div class="container">
     <ol class="breadcrumb">
-                        <li class="active">Atlas Database Framework for PHP</li>
+                        <li><a href="/">Atlas Database Framework for PHP</a></li>
+                                <li><a href="/cassini/">Cassini (v3)</a></li>
+                                <li><a href="/cassini/pdo/">PDO Connection</a></li>
+                                <li class="active">Connection</li>
             </ol>
     <div class="row">
 
-                <div class="col-md-12">
+                <div class="col-md-3">
+            <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
+    <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
+                                <li>
+                <a href="#1-4-1" title="Connection">Connection</a>
+            </li>
+                                <li>
+                <a href="#1-4-1-1" title="Instantiation">Instantiation</a>
+            </li>
+                                <li>
+                <a href="#1-4-1-2" title="Calling&#x20;PDO&#x20;Methods">Calling PDO Methods</a>
+            </li>
+                                <li>
+                <a href="#1-4-1-3" title="Fetching&#x20;Results">Fetching Results</a>
+            </li>
+                                                                                                                                                        <li>
+                <a href="#1-4-1-4" title="Yielding&#x20;Results">Yielding Results</a>
+            </li>
+                                                                        </ul>
+</nav>
+        </div>
+                <div class="col-md-9">
+<div id="section-main"><h1 id="1-4-1">1.4.1. Connection</h1>
+<h2 id="1-4-1-1">1.4.1.1. Instantiation</h2>
+<p>The easiest way to create a <em>Connection</em> is to use its static  <code>new()</code> method, either with <em>PDO</em> connection arguments, or with an actual <em>PDO</em> instance:</p>
+<pre><code class="language-php">use Atlas\Pdo\Connection;
 
-<h1>Atlas Database Framework for PHP</h1>
+// pass PDO constructor arguments ...
+$connection = Connection::new(
+    'mysql:host=localhost;dbname=testdb',
+    'username',
+    'password'
+);
 
-<ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.</span>&nbsp;&nbsp;<a href="/cassini/">Cassini (v3)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.1.</span>&nbsp;&nbsp;<a href="/cassini/orm/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.2.</span>&nbsp;&nbsp;<a href="/cassini/skeleton/">Skeleton Generator</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.3.</span>&nbsp;&nbsp;<a href="/cassini/query/">Query System</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.4.</span>&nbsp;&nbsp;<a href="/cassini/pdo/">PDO Connection</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.</span>&nbsp;&nbsp;<a href="/boggs/">Boggs (v2)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.1.</span>&nbsp;&nbsp;<a href="/boggs/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.2.</span>&nbsp;&nbsp;<a href="/boggs/skeleton/">Skeleton Generator</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.</span>&nbsp;&nbsp;<a href="/albers/">Albers (v1)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.1.</span>&nbsp;&nbsp;<a href="/albers/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.2.</span>&nbsp;&nbsp;<a href="/albers/skeleton/">Skeleton Generator</a></div></div></li></ul></li></ul><div id="section-main"></div>        </div>
+// ... or a PDO instance.
+$connection = Connection::new($pdo);
+</code></pre>
+<p>If you need a callable factory to create a <em>Connection</em> and its PDO instance at a later time, such as in a service container, you can use the <code>Connection::factory()</code> method:</p>
+<pre><code class="language-php">use Atlas\Pdo\Connection;
+
+// get a callable factory that creates a Connection
+$factory = Connection::factory('sqlite::memory:');
+
+// later, call the factory to instantiate the Connection
+$connection = $factory();
+</code></pre>
+<h2 id="1-4-1-2">1.4.1.2. Calling PDO Methods</h2>
+<p>The <em>Connection</em> acts as a proxy to the decorated PDO instance, so you can call any method on the <em>Connection</em> that you would normally call on PDO.</p>
+<h2 id="1-4-1-3">1.4.1.3. Fetching Results</h2>
+<p>The <em>Connection</em> provides several <code>fetch*()</code> methods to help reduce boilerplate code. Instead of issuing <code>prepare()</code>, a series of <code>bindValue()</code> calls, <code>execute()</code>, and then <code>fetch*()</code> on a <em>PDOStatement</em>, you can bind values and fetch results in one call on <em>Connection</em> directly.</p>
+<h3 id="1-4-1-3-1">1.4.1.3.1. fetchAll()</h3>
+<p>The plain-old PDO way to fetch all rows looks like this:</p>
+<pre><code class="language-php">use PDO;
+
+$pdo = new PDO('sqlite::memory:');
+
+$stm  = 'SELECT * FROM test WHERE foo = :foo AND bar = :bar';
+$bind = array('foo' =&gt; 'baz', 'bar' =&gt; 'dib');
+$sth = $pdo-&gt;prepare($stm);
+$sth-&gt;execute($bind);
+$result = $sth-&gt;fetchAll(PDO::FETCH_ASSOC);
+</code></pre>
+<p>This is how to do the same thing with an Atlas PDO <em>Connection</em>:</p>
+<pre><code class="language-php">use Atlas\Pdo\Connection;
+
+$connection = Connection::new('sqlite::memory:');
+
+$stm  = 'SELECT * FROM test WHERE foo = :foo AND bar = :bar';
+$bind = array('foo' =&gt; 'baz', 'bar' =&gt; 'dib');
+
+$result = $connection-&gt;fetchAll($stm, $bind);
+</code></pre>
+<h3 id="1-4-1-3-2">1.4.1.3.2. fetchAffected()</h3>
+<p>The <code>fetchAffected()</code> method returns the number of affected rows.</p>
+<pre><code class="language-php">$stm = "UPDATE test SET incr = incr + 1 WHERE foo = :foo AND bar = :bar";
+$rowCount = $connection-&gt;fetchAffected($stm, $bind);
+</code></pre>
+<h3 id="1-4-1-3-3">1.4.1.3.3. fetchColumn()</h3>
+<p>The <code>fetchColumn()</code> method returns a sequential array of the first column from all rows.</p>
+<pre><code class="language-php">$result = $connection-&gt;fetchColumn($stm, $bind);
+</code></pre>
+<p>You can choose another column number with an optional third argument (columns are zero-indexed):</p>
+<pre><code class="language-php">// use column 3 (i.e. the 4th column)
+$result = $connection-&gt;fetchColumn($stm, $bind, 3);
+</code></pre>
+<h3 id="1-4-1-3-4">1.4.1.3.4. fetchGroup()</h3>
+<p>The <code>fetchGroup()</code> method is like fetchUnique() except that the values aren't wrapped in arrays. Instead, single column values are returned as a single dimensional array and multiple columns are returned as an array of arrays.</p>
+<pre><code class="language-php">$result = $connection-&gt;fetchGroup($stm, $bind, $style = PDO::FETCH_COLUMN)
+</code></pre>
+<p>Set <code>$style</code> to <code>PDO::FETCH_NAMED</code> when values are an array (i.e. there are more than two columns in the select).</p>
+<h3 id="1-4-1-3-5">1.4.1.3.5. fetchKeyPair()</h3>
+<p>The <code>fetchKeyPair()</code> method returns an associative array where each key is the first column and each value is the second column</p>
+<pre><code class="language-php">$result = $connection-&gt;fetchKeyPair($stm, $bind);
+</code></pre>
+<h3 id="1-4-1-3-6">1.4.1.3.6. fetchObject()</h3>
+<p>The <code>fetchObject()</code> method returns the first row as an object of your choosing; the columns are mapped to object properties. an optional 4th parameter array provides constructor arguments when instantiating the object.</p>
+<pre><code class="language-php">$result = $connection-&gt;fetchObject($stm, $bind, 'ClassName', ['ctor_arg_1']);
+</code></pre>
+<h3 id="1-4-1-3-7">1.4.1.3.7. fetchObjects()</h3>
+<p>The <code>fetchObjects()</code> method returns an array of objects of your choosing; the columns are mapped to object properties. An optional 4th parameter array provides constructor arguments when instantiating the object.</p>
+<pre><code class="language-php">$result = $connection-&gt;fetchObjects($stm, $bind, 'ClassName', ['ctor_arg_1']);
+</code></pre>
+<h3 id="1-4-1-3-8">1.4.1.3.8. fetchOne()</h3>
+<p>The <code>fetchOne()</code> method returns the first row as an associative array where the keys are the column names.</p>
+<pre><code class="language-php">$result = $connection-&gt;fetchOne($stm, $bind);
+</code></pre>
+<h3 id="1-4-1-3-9">1.4.1.3.9. fetchUnique()</h3>
+<p>The <code>fetchUnique()</code> method returns an associative array of all rows where the key is the value of the first column, and the row arrays are keyed on the remaining column names.</p>
+<pre><code class="language-php">$result = $connection-&gt;fetchUnique($stm, $bind);
+</code></pre>
+<h3 id="1-4-1-3-10">1.4.1.3.10. fetchValue()</h3>
+<p>The <code>fetchValue()</code> method returns the value of the first row in the first column.</p>
+<pre><code class="language-php">$result = $connection-&gt;fetchValue($stm, $bind);
+</code></pre>
+<h2 id="1-4-1-4">1.4.1.4. Yielding Results</h2>
+<p>The <em>Connection</em> provides several <code>yield*()</code> methods to help reduce memory usage. Whereas <code>fetch*()</code> methods may collect all the query result rows before returning them all at once, the equivalent <code>yield*()</code> methods generate one result row at a time. For example:</p>
+<h3 id="1-4-1-4-1">1.4.1.4.1. yieldAll()</h3>
+<p>This is the yielding equivalent of <code>fetchAll()</code>.</p>
+<pre><code class="language-php">foreach ($connection-&gt;yieldAll($stm, $bind) as $row) {
+    // ...
+}
+</code></pre>
+<h3 id="1-4-1-4-2">1.4.1.4.2. yieldColumn()</h3>
+<p>This is the yielding equivalent of <code>fetchColumn()</code>.</p>
+<pre><code class="language-php">
+foreach ($connection-&gt;yieldColumn($stm, $bind) as $val) {
+    // ...
+}
+</code></pre>
+<h3 id="1-4-1-4-3">1.4.1.4.3. yieldKeyPair()</h3>
+<p>This is the yielding equivalent of <code>fetchKeyPair()</code>.</p>
+<pre><code class="language-php">foreach ($connection-&gt;yieldPairs($stm, $bind) as $key =&gt; $val) {
+    // ...
+}
+</code></pre>
+<h3 id="1-4-1-4-4">1.4.1.4.4. yieldObjects()</h3>
+<p>This is the yielding equivalent of <code>fetchObjects()</code>.</p>
+<pre><code class="language-php">$class = 'ClassName';
+$args = ['arg0', 'arg1', 'arg2'];
+foreach ($connection-&gt;yieldObjects($stm, $bind, $class, $args) as $object) {
+    // ...
+}
+</code></pre>
+<h3 id="1-4-1-4-5">1.4.1.4.5. yieldUnique()</h3>
+<p>This is the yielding equivalent of <code>fetchUnique()</code>.</p>
+<pre><code class="language-php">foreach ($connection-&gt;yieldUnique($stm, $bind) as $key =&gt; $row) {
+    // ...
+}
+</code></pre>
+</div>        </div>
     </div>
 </div>
 
@@ -320,9 +468,9 @@
         <div class="container">
             <div class="row">
                 <div class="prev col-xs-6">
-                                    </div>
+                                            <a href="/cassini/pdo/">Previous</a>                                    </div>
                 <div class="next col-xs-6">
-                                            <a href="/cassini/">Next</a>                                    </div>
+                                            <a href="/cassini/pdo/connection-locator.html">Next</a>                                    </div>
             </div>
         </div>
     </div>

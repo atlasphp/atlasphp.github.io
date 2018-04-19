@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
-<title>Atlas Database Framework for PHP</title>
+<title>Working with RecordSets</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
@@ -303,15 +303,149 @@
 </header>
 <div class="container">
     <ol class="breadcrumb">
-                        <li class="active">Atlas Database Framework for PHP</li>
+                        <li><a href="/">Atlas Database Framework for PHP</a></li>
+                                <li><a href="/cassini/">Cassini (v3)</a></li>
+                                <li><a href="/cassini/orm/">ORM</a></li>
+                                <li class="active">Working with RecordSets</li>
             </ol>
     <div class="row">
 
-                <div class="col-md-12">
+                <div class="col-md-3">
+            <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
+    <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
+                                <li>
+                <a href="#1-1-5" title="Working&#x20;with&#x20;RecordSets">Working with RecordSets</a>
+            </li>
+                                <li>
+                <a href="#1-1-5-1" title="New&#x20;RecordSets">New RecordSets</a>
+            </li>
+                                <li>
+                <a href="#1-1-5-2" title="Appending&#x20;Records&#x20;to&#x20;a&#x20;RecordSet">Appending Records to a R...</a>
+            </li>
+                                <li>
+                <a href="#1-1-5-3" title="Array&#x20;Access">Array Access</a>
+            </li>
+                                <li>
+                <a href="#1-1-5-4" title="Searching&#x20;within&#x20;RecordSets">Searching within RecordS...</a>
+            </li>
+                                <li>
+                <a href="#1-1-5-5" title="Detaching&#x20;Records&#x20;from&#x20;RecordSets">Detaching Records from R...</a>
+            </li>
+                                <li>
+                <a href="#1-1-5-6" title="Marking&#x20;RecordSets&#x20;For&#x20;Deletion">Marking RecordSets For D...</a>
+            </li>
+                                <li>
+                <a href="#1-1-5-7" title="Persisting&#x20;A&#x20;RecordSet">Persisting A RecordSet</a>
+            </li>
+            </ul>
+</nav>
+        </div>
+                <div class="col-md-9">
+<div id="section-main"><h1 id="1-1-5">1.1.5. Working with RecordSets</h1>
+<h2 id="1-1-5-1">1.1.5.1. New RecordSets</h2>
+<p>Create a new RecordSet using the <code>newRecordSet()</code> method.</p>
+<pre><code class="language-php">&lt;?php
+$threadRecordSet = $atlas-&gt;newRecordSet(ThreadMapper::CLASS);
+</code></pre>
+<h2 id="1-1-5-2">1.1.5.2. Appending Records to a RecordSet</h2>
+<p>You can append a new Record to an existing RecordSet using <code>appendNew()</code>,
+optionally passing any data you want to initially populate into the Record:</p>
+<pre><code class="language-php">&lt;?php
+$newThread = $threadRecordSet-&gt;appendNew([
+    'title' =&gt; 'New Title',
+]);
+</code></pre>
+<p>Additionally, you can append foreign Records to a native Record's relateds.</p>
+<pre><code class="language-php">&lt;?php
+$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 1, [
+    'comments',
+]);
 
-<h1>Atlas Database Framework for PHP</h1>
+$comment = $thread-&gt;comments-&gt;appendNew([
+    'thread' =&gt; $thread,
+    'comment' =&gt; 'Lorem ipsum dolor sit amet...'
+]);
 
-<ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.</span>&nbsp;&nbsp;<a href="/cassini/">Cassini (v3)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.1.</span>&nbsp;&nbsp;<a href="/cassini/orm/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.2.</span>&nbsp;&nbsp;<a href="/cassini/skeleton/">Skeleton Generator</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.3.</span>&nbsp;&nbsp;<a href="/cassini/query/">Query System</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.4.</span>&nbsp;&nbsp;<a href="/cassini/pdo/">PDO Connection</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.</span>&nbsp;&nbsp;<a href="/boggs/">Boggs (v2)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.1.</span>&nbsp;&nbsp;<a href="/boggs/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.2.</span>&nbsp;&nbsp;<a href="/boggs/skeleton/">Skeleton Generator</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.</span>&nbsp;&nbsp;<a href="/albers/">Albers (v1)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.1.</span>&nbsp;&nbsp;<a href="/albers/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.2.</span>&nbsp;&nbsp;<a href="/albers/skeleton/">Skeleton Generator</a></div></div></li></ul></li></ul><div id="section-main"></div>        </div>
+// insert the new comment directly
+$atlas-&gt;insert($comment);
+
+// or persist the whole thread
+$atlas-&gt;persist($thread);
+</code></pre>
+<h2 id="1-1-5-3">1.1.5.3. Array Access</h2>
+<p>The RecordSet also acts as an array, so you can get/set/unset Records by their
+sequential keys in the RecordSet.</p>
+<pre><code class="language-php">&lt;?php
+// address the second record in the set
+$threadRecordSet[1]-&gt;title = 'Changed Title';
+
+// unset the first record in the set
+unset($threadRecordSet[0]);
+
+// push a new record onto the set
+$threadRecordSet[] = $atlas-&gt;newRecord(ThreadMapper::CLASS);
+</code></pre>
+<h2 id="1-1-5-4">1.1.5.4. Searching within RecordSets</h2>
+<p>You can search for Records within an existing RecordSet by their column values:</p>
+<pre><code class="language-php">&lt;?php
+$threadRecordSet = $atlas-&gt;select(ThreadMapper::CLASS)
+    -&gt;where('published = ', 1)
+    -&gt;fetchRecordSet();
+
+// returns one matching Record object from the RecordSet,
+// or null if there is no match
+$matchingRecord = $threadRecordSet-&gt;getOneBy(['subject' =&gt; 'Subject One']);
+
+// returns a new RecordSet of matching Record objects from the RecordSet
+$matchingRecordSet = $threadRecordSet-&gt;getAllBy(['author_id' =&gt; '5']);
+</code></pre>
+<h2 id="1-1-5-5">1.1.5.5. Detaching Records from RecordSets</h2>
+<p>You can detach Records from a RecordSet by their column values. This does NOT
+delete Records from the database; it only detaches them from the RecordSet.</p>
+<pre><code class="language-php">&lt;?php
+// unsets and returns one matching Record from the Record Set,
+// or null if there is no match
+$detachedRecord = $threadRecordSet-&gt;detachOneBy(['subject' =&gt; 'Subject One']);
+
+// unsets and returns a new RecordSet of matching Record objects
+$detachedRecordSet = $threadRecordSet-&gt;detachAllBy(['author_id' =&gt; '5']);
+
+// unsets and returns a new RecordSet of all Record objects
+$detachedRecordSet = $threadRecordSet-&gt;detachAll();
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong>
+This only detaches them from the RecordSet; it does not delete them
+from the database. If you need to delete a Record from the database, see the
+sections on Marking Records for Deletion and deleting Records.</p>
+</blockquote>
+<h2 id="1-1-5-6">1.1.5.6. Marking RecordSets For Deletion</h2>
+<p>You can mark each Record currently in a RecordSet for deletion by using the
+<code>setDelete()</code> method:</p>
+<pre><code class="language-php">&lt;?php
+// mark all current records for deletion
+$threadRecordSet-&gt;setDelete();
+</code></pre>
+<blockquote>
+<p><strong>Note</strong>:</p>
+<p>If you add another Record to the collection at this point, it will not have
+been marked for deletion.</p>
+</blockquote>
+<p>You might only want to mark some of the Records for deletion:</p>
+<pre><code class="language-php">&lt;?php
+$threadRecordSet-&gt;getAllBy(['author_id' =&gt; 1])-&gt;setDelete();
+</code></pre>
+<p>When you persist a RecordSet relationship, all of its Records marked for
+deletion will automatically be detached.</p>
+<h2 id="1-1-5-7">1.1.5.7. Persisting A RecordSet</h2>
+<p>You can persist each Record in a RecordSet by calling the <em>Atlas</em> method
+<code>persistRecordSet()</code>:</p>
+<pre><code class="language-php">&lt;?php
+$deletedRecords = $atlas-&gt;persistRecordSet($threadRecordSet);
+</code></pre>
+<p>This will insert, update, or delete each Record in the RecordSet as appropriate,
+then detach all deleted Records and return them as their own RecordSet.</p>
+</div>        </div>
     </div>
 </div>
 
@@ -320,9 +454,9 @@
         <div class="container">
             <div class="row">
                 <div class="prev col-xs-6">
-                                    </div>
+                                            <a href="/cassini/orm/records.html">Previous</a>                                    </div>
                 <div class="next col-xs-6">
-                                            <a href="/cassini/">Next</a>                                    </div>
+                                            <a href="/cassini/orm/transactions.html">Next</a>                                    </div>
             </div>
         </div>
     </div>
