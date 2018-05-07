@@ -369,8 +369,7 @@ foreach ($tableNames as $tableName) {
 </code></pre>
 <h2 id="1-4-1-3">1.4.1.3. Fetching Column Defintions</h2>
 <p>To get an array of column definitions in a table, call <code>fetchColumns()</code>.</p>
-<pre><code class="language-php">&lt;?php
-$columns = $info-&gt;fetchColumns('table_name'); // or 'schema_name.table_name'
+<pre><code class="language-php">$columns = $info-&gt;fetchColumns('table_name');
 foreach ($columns as $name =&gt; $def) {
     echo "Column $name is of type "
        . $def['type']
@@ -378,8 +377,12 @@ foreach ($columns as $name =&gt; $def) {
        . $def['size']
        . PHP_EOL;
 }
-?&gt;
 </code></pre>
+<blockquote>
+<p><strong>Tip:</strong></p>
+<p>You can use a schema prefix on the table name if you like, such as
+'schema_name.table_name'.</p>
+</blockquote>
 <p>Each element is itself an array, with the following keys:</p>
 <ul>
 <li>
@@ -408,11 +411,10 @@ foreach ($columns as $name =&gt; $def) {
 </li>
 </ul>
 <h2 id="1-4-1-4">1.4.1.4. Fetching Auto-Increment Sequence Name</h2>
-<p>To fetch the name of the primary key autoincrement sequence on a PostgreSQL table, call <code>fetchAutoincSequence()</code> with the table name.</p>
-<pre><code class="language-php">&lt;?php
-$sequence = $info-&gt;fetchAutoincSequence('table_name');
+<p>To fetch the name of the primary key autoincrement sequence on a PostgreSQL
+table, call <code>fetchAutoincSequence()</code> with the table name.</p>
+<pre><code class="language-php">$sequence = $info-&gt;fetchAutoincSequence('table_name');
 // =&gt; 'table_name_id_seq'
-?&gt;
 </code></pre>
 <p>On systems other than PostgreSQL, this will return <code>null</code>.</p>
 </div>        </div>
