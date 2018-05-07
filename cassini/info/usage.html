@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
-<title>Other Topics</title>
+<title>Usage</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
@@ -316,8 +316,8 @@
     <ol class="breadcrumb">
                         <li><a href="/">Atlas Database Framework for PHP</a></li>
                                 <li><a href="/cassini/">Cassini (v3)</a></li>
-                                <li><a href="/cassini/orm/">ORM</a></li>
-                                <li class="active">Other Topics</li>
+                                <li><a href="/cassini/info/">Schema Information</a></li>
+                                <li class="active">Usage</li>
             </ol>
     <div class="row">
 
@@ -325,225 +325,96 @@
             <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
     <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
                                 <li>
-                <a href="#1-1-10" title="Other&#x20;Topics">Other Topics</a>
+                <a href="#1-4-1" title="Usage">Usage</a>
             </li>
                                 <li>
-                <a href="#1-1-10-1" title="Adding&#x20;Custom&#x20;Mapper&#x20;Methods">Adding Custom Mapper Met...</a>
+                <a href="#1-4-1-1" title="Instantiation">Instantiation</a>
             </li>
                                 <li>
-                <a href="#1-1-10-2" title="Single&#x20;Table&#x20;Inheritance">Single Table Inheritance</a>
+                <a href="#1-4-1-2" title="Fetching&#x20;Table&#x20;Names">Fetching Table Names</a>
             </li>
                                 <li>
-                <a href="#1-1-10-3" title="Managing&#x20;Many-To-Many&#x20;Relateds">Managing Many-To-Many Re...</a>
+                <a href="#1-4-1-3" title="Fetching&#x20;Column&#x20;Defintions">Fetching Column Defintio...</a>
             </li>
                                 <li>
-                <a href="#1-1-10-4" title="Automated&#x20;Validation">Automated Validation</a>
+                <a href="#1-4-1-4" title="Fetching&#x20;Auto-Increment&#x20;Sequence&#x20;Name">Fetching Auto-Increment ...</a>
             </li>
             </ul>
 </nav>
         </div>
                 <div class="col-md-9">
-<div id="section-main"><h1 id="1-1-10">1.1.10. Other Topics</h1>
-<h2 id="1-1-10-1">1.1.10.1. Adding Custom Mapper Methods</h2>
-<p>Feel free to add custom methods to your <em>Mapper</em> classes, though do be sure
-that they are appropriate to a <em>Mapper</em>. For example, custom <code>fetch*()</code> methods
-are perfectly reasonable, so that you don't have to write the same queries
-over and over:</p>
-<pre><code class="language-php">&lt;?php
-namespace App\DataSource\Content;
+<div id="section-main"><h1 id="1-4-1">1.4.1. Usage</h1>
+<h2 id="1-4-1-1">1.4.1.1. Instantiation</h2>
+<p>Create an information-discovery object with a corresponding connection:</p>
+<pre><code class="language-php">use Atlas\Info\Info;
+use Atlas\Pdo\Connection;
 
-use Atlas\Mapper\Mapper;
-
-class Content extends Mapper
-{
-    public function fetchLatestContent(int $count) : ContentRecordSet
-    {
-        return $this
-            -&gt;select()
-            -&gt;orderBy('publish_date DESC')
-            -&gt;limit($count)
-            -&gt;fetchRecordSet();
-    }
+$connection = Connection::new('sqlite::memory:');
+$info = Info::new($connection);
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>The <code>new()</code> method will automatically pick the right schema-discovery class
+for your <em>Connection</em>.</p>
+</blockquote>
+<h2 id="1-4-1-2">1.4.1.2. Fetching Table Names</h2>
+<p>To get an array of table names from the current schema, call <code>fetchTableNames()</code>.</p>
+<pre><code class="language-php">$tableNames = $info-&gt;fetchTableNames();
+foreach ($tableNames as $tableName) {
+    echo $tableName . PHP_EOL;
 }
 </code></pre>
-<p>Another example would be custom write behaviors, such as incrementing a value
-directly in the database (without going through any events) and modifying the
-appropriate <em>Record</em> in memory:</p>
+<p>You can also indicate that you want table names from another schema:</p>
+<pre><code class="language-php">$tableNames = $info-&gt;fetchTableNames('schema_name');
+</code></pre>
+<h2 id="1-4-1-3">1.4.1.3. Fetching Column Defintions</h2>
+<p>To get an array of column definitions in a table, call <code>fetchColumns()</code>.</p>
 <pre><code class="language-php">&lt;?php
-namespace App\DataSource\Content;
-
-use Atlas\Mapper\Mapper;
-
-class Content extends Mapper
-{
-    public function increment(ContentRecord $record, string $field)
-    {
-        $this-&gt;table
-            -&gt;update()
-            -&gt;set($field, "{$field} + 1")
-            -&gt;where("content_id = ", $record-&gt;content_id)
-            -&gt;perform();
-
-        $record-&gt;$field = $this-&gt;table
-            -&gt;select($field)
-            -&gt;where("content_id = ", $record-&gt;content_id)
-            -&gt;fetchValue();
-    }
+$columns = $info-&gt;fetchColumns('table_name'); // or 'schema_name.table_name'
+foreach ($columns as $name =&gt; $def) {
+    echo "Column $name is of type "
+       . $def['type']
+       . " with a size of "
+       . $def['size']
+       . PHP_EOL;
 }
+?&gt;
 </code></pre>
-<h2 id="1-1-10-2">1.1.10.2. Single Table Inheritance</h2>
-<p>Sometimes you will want to use one <em>Mapper</em> (and its underlying <em>Table</em>) to
-create more than one kind of <em>Record</em>. The <em>Record</em> type is generally specified
-by a column on the table, e.g. <code>record_type</code>. To do so, create <em>Record</em> classes
-that extend the <em>Record</em> for that <em>Mapper</em> in the same namespace as the
-<em>Mapper</em>, then override the <em>Mapper</em> <code>getRecordClass()</code> method to return the
-appropriate class name.</p>
-<p>For example, given a <em>ContentMapper</em> and <em>ContentRecord</em> ...</p>
-<pre><code>App\
-    DataSource\
-        Content\
-            Content.php
-            ContentEvents.php
-            ContentRelationships.php
-            ContentRecord.php
-            ContentRecordSet.php
-            ContentRow.php
-            ContentSelect.php
-            ContentTable.php
-            ContentTableEvents.php
-            ContentTableSelect.php
-</code></pre>
-<p>... , you might have the content types of "post", "page", "video", "wiki", and so on.</p>
-<pre><code>App\
-    DataSource\
-        Content\
-            Content.php
-            ContentEvents.php
-            ContentRelationships.php
-            ContentRecord.php
-            ContentRecordSet.php
-            ContentRow.php
-            ContentSelect.php
-            ContentTable.php
-            ContentTableEvents.php
-            ContentTableSelect.php
-            PageContentRecord.php
-            PostContentRecord.php
-            VideoContentRecord.php
-            WikiContentRecord.php
-</code></pre>
-<p>A <em>WikiContentRecord</em> might look like this ...</p>
+<p>Each element is itself an array, with the following keys:</p>
+<ul>
+<li>
+<p><code>name</code>: (string) The column name</p>
+</li>
+<li>
+<p><code>type</code>: (string) The column data type.  Data types are as reported by the database.</p>
+</li>
+<li>
+<p><code>size</code>: (?int) The column size (character length for strings, or numeric precision for numbers).</p>
+</li>
+<li>
+<p><code>scale</code>: (?int) The number of decimal places for the column, if any.</p>
+</li>
+<li>
+<p><code>notnull</code>: (bool) Is the column marked as <code>NOT NULL</code>?</p>
+</li>
+<li>
+<p><code>default</code>: (mixed) The default value for the column. Note that this will be <code>null</code> if the underlying database uses an SQL expression instead of a literal string or number.</p>
+</li>
+<li>
+<p><code>autoinc</code>: (bool) Is the column auto-incremented?</p>
+</li>
+<li>
+<p><code>primary</code>: (bool) Is the column part of the primary key?</p>
+</li>
+</ul>
+<h2 id="1-4-1-4">1.4.1.4. Fetching Auto-Increment Sequence Name</h2>
+<p>To fetch the name of the primary key autoincrement sequence on a PostgreSQL table, call <code>fetchAutoincSequence()</code> with the table name.</p>
 <pre><code class="language-php">&lt;?php
-namespace App\DataSource\Content;
-
-class WikiContentRecord extends ContentRecord
-{
-}
+$sequence = $info-&gt;fetchAutoincSequence('table_name');
+// =&gt; 'table_name_id_seq'
+?&gt;
 </code></pre>
-<p>... and the <em>Content</em> <code>getRecordClass()</code> method would look like this:</p>
-<pre><code class="language-php">&lt;?php
-namespace App\DataSource\Content;
-
-use Atlas\Mapper\Mapper;
-use Atlas\Table\Row;
-
-class Content extends Mapper
-{
-    protected function getRecordClass(Row $row) : Record
-    {
-        switch ($row-&gt;type) {
-            case 'page':
-                return PageContentRecord::CLASS;
-            case 'post':
-                return PostContentRecord::CLASS;
-            case 'video':
-                return VideoContentRecord::CLASS;
-            case 'Wiki':
-                return PostContentRecord::CLASS;
-            default:
-                return ContentRecord::CLASS:
-        }
-    }
-}
-</code></pre>
-<p>Note that you cannot define different relationships "per record."  You can only
-define <em>MapperRelationships</em> for the mapper as whole, to cover all its record
-types.</p>
-<p>Note also that there can only be one <em>RecordSet</em> class per <em>Mapper</em>, though it
-can contain any kind of <em>Record</em>.</p>
-<h2 id="1-1-10-3">1.1.10.3. Managing Many-To-Many Relateds</h2>
-<p>Given the typical example of a <code>blog</code> table, associated to <code>tags</code>, through a
-<code>taggings</code> table, here is how you would add a tag to a blog post:</p>
-<pre><code class="language-php">&lt;?php
-// get a blog post, with taggings and tags
-$blog = $atlas-&gt;fetchRecord(Blog::CLASS, $blog_id, [
-    'taggings' =&gt; [
-        'tags'
-    ]
-]);
-
-// get all tags in the system
-$tags = $atlas-&gt;fetchRecordSet(Tags::CLASS);
-
-// create the new tagging association, with the related blog and tag objects
-$tagging = $thread-&gt;taggings-&gt;appendNew([
-    'blog' =&gt; $blog,
-    'tag' =&gt; $tags-&gt;getOneBy(['name' =&gt; $tag_name])
-]);
-
-// persist the whole blog record, which will insert the tagging
-$atlas-&gt;persist($tagging);
-</code></pre>
-<p>Similarly, here is how you would remove a tag:</p>
-<pre><code class="language-php">&lt;?php
-// mark the Tagging association for deletion
-$blog-&gt;taggings
-    -&gt;getOneBy(['name' =&gt; $tag_name)
-    -&gt;setDelete();
-
-// persist the whole record with the tagging relateds,
-// which will delete the tagging and detach the related record
-$atlas-&gt;persist($thread);
-</code></pre>
-<h2 id="1-1-10-4">1.1.10.4. Automated Validation</h2>
-<p>You will probably want to apply some sort of filtering (validation and
-sanitizing) to <em>Row</em> (and to a lesser extent <em>Record</em>) objects before they get
-written back to the database. To do so, implement or override the appropriate
-<em>TableEvents</em> (or <em>MapperEvents</em>) class methods for <code>before</code> or <code>modify</code> the
-<code>insert</code> or <code>update</code> event.  Irrecoverable filtering failures should be thrown
-as exceptions to be caught by your surrounding application or domain logic.</p>
-<p>For example, to check that a value is a valid email address:</p>
-<pre><code class="language-php">&lt;?php
-namespace App\DataSource\Author;
-
-use Atlas\Table\Row;
-use Atlas\Table\Table;
-use Atlas\Table\TableEvents;
-use UnexpectedValueException;
-
-class AuthorTableEvents extends TableEvents
-{
-    public function beforeInsert(Table $table, Row $row) : void
-    {
-        $this-&gt;assertValidEmail($row-&gt;email);
-    }
-
-    public function beforeUpdate(Table $table, Row $row) : void
-    {
-        $this-&gt;assertValidEmail($row-&gt;email);
-    }
-
-    protected function assertValidEmail($value)
-    {
-        if (! filter_var($value, FILTER_VALIDATE_EMAIL) {
-            throw new UnexpectedValueException("The author email address is not valid.");
-        }
-    }
-}
-</code></pre>
-<p>For detailed reporting of validation failures, consider writing your own
-extended exception class to retain a list of the fields and error messages,
-perhaps with the object being validated.</p>
+<p>On systems other than PostgreSQL, this will return <code>null</code>.</p>
 </div>        </div>
     </div>
 </div>
@@ -553,9 +424,9 @@ perhaps with the object being validated.</p>
         <div class="container">
             <div class="row">
                 <div class="prev col-xs-6">
-                                            <a href="/cassini/orm/direct.html">Previous</a>                                    </div>
+                                            <a href="/cassini/info/">Previous</a>                                    </div>
                 <div class="next col-xs-6">
-                                            <a href="/cassini/orm/domain.html">Next</a>                                    </div>
+                                            <a href="/cassini/pdo/">Next</a>                                    </div>
             </div>
         </div>
     </div>

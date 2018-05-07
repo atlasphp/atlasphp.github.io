@@ -148,6 +148,17 @@
 
     </li>
                         <li>
+    <a href="/cassini/info/">Schema Information</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/info/usage.html">Usage</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/pdo/">PDO Connection</a>
     
     <ul class="dropdown-menu">
@@ -345,7 +356,7 @@
 <h2 id="1-1-5-1">1.1.5.1. New RecordSets</h2>
 <p>Create a new RecordSet using the <code>newRecordSet()</code> method.</p>
 <pre><code class="language-php">&lt;?php
-$threadRecordSet = $atlas-&gt;newRecordSet(ThreadMapper::CLASS);
+$threadRecordSet = $atlas-&gt;newRecordSet(Thread::CLASS);
 </code></pre>
 <h2 id="1-1-5-2">1.1.5.2. Appending Records to a RecordSet</h2>
 <p>You can append a new Record to an existing RecordSet using <code>appendNew()</code>,
@@ -357,7 +368,7 @@ $newThread = $threadRecordSet-&gt;appendNew([
 </code></pre>
 <p>Additionally, you can append foreign Records to a native Record's relateds.</p>
 <pre><code class="language-php">&lt;?php
-$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 1, [
+$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 1, [
     'comments',
 ]);
 
@@ -383,12 +394,12 @@ $threadRecordSet[1]-&gt;title = 'Changed Title';
 unset($threadRecordSet[0]);
 
 // push a new record onto the set
-$threadRecordSet[] = $atlas-&gt;newRecord(ThreadMapper::CLASS);
+$threadRecordSet[] = $atlas-&gt;newRecord(Thread::CLASS);
 </code></pre>
 <h2 id="1-1-5-4">1.1.5.4. Searching within RecordSets</h2>
 <p>You can search for Records within an existing RecordSet by their column values:</p>
 <pre><code class="language-php">&lt;?php
-$threadRecordSet = $atlas-&gt;select(ThreadMapper::CLASS)
+$threadRecordSet = $atlas-&gt;select(Thread::CLASS)
     -&gt;where('published = ', 1)
     -&gt;fetchRecordSet();
 

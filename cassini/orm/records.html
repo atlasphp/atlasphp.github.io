@@ -148,6 +148,17 @@
 
     </li>
                         <li>
+    <a href="/cassini/info/">Schema Information</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/info/usage.html">Usage</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/pdo/">PDO Connection</a>
     
     <ul class="dropdown-menu">
@@ -340,9 +351,9 @@
 <p>Create a new Record using the <code>newRecord()</code> method. You can assign data using
 properties, or pass an array of initial data to populate into the Record.</p>
 <pre><code class="language-php">&lt;?php
-$thread = $atlas-&gt;newRecord(ThreadMapper::CLASS,
+$thread = $atlas-&gt;newRecord(Thread::CLASS,
     [
-        'title'=&gt;'New Thread Title',
+        'title' =&gt; 'New Thread Title',
     ]
 );
 </code></pre>
@@ -370,11 +381,11 @@ Record, and on all the loaded relationships for that Record.</p>
 with an Author Record using the <code>author_id</code> column. The relationship is named
 <code>author</code>. (See the section on relationships for more information.)</p>
 <pre><code class="language-php">&lt;?php
-$author = $atlas-&gt;fetchRecord(AuthorMapper::CLASS, 4);
-$thread = $atlas-&gt;newRecord(ThreadMapper::CLASS,
+$author = $atlas-&gt;fetchRecord(Author::CLASS, 4);
+$thread = $atlas-&gt;newRecord(Thread::CLASS,
     [
-        'title'=&gt;'New Thread Title',
-        'author'=&gt;$author
+        'title' =&gt; 'New Thread Title',
+        'author' =&gt; $author
     ]
 );
 // If the insert is successful, the `author_id` column will automatically be
@@ -392,16 +403,16 @@ discussed later in this chapter.</p>
 </blockquote>
 <p>The following will fail.</p>
 <pre><code class="language-php">&lt;?php
-$author = $atlas-&gt;newRecord(AuthorMapper::CLASS,
+$author = $atlas-&gt;newRecord(Author::CLASS,
     [
-        'first_name'=&gt;'Sterling',
-        'last_name'=&gt;'Archer'
+        'first_name' =&gt; 'Sterling',
+        'last_name' =&gt; 'Archer'
     ]
 );
-$thread = $atlas-&gt;newRecord(ThreadMapper::CLASS,
+$thread = $atlas-&gt;newRecord(Thread::CLASS,
     [
-        'title'=&gt;'New Thread Title',
-        'author'=&gt;$author
+        'title' =&gt; 'New Thread Title',
+        'author' =&gt; $author
     ]
 );
 // Insert will not create the related Author Record. Use persist() instead.
@@ -411,7 +422,7 @@ $atlas-&gt;insert($thread);
 <p>Updating an existing record works the same as <code>insert()</code>.</p>
 <pre><code class="language-php">&lt;?php
 // fetch an existing record by primary key
-$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 3);
+$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
 
 // Modify the title
 $thread-&gt;title = 'This title is better than the last one';
@@ -427,8 +438,8 @@ method call in a try/catch block.</p>
 <p>As with <code>insert()</code>, foreign keys are also updated, but only for existing related
 records.</p>
 <pre><code class="language-php">&lt;?php
-$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 3);
-$author = $atlas-&gt;fetchRecord(AuthorMapper::CLASS, 4);
+$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
+$author = $atlas-&gt;fetchRecord(Author::CLASS, 4);
 
 // Modify the author
 $thread-&gt;author = $author;
@@ -439,7 +450,7 @@ $atlas-&gt;update($thread);
 <h2 id="1-1-4-3">1.1.4.3. Deleting a Record</h2>
 <p>Deleting a record works the same as inserting or updating.</p>
 <pre><code class="language-php">&lt;?php
-$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 3);
+$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
 $atlas-&gt;delete($thread);
 </code></pre>
 <blockquote>
@@ -486,7 +497,7 @@ database level; Atlas has no control over this.</p>
 <p>You may also mark records for deletion and they will be removed from the
 database as part of <code>persist()</code>.</p>
 <pre><code class="language-php">&lt;?php
-$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 3);
+$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
 // Mark the record for deletion
 $thread-&gt;setDelete();
 $atlas-&gt;persist($thread);
@@ -496,7 +507,7 @@ Record is persisted, they will be deleted from the database.</p>
 <pre><code class="language-php">&lt;?php
 // Assume a oneToMany relationship between a thread and its comments
 // Select the thread and related comments
-$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, 3,
+$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3,
     [
         'comments'
     ]

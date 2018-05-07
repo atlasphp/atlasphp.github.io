@@ -148,6 +148,17 @@
 
     </li>
                         <li>
+    <a href="/cassini/info/">Schema Information</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/info/usage.html">Usage</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/pdo/">PDO Connection</a>
     
     <ul class="dropdown-menu">
@@ -343,7 +354,7 @@ class ThreadRecord extends Record
     }
 }
 
-$thread = $atlas-&gt;fetchRecord(ThreadMapper::CLASS, $id);
+$thread = $atlas-&gt;fetchRecord(Thread::CLASS, $id);
 echo $thread-&gt;formatDate(); // outputs something like `Aug 21st, 2017`
 </code></pre>
 <p>The same concept is available for RecordSets using the RecordSet class. In our
@@ -364,7 +375,7 @@ class ThreadRecordSet extends RecordSet
         return $titles;
     }
 }
-$threads = $atlas-&gt;fetchRecordSet(ThreadMapper::CLASS, [1, 2, 3]);
+$threads = $atlas-&gt;fetchRecordSet(Thread::CLASS, [1, 2, 3]);
 
 print_r($threads-&gt;getAllTitles());
 </code></pre>

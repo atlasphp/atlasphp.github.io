@@ -148,6 +148,17 @@
 
     </li>
                         <li>
+    <a href="/cassini/info/">Schema Information</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/info/usage.html">Usage</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/pdo/">PDO Connection</a>
     
     <ul class="dropdown-menu">
@@ -314,30 +325,30 @@
             <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
     <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
                                 <li>
-                <a href="#1-4-2" title="Connection&#x20;Locator">Connection Locator</a>
+                <a href="#1-5-2" title="Connection&#x20;Locator">Connection Locator</a>
             </li>
                                 <li>
-                <a href="#1-4-2-1" title="Instantiation">Instantiation</a>
+                <a href="#1-5-2-1" title="Instantiation">Instantiation</a>
             </li>
                                 <li>
-                <a href="#1-4-2-2" title="Runtime&#x20;Configuration">Runtime Configuration</a>
+                <a href="#1-5-2-2" title="Runtime&#x20;Configuration">Runtime Configuration</a>
             </li>
                                 <li>
-                <a href="#1-4-2-3" title="Getting&#x20;Connections">Getting Connections</a>
+                <a href="#1-5-2-3" title="Getting&#x20;Connections">Getting Connections</a>
             </li>
                                 <li>
-                <a href="#1-4-2-4" title="Locking&#x20;To&#x20;The&#x20;Write&#x20;Connection">Locking To The Write Con...</a>
+                <a href="#1-5-2-4" title="Locking&#x20;To&#x20;The&#x20;Write&#x20;Connection">Locking To The Write Con...</a>
             </li>
                                 <li>
-                <a href="#1-4-2-5" title="Construction-Time&#x20;Configuration">Construction-Time Config...</a>
+                <a href="#1-5-2-5" title="Construction-Time&#x20;Configuration">Construction-Time Config...</a>
             </li>
             </ul>
 </nav>
         </div>
                 <div class="col-md-9">
-<div id="section-main"><h1 id="1-4-2">1.4.2. Connection Locator</h1>
+<div id="section-main"><h1 id="1-5-2">1.5.2. Connection Locator</h1>
 <p>Some applications may use multiple database servers; for example, one for writes, and one or more for reads. The <em>ConnectionLocator</em> allows you to define multiple <em>Connection</em> objects for lazy-loaded read and write connections. It will create the connections only when they are when called. The <em>Connection</em> creation logic should be wrapped in factory callable.</p>
-<h2 id="1-4-2-1">1.4.2.1. Instantiation</h2>
+<h2 id="1-5-2-1">1.5.2.1. Instantiation</h2>
 <p>The easiest way to create a <em>ConnectionLoctor</em> is to use its static  <code>new()</code> method, either with <em>PDO</em> connection arguments, or with an actual <em>PDO</em> instance:</p>
 <pre><code class="language-php">use Atlas\Pdo\ConnectionLocator;
 
@@ -352,7 +363,7 @@ $connectionLocator = ConnectionLocator::new(
 $connectionLocator = ConnectionLocator::new($pdo);
 </code></pre>
 <p>Doing so will define the default connection factory for the <em>ConnectionLocator</em>.</p>
-<h2 id="1-4-2-2">1.4.2.2. Runtime Configuration</h2>
+<h2 id="1-5-2-2">1.5.2.2. Runtime Configuration</h2>
 <p>Once you have a <em>ConnectionLocator</em>, you can add as many named read and write connection factories as you like:</p>
 <pre><code class="language-php">// the write (master) server
 $connectionLocator-&gt;setWriteFactory('master', Connection::factory(
@@ -384,7 +395,7 @@ $connectionLocator-&gt;setReadFactory('slave3', Connection::factory(
     'password'
 ));
 </code></pre>
-<h2 id="1-4-2-3">1.4.2.3. Getting Connections</h2>
+<h2 id="1-5-2-3">1.5.2.3. Getting Connections</h2>
 <p>Retrieve a <em>Connection</em> from the locator when you need it. This will create the <em>Connection</em> (if needed) and then return it.</p>
 <ul>
 <li>
@@ -407,7 +418,7 @@ assert($read === $readAgain); // true
 <pre><code class="language-php">$foo = $connectionLocator-&gt;get(ConnectionLocator::READ, 'foo');
 $bar = $connectionLocator-&gt;get(ConnectionLocator::WRITE, 'bar');
 </code></pre>
-<h2 id="1-4-2-4">1.4.2.4. Locking To The Write Connection</h2>
+<h2 id="1-5-2-4">1.5.2.4. Locking To The Write Connection</h2>
 <p>If you call the <code>lockToWrite()</code> method, calls to <code>getRead()</code> will return the write connection instead of the read connection.</p>
 <pre><code class="language-php">$read = $connectionLocator-&gt;getRead();
 $write = $connectionLocator-&gt;getWrite();
@@ -417,7 +428,7 @@ $readAgain = $connectionLocator-&gt;getRead();
 assert($readAgain === $write); // true
 </code></pre>
 <p>You can disable the lock-to-write behavior by calling <code>lockToWrite(false)</code>.</p>
-<h2 id="1-4-2-5">1.4.2.5. Construction-Time Configuration</h2>
+<h2 id="1-5-2-5">1.5.2.5. Construction-Time Configuration</h2>
 <p>The <em>ConnectionLocator</em> can be configured with all its connections at construction time; this can be useful with dependency injection mechanisms. (Note that this requires using the constructor proper, not the static <code>new()</code> method.)</p>
 <pre><code class="language-php">use Atlas\Pdo\Connection;
 use Atlas\Pdo\ConnectionLocator;

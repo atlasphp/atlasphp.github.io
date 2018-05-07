@@ -148,6 +148,17 @@
 
     </li>
                         <li>
+    <a href="/cassini/info/">Schema Information</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/info/usage.html">Usage</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/pdo/">PDO Connection</a>
     
     <ul class="dropdown-menu">
@@ -369,24 +380,27 @@ return [
 <p>That will read every table in the database and create one DataSource directory
 for each of them, each with several classes:</p>
 <pre><code>└── Thread
-    ├── ThreadFields.php                # App\DataSource\Thread\ThreadFields
-    ├── ThreadMapper.php                # App\DataSource\Thread\ThreadMapper
-    ├── ThreadMapperRelationships.php   # App\DataSource\Thread\ThreadMapper
-    ├── ThreadMapperEvents.php          # App\DataSource\Thread\ThreadMapperEvents
-    ├── ThreadRecord.php                # App\DataSource\Thread\ThreadRecord
-    ├── ThreadRecordSet.php             # App\DataSource\Thread\ThreadRecordSet
-    ├── ThreadRow.php                   # App\DataSource\Thread\ThreadRow
-    ├── ThreadTable.php                 # App\DataSource\Thread\ThreadTable
-    ├── ThreadTableEvents.php           # App\DataSource\Thread\ThreadTableEvents
+    ├── Thread.php                  # App\DataSource\Thread\Thread
+    ├── ThreadEvents.php            # App\DataSource\Thread\ThreadEvents
+    ├── ThreadFields.php            # App\DataSource\Thread\ThreadFields
+    ├── ThreadRecord.php            # App\DataSource\Thread\ThreadRecord
+    ├── ThreadRecordSet.php         # App\DataSource\Thread\ThreadRecordSet
+    ├── ThreadRelationships.php     # App\DataSource\Thread\ThreadRelationships
+    ├── ThreadRow.php               # App\DataSource\Thread\ThreadRow
+    ├── ThreadSelect.php            # App\DataSource\Thread\ThreadSelect
+    ├── ThreadTable.php             # App\DataSource\Thread\ThreadTable
+    ├── ThreadTableEvents.php       # App\DataSource\Thread\ThreadTableEvents
+    ├── ThreadTableSelect.php       # App\DataSource\Thread\ThreadTableSelect
 </code></pre>
 <p>Most of these classes will be empty, and are provided so you can extend their
-behavior if you wish.</p>
+behavior if you wish. They also serve to assist IDEs with autocompletion of
+return typehints.</p>
 <p>The following classes will be overwritten if you run the skeleton generator
 again:</p>
 <ul>
-<li>Fields.php</li>
-<li>Row.php</li>
-<li>Table.php</li>
+<li>{TYPE}Fields.php</li>
+<li>{TYPE}Row.php</li>
+<li>{TYPE}Table.php</li>
 </ul>
 <h2 id="1-2-1-3">1.2.1.3. Cutom Table Name Transformations</h2>
 <p>If you are unsatisfied with how the skeleton generator transforms table names to

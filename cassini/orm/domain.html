@@ -148,6 +148,17 @@
 
     </li>
                         <li>
+    <a href="/cassini/info/">Schema Information</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/info/usage.html">Usage</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/pdo/">PDO Connection</a>
     
     <ul class="dropdown-menu">
@@ -345,26 +356,24 @@ model Entities and Aggregates. This section offers some suggestions and examples
 on how to do that.</p>
 <h2 id="1-1-11-1">1.1.11.1. Persistence Model</h2>
 <p>For the examples below, we will work with an imaginary forum application that
-has conversation threads. The ThreadMapper might something like this:</p>
+has conversation threads. The Thread mapper might something like this:</p>
 <pre><code class="language-php">&lt;?php
 namespace App\DataSource\Thread;
 
-use App\DataSource\Author\AuthorMapper;
-use App\DataSource\Summary\SummaryMapper;
-use App\DataSource\Reply\ReplyMapper;
-use App\DataSource\Tagging\TaggingMapper;
-use App\DataSource\Tag\TagMapper;
-use Atlas\Mapper\AbstractMapper;
+use App\DataSource\Author\Author;
+use App\DataSource\Reply\Reply;
+use App\DataSource\Summary\Summary;
+use App\DataSource\Tagging\Tagging;
+use Atlas\Mapper\Mapper;
 
-class ThreadMapper extends AbstractMapper
+class Thread extends Mapper
 {
     protected function setRelated()
     {
-        $this-&gt;manyToOne('author', AuthorMapper::CLASS);
-        $this-&gt;oneToOne('summary', SummaryMapper::CLASS);
-        $this-&gt;oneToMany('replies', ReplyMapper::CLASS);
-        $this-&gt;oneToMany('taggings', TaggingMapper::CLASS);
-        $this-&gt;manyToMany('tags', TagMapper::CLASS, 'taggings');
+        $this-&gt;manyToOne('author', Author::CLASS);
+        $this-&gt;oneToOne('summary', Summary::CLASS);
+        $this-&gt;oneToMany('replies', Reply::CLASS);
+        $this-&gt;oneToMany('taggings', Tagging::CLASS);
     }
 }
 </code></pre>
@@ -396,13 +405,13 @@ Thread Entities. It might look something like this:</p>
 <pre><code class="language-php">&lt;?php
 namespace App\Domain\Thread;
 
-use App\DataSource\Thread\ThreadMapper;
+use App\DataSource\Thread\Thread;
 
 class ThreadRepository
 {
     protected $mapper;
 
-    public function __construct(ThreadMapper $mapper)
+    public function __construct(Thread $mapper)
     {
         $this-&gt;mapper = $mapper;
     }
@@ -412,7 +421,6 @@ class ThreadRepository
         $record = $this-&gt;mapper-&gt;fetchRecord($thread_id, [
             'author',
             'taggings',
-            'tags',
             'replies',
         ]);
 
@@ -477,7 +485,11 @@ class ThreadRecord extends Record implements ThreadInterface
 
     public function getTags()
     {
-        return $this-&gt;tags-&gt;getArrayCopy();
+        $tags = [];
+        foreach ($this-&gt;taggings as $tagging) {
+            $tags[] = $tagging-&gt;tag-&gt;getArrayCopy();
+        }
+        return $tags;
     }
 
     public function getReplies()
@@ -556,7 +568,11 @@ class Thread implements ThreadInterface
 
     public function getTags()
     {
-        return $this-&gt;record-&gt;tags-&gt;getArrayCopy();
+        $tags = [];
+        foreach ($this-&gt;record-&gt;taggings as $tagging) {
+            $tags[] = $tagging-&gt;tag-&gt;getArrayCopy();
+        }
+        return $tags;
     }
 
     public function getReplies()
@@ -673,6 +689,11 @@ class ThreadRepository ...
 
     protected function newThread(ThreadRecord $record)
     {
+        $tags = [];
+        foreach ($record-&gt;taggings as $tagging) {
+            $tags[] = $tagging-&gt;tag-&gt;getArrayCopy();
+        }
+
         return new Thread(
             $record-&gt;thread_id,
             $record-&gt;title,
@@ -680,7 +701,7 @@ class ThreadRepository ...
             $record-&gt;date_published,
             $record-&gt;author-&gt;author_id,
             $record-&gt;author-&gt;name,
-            $record-&gt;tags-&gt;getArrayCopy(),
+            $tags,
             $record-&gt;replies-&gt;getArrayCopy()
         );
     }

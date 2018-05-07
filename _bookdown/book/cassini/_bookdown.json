@@ -4,6 +4,7 @@
         {"orm": "https://raw.githubusercontent.com/atlasphp/Atlas.Orm/3.x/docs/_bookdown.json"},
         {"skeleton": "https://raw.githubusercontent.com/atlasphp/Atlas.Cli/2.x/docs/_bookdown.json"},
         {"query": "https://raw.githubusercontent.com/atlasphp/Atlas.Query/1.x/docs/_bookdown.json"},
+        {"info": "https://raw.githubusercontent.com/atlasphp/Atlas.Info/1.x/docs/_bookdown.json"},
         {"pdo": "https://raw.githubusercontent.com/atlasphp/Atlas.Pdo/1.x/docs/_bookdown.json"}
     ],
     "tocDepth": "2"
