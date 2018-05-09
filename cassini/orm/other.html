@@ -113,6 +113,17 @@
 
     </li>
                         <li>
+    <a href="/cassini/table/">Table Data Gateway</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/table/usage.html">Usage</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/query/">Query System</a>
     
     <ul class="dropdown-menu">
@@ -398,15 +409,15 @@ by a column on the table, e.g. <code>record_type</code>. To do so, create <em>Re
 that extend the <em>Record</em> for that <em>Mapper</em> in the same namespace as the
 <em>Mapper</em>, then override the <em>Mapper</em> <code>getRecordClass()</code> method to return the
 appropriate class name.</p>
-<p>For example, given a <em>ContentMapper</em> and <em>ContentRecord</em> ...</p>
+<p>For example, given a <em>Content</em> mapper and <em>ContentRecord</em> ...</p>
 <pre><code>App\
     DataSource\
         Content\
             Content.php
             ContentEvents.php
-            ContentRelationships.php
             ContentRecord.php
             ContentRecordSet.php
+            ContentRelationships.php
             ContentRow.php
             ContentSelect.php
             ContentTable.php
@@ -419,9 +430,9 @@ appropriate class name.</p>
         Content\
             Content.php
             ContentEvents.php
-            ContentRelationships.php
             ContentRecord.php
             ContentRecordSet.php
+            ContentRelationships.php
             ContentRow.php
             ContentSelect.php
             ContentTable.php

@@ -113,6 +113,17 @@
 
     </li>
                         <li>
+    <a href="/cassini/table/">Table Data Gateway</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/table/usage.html">Usage</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/query/">Query System</a>
     
     <ul class="dropdown-menu">
@@ -351,11 +362,9 @@
 <p>Create a new Record using the <code>newRecord()</code> method. You can assign data using
 properties, or pass an array of initial data to populate into the Record.</p>
 <pre><code class="language-php">&lt;?php
-$thread = $atlas-&gt;newRecord(Thread::CLASS,
-    [
+$thread = $atlas-&gt;newRecord(Thread::CLASS, [
         'title' =&gt; 'New Thread Title',
-    ]
-);
+]);
 </code></pre>
 <p>You can assign a value via a property, which maps to a column name.</p>
 <pre><code class="language-php">&lt;?php

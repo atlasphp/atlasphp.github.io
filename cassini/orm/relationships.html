@@ -113,6 +113,17 @@
 
     </li>
                         <li>
+    <a href="/cassini/table/">Table Data Gateway</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/table/usage.html">Usage</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/query/">Query System</a>
     
     <ul class="dropdown-menu">
@@ -460,7 +471,7 @@ database collation, but they are <em>not</em> equivalent in PHP.</p>
 case of related string key columns when matching related records. You can do so
 with the <code>ignoreCase()</code> method on the relationship definition.</p>
 <pre><code class="language-php">&lt;?php
-class FooMapper
+class FooRelationships
 {
     protected function define()
     {
@@ -479,7 +490,7 @@ particular type.</p>
 <p>In the following example, a <code>comments</code> table has a <code>commentable_id</code> column as
 the foreign key value, but is restricted to "video" values on a discriminator
 column named <code>commentable_type</code>.</p>
-<pre><code class="language-php">class IssueMapper extends AbstractMapper
+<pre><code class="language-php">class Issue extends Mapper
 {
     protected function define()
     {
