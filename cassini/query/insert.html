@@ -361,7 +361,7 @@
 $insert-&gt;column('bar', $bar_value);
 </code></pre>
 <p>Note that the PDO parameter type will automatically be set for strings,
-integers, floats, and nulls. If you want to set an PDO parameter type yourself,
+integers, floats, and nulls. If you want to set a PDO parameter type yourself,
 pass it as an optional third parameter.</p>
 <pre><code class="language-php">// INSERT INTO foo (bar) VALUES (:bar);
 $insert-&gt;column('bar', $bar_value, \PDO::PARAM_LOB);
