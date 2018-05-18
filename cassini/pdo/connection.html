@@ -389,7 +389,7 @@ $connection = $factory();
 $pdo = new PDO('sqlite::memory:');
 
 $stm  = 'SELECT * FROM test WHERE foo = :foo AND bar = :bar';
-$bind = array('foo' =&gt; 'baz', 'bar' =&gt; 'dib');
+$bind = ['foo' =&gt; 'baz', 'bar' =&gt; 'dib'];
 $sth = $pdo-&gt;prepare($stm);
 $sth-&gt;execute($bind);
 $result = $sth-&gt;fetchAll(PDO::FETCH_ASSOC);
@@ -400,7 +400,7 @@ $result = $sth-&gt;fetchAll(PDO::FETCH_ASSOC);
 $connection = Connection::new('sqlite::memory:');
 
 $stm  = 'SELECT * FROM test WHERE foo = :foo AND bar = :bar';
-$bind = array('foo' =&gt; 'baz', 'bar' =&gt; 'dib');
+$bind = ['foo' =&gt; 'baz', 'bar' =&gt; 'dib'];
 
 $result = $connection-&gt;fetchAll($stm, $bind);
 </code></pre>
