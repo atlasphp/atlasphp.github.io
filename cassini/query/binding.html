@@ -342,7 +342,10 @@
                 <a href="#1-4-2-1" title="Implicit&#x20;Inline&#x20;Binding">Implicit Inline Binding</a>
             </li>
                                 <li>
-                <a href="#1-4-2-2" title="Explicit&#x20;Parameter&#x20;Binding">Explicit Parameter Bindi...</a>
+                <a href="#1-4-2-2" title="Explicit&#x20;Inline&#x20;Binding">Explicit Inline Binding</a>
+            </li>
+                                <li>
+                <a href="#1-4-2-3" title="Explicit&#x20;Parameter&#x20;Binding">Explicit Parameter Bindi...</a>
             </li>
             </ul>
 </nav>
@@ -393,7 +396,20 @@ $select
     -&gt;from('foo')
     -&gt;where('bar IN ', $bar_value);
 </code></pre>
-<h2 id="1-4-2-2">1.4.2.2. Explicit Parameter Binding</h2>
+<h2 id="1-4-2-2">1.4.2.2. Explicit Inline Binding</h2>
+<p>If you need to bind more than one value into a condition, use <code>sprintf()</code>
+combined with the <code>bindInline()</code> method:</p>
+<pre><code class="language-php">// SELECT * FROM foo WHERE bar BETWEEN :__1__ AND :__2__
+$select
+    -&gt;columns('*')
+    -&gt;from('foo')
+    -&gt;where(sprintf(
+        'bar BETWEEN %s AND %s',
+        $select-&gt;bindInline($low_value),
+        $select-&gt;bindInline($high_value)
+    ));
+</code></pre>
+<h2 id="1-4-2-3">1.4.2.3. Explicit Parameter Binding</h2>
 <p>You can still use the normal PDO binding approach, where you explicitly set
 named parameters in conditions, and then bind the values with a separate call:</p>
 <pre><code class="language-php">$select
