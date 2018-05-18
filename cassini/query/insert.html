@@ -344,7 +344,7 @@
                                                                                 <li>
                 <a href="#1-4-4-2" title="Performing&#x20;The&#x20;Query">Performing The Query</a>
             </li>
-            </ul>
+                        </ul>
 </nav>
         </div>
                 <div class="col-md-9">
@@ -405,6 +405,16 @@ $insert
 get back a <em>PDOStatement</em>.</p>
 <pre><code class="language-php">$result = $insert-&gt;perform(); // : PDOStatement
 </code></pre>
+<h3 id="1-4-4-2-1">1.4.4.2.1. Last Insert ID</h3>
+<p>If the database autoincrements a column while performing the query, you can get
+back that value using the <code>getLastInsertId()</code> method:</p>
+<pre><code class="language-php">$id = $insert-&gt;getLastInsertId();
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>You can pass a sequence name as an optional parameter to <code>getLastInsertId()</code>;
+this may be required with PostgreSQL.</p>
+</blockquote>
 </div>        </div>
     </div>
 </div>
