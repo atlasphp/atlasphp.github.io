@@ -574,9 +574,11 @@ $select-&gt;join(
 get back a <em>PDOStatement</em>.</p>
 <pre><code class="language-php">$result = $select-&gt;perform();
 </code></pre>
-<p>The SELECT proxies all <code>fetch*()</code> and <code>yield()</code> method calls to the underlying
-<em>Connection</em> object, which means they are also available to you as well.  The
-proxied <em>Connection</em> <code>fetch*()</code> and <code>yield*()</code> methods are:</p>
+<p>The <em>Select</em> proxies all <code>fetch*()</code> and <code>yield()</code> method calls to the underlying
+<em>Connection</em> object via the magic <code>__call()</code> method, which means you can both
+build the query and perform it using the same <em>Select</em> object.</p>
+<p>The <em>Connection</em> <code>fetch*()</code> and <code>yield*()</code> methods proxied through the <em>Select</em>
+are as follows:</p>
 <ul>
 <li>
 <code>fetchAll() : array</code>
@@ -624,10 +626,21 @@ proxied <em>Connection</em> <code>fetch*()</code> and <code>yield*()</code> meth
 <code>yieldUnique() : Generator</code>
 </li>
 </ul>
-<p>Note that the <code>$statement</code> and <code>$values</code> parameters are passed automatically by
-the the <em>Select</em> proxy, though parameters after those may still be specified.</p>
+<p>For example, to build a query and get back an array of all results:</p>
+<pre><code class="language-php">// SELECT * FROM foo WHERE bar &gt; :__1__
+$result = $select
+    -&gt;columns('*')
+    -&gt;from('foo')
+    -&gt;where('bar &gt; ', $value)
+    -&gt;fetchAll();
+
+foreach ($result as $key =&gt; $val) {
+    echo $val['bar'] . PHP_EOL;
+}
+</code></pre>
 <p>For more information on the <code>fetch*()</code> and <code>yield*()</code> methods, please see the
-<a href="https://github.com/atlasphp/Atlas.Pdo">Atlas.Pdo</a> documentation.</p>
+<a href="http://atlasphp.io/cassini/pdo/connection.html">Atlas.Pdo Connection</a>
+documentation.</p>
 </div>        </div>
     </div>
 </div>
