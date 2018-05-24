@@ -117,7 +117,19 @@
     
     <ul class="dropdown-menu">
                         <li>
-    <a href="/cassini/table/usage.html">Usage</a>
+    <a href="/cassini/table/instantiation.html">Instantiation</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/table/reading.html">Reading From The Table</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/table/writing.html">Writing To The Table</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/table/events.html">Table Events</a>
 
     </li>
             </ul>
@@ -385,9 +397,9 @@ type after the value:</p>
     -&gt;from('foo')
     -&gt;where('bar = ', $bar_value, \PDO::PARAM_LOB);
 </code></pre>
-<p>Finally, if you bind an array inline, Atlas.Query will set a bind each element
-separately with its own placeholder, comma-separate the placeholders, and wrap
-them in parentheses. This makes using an IN() condition very cnvenienent.</p>
+<p>If you bind an array inline, Atlas.Query will set a bind each element separately
+with its own placeholder, comma-separate the placeholders, and wrap them in
+parentheses. This makes using an IN() condition very cnvenienent.</p>
 <pre><code class="language-php">$bar_value = ['foo', 'bar', 'baz'];
 
 // SELECT * FROM foo WHERE bar IN (:__1__, :__2__, :__3__)
@@ -395,6 +407,17 @@ $select
     -&gt;columns('*')
     -&gt;from('foo')
     -&gt;where('bar IN ', $bar_value);
+</code></pre>
+<p>Finally, if the inline value is itself a Select object, it will be converted to
+a string via <code>getStatement()</code> and returned surrounded in parentheses:</p>
+<pre><code class="language-php">// SELECT * FROM foo WHERE bar IN (SELECT baz FROM dib)
+$select
+    -&gt;columns('*')
+    -&gt;from('foo')
+    -&gt;where('bar IN ', $select-&gt;subSelect()
+        -&gt;columns('baz')
+        -&gt;from('dib')
+    );
 </code></pre>
 <h2 id="1-4-2-2">1.4.2.2. Explicit Inline Binding</h2>
 <p>If you need to bind more than one value into a condition, use <code>sprintf()</code>

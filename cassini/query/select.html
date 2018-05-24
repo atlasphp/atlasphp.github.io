@@ -117,7 +117,19 @@
     
     <ul class="dropdown-menu">
                         <li>
-    <a href="/cassini/table/usage.html">Usage</a>
+    <a href="/cassini/table/instantiation.html">Instantiation</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/table/reading.html">Reading From The Table</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/table/writing.html">Writing To The Table</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/table/events.html">Table Events</a>
 
     </li>
             </ul>
@@ -341,7 +353,7 @@
                                 <li>
                 <a href="#1-4-3-1" title="Building&#x20;The&#x20;Query">Building The Query</a>
             </li>
-                                                                                                                                                        <li>
+                                                                                                                                                                                <li>
                 <a href="#1-4-3-2" title="Resetting&#x20;Query&#x20;Elements">Resetting Query Elements</a>
             </li>
                                 <li>
@@ -393,7 +405,7 @@ $select
     )-&gt;catJoin(' AND d.baz = ', $baz_value);
 </code></pre>
 <h3 id="1-4-3-1-4">1.4.3.1.4. WHERE</h3>
-<p>(All <code>WHERE</code> methods support inline value binding via optional trailing arguments.)</p>
+<p>(These <code>WHERE</code> methods support inline value binding via optional trailing arguments.)</p>
 <p>To add <code>WHERE</code> conditions, use the <code>where()</code> method. Additional calls to
 <code>where()</code> will implicitly AND the subsequent condition.</p>
 <pre><code class="language-php">// WHERE bar &gt; :__1__ AND zim &gt;= :__2__ AND baz :__3__
@@ -418,6 +430,32 @@ $select
     -&gt;catWhere(' AND bar &lt; ', $bar_value)
     -&gt;catWhere(')');
 
+</code></pre>
+<h4 id="1-4-3-1-4-1">1.4.3.1.4.1. Explicit Inline Binding</h4>
+<p>For some conditions, using <code>sprintf()</code> combined with explicit inline binding
+may be advisable:</p>
+<pre><code class="language-php">// WHERE foo BETWEEN :__1__ AND :__2__
+$select-&gt;where(sprintf(
+    'foo BETWEEN %s AND %s',
+    $select-&gt;bindInline($low_value),
+    $select-&gt;bindInline($high_value)
+));
+</code></pre>
+<h4 id="1-4-3-1-4-2">1.4.3.1.4.2. Convenience Equality</h4>
+<p>There is an additional <code>whereEquals()</code> convenience method that adds a series of
+<code>AND</code>ed equality conditions for you based on an array of key-value pairs.</p>
+<p>Given an array value, the condition will be <code>IN ()</code>. Given a null value, the
+condition will be <code>IS NULL</code>. For all other values, the condition will be <code>=</code>. If
+you pass a key without a value, that key will be used as a raw unescaped
+condition.</p>
+<p>For example:</p>
+<pre><code class="language-php">// WHERE foo IN (:__1__, :__2__, :__3__) AND bar IS NULL AND baz = :__4__ AND zim = NOW()
+$select-&gt;whereEquals([
+    'foo' =&gt; ['a', 'b', 'c'],
+    'bar' =&gt; null,
+    'baz' =&gt; 'dib',
+    'zim = NOW()'
+]);
 </code></pre>
 <h3 id="1-4-3-1-5">1.4.3.1.5. GROUP BY</h3>
 <p>To add <code>GROUP BY</code> expressions, use the <code>groupBy()</code> method and pass each
@@ -533,8 +571,8 @@ queries that are already part of UNION.</p>
 <p>The returned object will be a new <em>Select</em> that shares bound values with the
 parent <em>Select</em>.</p>
 <p>When you are done building the subselect, give it an alias using the <code>as()</code>
-method, and call <code>getStatement()</code> to render it (wrapped in parentheses) into the
-desired condition or expression.</p>
+method, and call <code>getStatement()</code> to render it into the desired condition or
+expression.</p>
 <p>The following is a contrived example:</p>
 <pre><code class="language-php">// SELECT * FROM (
 //     SELECT id, name
@@ -542,7 +580,8 @@ desired condition or expression.</p>
 //     WHERE id &gt; :__1__
 // ) AS subfoo
 // WHERE LENGTH(subfoo.name) &gt; :__2__
-$select-&gt;columns('*')
+$select
+    -&gt;columns('*')
     -&gt;from(
         $select-&gt;subSelect()
             -&gt;columns('id', 'name')
@@ -558,15 +597,18 @@ $select-&gt;columns('*')
 <em>Select</em> objects. If you create a new <em>Select</em> and try to use it as a subselect,
 the bound values will not be shared, and you may get unexpected results.</p>
 <p>Other examples include:</p>
-<pre><code class="language-php">$select-&gt;where(
-    'foo IN ',
-    $select-&gt;subSelect()-&gt;...-&gt;as('sub_alias')-&gt;getStatement()
-);
-
+<pre><code class="language-php">// joining on a subselect
 $select-&gt;join(
     'LEFT',
     $select-&gt;subSelect()-&gt;...-&gt;as('sub_alias')-&gt;getStatement(),
     'foo.id = sub_alias.id',
+);
+
+// binding a subselect inline; note that it does not need to be
+// converted to a string via getStatement()
+$select-&gt;where(
+    'foo IN ',
+    $select-&gt;subSelect()-&gt;...
 );
 </code></pre>
 <h2 id="1-4-3-4">1.4.3.4. Performing The Query</h2>
