@@ -350,97 +350,17 @@
                                 <li>
                 <a href="#1-1-8" title="Events">Events</a>
             </li>
-                                <li>
-                <a href="#1-1-8-1" title="Table&#x20;Events">Table Events</a>
-            </li>
-                                <li>
-                <a href="#1-1-8-2" title="Mapper&#x20;Events">Mapper Events</a>
-            </li>
             </ul>
 </nav>
         </div>
                 <div class="col-md-9">
 <div id="section-main"><h1 id="1-1-8">1.1.8. Events</h1>
 <p>There are several events that will automatically be called when interacting with
-Atlas objects.</p>
-<h2 id="1-1-8-1">1.1.8.1. Table Events</h2>
-<p>The <code>insert()</code>, <code>update()</code>, and <code>delete()</code> methods all have 3 events associated
-with them: a <code>before*()</code>, a <code>modify*()</code>, and an <code>after*()</code>. In addition, there
-is a <code>modifySelect()</code> event, and a <code>modifySelectedRow()</code> event.</p>
-<pre><code class="language-php">&lt;?php
-// Runs after the Select object is created, but before it is executed
-modifySelect(Table $table, TableSelect $select)
-
-// Runs after a newly-selected row is populated but before it is returned
-modifySelectedRow(Table $table, Row $row)
-
-// Runs before the Insert object is created
-beforeInsert(Table $table, Row $row)
-
-// Runs after the Insert object is created, but before it is executed
-modifyInsert(Table $table, Row $row, Insert $insert)
-
-// Runs after the Insert object is executed
-afterInsert(Table $table,
-            Row $row,
-            Insert $insert,
-            PDOStatement $pdoStatement)
-
-// Runs before the Update object is created
-beforeUpdate(Table $table, Row $row)
-
-// Runs after the Update object is created, but before it is executed
-modifyUpdate(Table $table, Row $row, Update $update)
-
-// Runs after the Update object is executed
-afterUpdate(Table $table,
-            Row $row,
-            Update $update,
-            PDOStatement $pdoStatement)
-
-// Runs before the Delete object is created
-beforeDelete(Table $table, Row $row)
-
-// Runs after the Delete object is created, but before it is executed
-modifyDelete(Table $table, Row $row, Delete $delete)
-
-// Runs after the Delete object is executed
-afterDelete(Table $table,
-            Row $row,
-            Delete $delete,
-            PDOStatement $pdoStatement)
-</code></pre>
-<p>TableEvents would be the place to put behaviors such as setting <code>inserted_at</code> or
-<code>updated_at</code> values, etc:</p>
-<pre><code class="language-php">&lt;?php
-namespace Blog\DataSource\Posts;
-
-use Atlas\Table\Row;
-use Atlas\Table\Table;
-use Atlas\Table\TableEvents;
-
-/**
- * @inheritdoc
- */
-class PostsTableEvents extends TableEvents
-{
-    public function beforeUpdate(Table $table, Row $row)
-    {
-        $row-&gt;inserted_at = date('Y-m-d H:i:s');
-    }
-
-    public function beforeUpdate(Table $table, Row $row)
-    {
-        $row-&gt;updated_at = date('Y-m-d H:i:s');
-    }
-}
-</code></pre>
-<h2 id="1-1-8-2">1.1.8.2. Mapper Events</h2>
+Atlas mappers.</p>
 <p>The <code>insert()</code>, <code>update()</code>, and <code>delete()</code> methods all have 3 events associated
 with them: a <code>before*()</code>, a <code>modify*()</code>, and an <code>after*()</code>. In addition, there
 is a <code>modifySelect()</code> event.</p>
-<pre><code class="language-php">&lt;?php
-// Runs after the Select object is created, but before it is executed
+<pre><code class="language-php">// Runs after the Select object is created, but before it is executed
 modifySelect(Mapper $mapper, MapperSelect $select)
 
 // Runs before the Insert object is created
@@ -482,8 +402,7 @@ afterDelete(Mapper $mapper,
 <p>Here is a simple example with the assumption that the Record object has a
 <code>validate()</code> method and a <code>getErrors()</code> method. See the section on <a href="behavior.html">Adding Logic
 to Records and RecordSets</a>.</p>
-<pre><code class="language-php">&lt;?php
-namespace Blog\DataSource\Posts;
+<pre><code class="language-php">namespace Blog\DataSource\Posts;
 
 use Atlas\Mapper\Mapper;
 use Atlas\Mapper\MapperEvents;
@@ -504,8 +423,7 @@ class PostsEvents extends MapperEvents
 }
 </code></pre>
 <p>And you might have something like this in your code:</p>
-<pre><code class="language-php">&lt;?php
-try {
+<pre><code class="language-php">try {
     $atlas-&gt;update($post);
 } catch (\Exception $e) {
     foreach ($post-&gt;getErrors() as $error) {

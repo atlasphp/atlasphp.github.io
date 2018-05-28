@@ -365,8 +365,7 @@
 the database is its own micro-transaction (cf. <a href="https://secure.php.net/manual/en/pdo.transactions.php">https://secure.php.net/manual/en/pdo.transactions.php</a>).</p>
 <h2 id="1-1-6-1">1.1.6.1. Manual Transaction Management</h2>
 <p>You can manage transactions manually by calling these methods on the Atlas object:</p>
-<pre><code class="language-php">&lt;?php
-// begins a transaction on BOTH the read connection
+<pre><code class="language-php">// begins a transaction on BOTH the read connection
 // AND the write connection
 $atlas-&gt;beginTransaction();
 
@@ -407,8 +406,7 @@ write connections, and each of these will lock to the write connection once a
 write operation is performed.)</p>
 <p>To specify which transaction strategy to use, pass it as the last argument to
 the <em>Atlas</em> static <code>new()</code> call ...</p>
-<pre><code class="language-php">&lt;?php
-use Atlas\Orm\Atlas;
+<pre><code class="language-php">use Atlas\Orm\Atlas;
 use Atlas\Orm\Transaction\AutoTransact;
 
 // use a MiniTransaction strategy
@@ -420,8 +418,7 @@ $atlas = Atlas::new(
 );
 </code></pre>
 <p>... or call <code>setTransactionClass()</code> on an <em>AtlasBuilder</em> instance:</p>
-<pre><code class="language-php">&lt;?php
-use Atlas\Orm\AtlasBuilder;
+<pre><code class="language-php">use Atlas\Orm\AtlasBuilder;
 use Atlas\Orm\Transaction\BeginOnRead;
 
 $builder = new AtlasBuilder(

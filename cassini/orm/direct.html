@@ -354,7 +354,10 @@
                 <a href="#1-1-9-1" title="Complex&#x20;Queries">Complex Queries</a>
             </li>
                                 <li>
-                <a href="#1-1-9-2" title="Reusing&#x20;the&#x20;Select">Reusing the Select</a>
+                <a href="#1-1-9-2" title="Joining&#x20;On&#x20;Defined&#x20;Relationships">Joining On Defined Relat...</a>
+            </li>
+                                <li>
+                <a href="#1-1-9-3" title="Reusing&#x20;the&#x20;Select">Reusing the Select</a>
             </li>
             </ul>
 </nav>
@@ -365,8 +368,7 @@
 methods are provided which expose the underlying <em>Atlas\Pdo\Connection</em>
 functionality. By using the <code>columns()</code> method, you can select specific columns
 or individual values. For example:</p>
-<pre><code class="language-php">&lt;?php
-// an array of IDs
+<pre><code class="language-php">// an array of IDs
 $threadIds = $atlas
     -&gt;select(Thread::CLASS)
     -&gt;columns(['thread_id'])
@@ -391,8 +393,7 @@ from the Table underlying the Mapper.</p>
 <h2 id="1-1-9-1">1.1.9.1. Complex Queries</h2>
 <p>You can use any of the direct table access methods with more complex queries and
 joins as provided by <a href="https://github.com/atlasphp/Atlas.Query/blob/1.x/docs/select.md">Atlas.Query</a>:</p>
-<pre><code class="language-php">&lt;?php
-$threadData = $atlas
+<pre><code class="language-php">$threadData = $atlas
     -&gt;select(Thread::CLASS)
     -&gt;columns('threads.subject', 'authors.name', 's.*')
     -&gt;join('INNER', 'authors', 'authors.author_id = threads.author_id')
@@ -403,29 +404,68 @@ $threadData = $atlas
     -&gt;limit(2)
     -&gt;fetchUnique();
 </code></pre>
-<p>In addition the various <code>JOIN</code> methods provided by Atlas.Query,
-the <em>MapperSelect</em> also provides <code>joinWith()</code>, so that you can join on a
-defined relationship. (The related table will be aliased as the relationship
-name.) For example, to do an <code>INNER JOIN</code> with another table as defined in
-the Mapper relationships:</p>
-<pre><code class="language-php">&lt;?php
-$threadIdsAndAuthorNames = $atlas
+<h2 id="1-1-9-2">1.1.9.2. Joining On Defined Relationships</h2>
+<p>In addition the various <code>JOIN</code> methods provided by Atlas.Query, the
+<em>MapperSelect</em> also provides <code>joinWith()</code>, so that you can join on a defined
+relationship and then use columns from that relationship. (The related table
+will be aliased automatically as the relationship name.)</p>
+<p>For example, to <code>JOIN</code> with another table as defined in the Mapper
+relationships:</p>
+<pre><code class="language-php">$threadIdsAndAuthorNames = $atlas
     -&gt;select(Thread::CLASS)
-    -&gt;joinWith('INNER', 'author')
+    -&gt;joinWith('author')
     -&gt;columns(
-        "thread.thread_id",
+        "threads.thread_id",
         "CONCAT(author.first_name, ' ', author.last_name)"
     )
     -&gt;limit(10)
     -&gt;orderBy('thread_id DESC')
     -&gt;fetchKeyPair();
 </code></pre>
-<h2 id="1-1-9-2">1.1.9.2. Reusing the Select</h2>
+<p>You can specify the JOIN type as part of the related name string, in addition
+to an alias of your choosing:</p>
+<pre><code class="language-php">// specify the join type:
+$select-&gt;joinWith('LEFT author');
+
+// specify an alternative alias:
+$select-&gt;joinWith('author AS author_alias');
+
+// specify both
+$select-&gt;joinWith('LEFT author AS author_alias');
+</code></pre>
+<p>Finally, you can pass a callable as an optional third parameter to add "sub"
+JOINs on the already-joined relationship. For example, to find all authors
+with threads that have the "foo" tag on them:</p>
+<pre><code class="language-php">$authorsWithThreadsAndTags = $atlas
+    -&gt;select(Author::CLASS)
+    -&gt;joinWith('threads', function ($sub) {
+        $sub-&gt;joinWith('taggings', function ($sub) {
+            $sub-&gt;joinWith('tag');
+        });
+    })
+    -&gt;where('tag = ', 'foo');
+</code></pre>
+<p>This builds a query similar to the following:</p>
+<pre><code class="language-sql">SELECT
+    *
+FROM
+    authors
+        JOIN threads ON authors.author_id = threads.author_id
+        JOIN taggings ON threads.thread_id = taggings.thread_id
+        JOIN tags AS tag ON taggings.tag_id = tag.tag_id
+WHERE tag = :__1__
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>Using <code>joinWith()</code> <strong>does not</strong> select any records from the defined
+relationship; it only adds a JOIN clause. If you want to select related
+records, use the <code>with()</code> method.</p>
+</blockquote>
+<h2 id="1-1-9-3">1.1.9.3. Reusing the Select</h2>
 <p>The select object can be used for multiple queries, which may be useful for
 pagination.  The generated select statement can also be displayed for debugging
 purposes.</p>
-<pre><code class="language-php">&lt;?php
-$select = $atlas
+<pre><code class="language-php">$select = $atlas
     -&gt;select(Thread::CLASS)
     -&gt;columns('*')
     -&gt;offset(10)

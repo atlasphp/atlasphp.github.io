@@ -378,20 +378,17 @@
 <div id="section-main"><h1 id="1-1-5">1.1.5. Working with RecordSets</h1>
 <h2 id="1-1-5-1">1.1.5.1. New RecordSets</h2>
 <p>Create a new RecordSet using the <code>newRecordSet()</code> method.</p>
-<pre><code class="language-php">&lt;?php
-$threadRecordSet = $atlas-&gt;newRecordSet(Thread::CLASS);
+<pre><code class="language-php">$threadRecordSet = $atlas-&gt;newRecordSet(Thread::CLASS);
 </code></pre>
 <h2 id="1-1-5-2">1.1.5.2. Appending Records to a RecordSet</h2>
 <p>You can append a new Record to an existing RecordSet using <code>appendNew()</code>,
 optionally passing any data you want to initially populate into the Record:</p>
-<pre><code class="language-php">&lt;?php
-$newThread = $threadRecordSet-&gt;appendNew([
+<pre><code class="language-php">$newThread = $threadRecordSet-&gt;appendNew([
     'title' =&gt; 'New Title',
 ]);
 </code></pre>
 <p>Additionally, you can append foreign Records to a native Record's relateds.</p>
-<pre><code class="language-php">&lt;?php
-$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 1, [
+<pre><code class="language-php">$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 1, [
     'comments',
 ]);
 
@@ -409,8 +406,7 @@ $atlas-&gt;persist($thread);
 <h2 id="1-1-5-3">1.1.5.3. Array Access</h2>
 <p>The RecordSet also acts as an array, so you can get/set/unset Records by their
 sequential keys in the RecordSet.</p>
-<pre><code class="language-php">&lt;?php
-// address the second record in the set
+<pre><code class="language-php">// address the second record in the set
 $threadRecordSet[1]-&gt;title = 'Changed Title';
 
 // unset the first record in the set
@@ -421,8 +417,7 @@ $threadRecordSet[] = $atlas-&gt;newRecord(Thread::CLASS);
 </code></pre>
 <h2 id="1-1-5-4">1.1.5.4. Searching within RecordSets</h2>
 <p>You can search for Records within an existing RecordSet by their column values:</p>
-<pre><code class="language-php">&lt;?php
-$threadRecordSet = $atlas-&gt;select(Thread::CLASS)
+<pre><code class="language-php">$threadRecordSet = $atlas-&gt;select(Thread::CLASS)
     -&gt;where('published = ', 1)
     -&gt;fetchRecordSet();
 
@@ -436,8 +431,7 @@ $matchingRecordSet = $threadRecordSet-&gt;getAllBy(['author_id' =&gt; '5']);
 <h2 id="1-1-5-5">1.1.5.5. Detaching Records from RecordSets</h2>
 <p>You can detach Records from a RecordSet by their column values. This does NOT
 delete Records from the database; it only detaches them from the RecordSet.</p>
-<pre><code class="language-php">&lt;?php
-// unsets and returns one matching Record from the Record Set,
+<pre><code class="language-php">// unsets and returns one matching Record from the Record Set,
 // or null if there is no match
 $detachedRecord = $threadRecordSet-&gt;detachOneBy(['subject' =&gt; 'Subject One']);
 
@@ -456,8 +450,7 @@ sections on Marking Records for Deletion and deleting Records.</p>
 <h2 id="1-1-5-6">1.1.5.6. Marking RecordSets For Deletion</h2>
 <p>You can mark each Record currently in a RecordSet for deletion by using the
 <code>setDelete()</code> method:</p>
-<pre><code class="language-php">&lt;?php
-// mark all current records for deletion
+<pre><code class="language-php">// mark all current records for deletion
 $threadRecordSet-&gt;setDelete();
 </code></pre>
 <blockquote>
@@ -466,16 +459,14 @@ $threadRecordSet-&gt;setDelete();
 been marked for deletion.</p>
 </blockquote>
 <p>You might only want to mark some of the Records for deletion:</p>
-<pre><code class="language-php">&lt;?php
-$threadRecordSet-&gt;getAllBy(['author_id' =&gt; 1])-&gt;setDelete();
+<pre><code class="language-php">$threadRecordSet-&gt;getAllBy(['author_id' =&gt; 1])-&gt;setDelete();
 </code></pre>
 <p>When you persist a RecordSet relationship, all of its Records marked for
 deletion will automatically be detached.</p>
 <h2 id="1-1-5-7">1.1.5.7. Persisting A RecordSet</h2>
 <p>You can persist each Record in a RecordSet by calling the <em>Atlas</em> method
 <code>persistRecordSet()</code>:</p>
-<pre><code class="language-php">&lt;?php
-$deletedRecords = $atlas-&gt;persistRecordSet($threadRecordSet);
+<pre><code class="language-php">$deletedRecords = $atlas-&gt;persistRecordSet($threadRecordSet);
 </code></pre>
 <p>This will insert, update, or delete each Record in the RecordSet as appropriate,
 then detach all deleted Records and return them as their own RecordSet.</p>

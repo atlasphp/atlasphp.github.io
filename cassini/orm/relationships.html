@@ -365,6 +365,9 @@
                                 <li>
                 <a href="#1-1-2-5" title="Variant&#x20;Relationships">Variant Relationships</a>
             </li>
+                                <li>
+                <a href="#1-1-2-6" title="Cascading&#x20;Deletes">Cascading Deletes</a>
+            </li>
             </ul>
 </nav>
         </div>
@@ -389,11 +392,9 @@ calling one of the four available relationship-definition methods:</p>
 many-to-many retrievals must occur explicitly through the association mapping
 table, which is what happens at the SQL level anyway.</p>
 </blockquote>
-<p>The <code>$field</code> will become a field name on the returned Record object. That field
-will be populated from the specified <code>$mapperClass</code> in Atlas.</p>
+<p>The <code>$field</code> will become a field name on the returned Record object.</p>
 <p>Here is an example:</p>
-<pre><code class="language-php">&lt;?php
-namespace App\DataSource\Thread;
+<pre><code class="language-php">namespace App\DataSource\Thread;
 
 use App\DataSource\Author\Author;
 use App\DataSource\Summary\Summary;
@@ -423,8 +424,7 @@ column names in the native table.</p>
 <p>If you want to use different columns, pass an array of native-to-foreign column
 names as the third parameter. For example, if the threads table uses
 <code>author_id</code>, but the authors table uses just <code>id</code>, you can do this:</p>
-<pre><code class="language-php">&lt;?php
-class ThreadRelationships extends MapperRelationships
+<pre><code class="language-php">class ThreadRelationships extends MapperRelationships
 {
     protected function define()
     {
@@ -438,8 +438,7 @@ class ThreadRelationships extends MapperRelationships
 </code></pre>
 <p>And on the <code>oneToMany</code> side of the relationship, you use the native author table
 <code>id</code> column with the foreign threads table <code>author_id</code> column.</p>
-<pre><code class="language-php">&lt;?php
-class AuthorRelationships extends MapperRelationships
+<pre><code class="language-php">class AuthorRelationships extends MapperRelationships
 {
     protected function define()
     {
@@ -455,8 +454,7 @@ class AuthorRelationships extends MapperRelationships
 multiple columns. If table <code>foo</code> has composite primary key columns of <code>acol</code> and
 <code>bcol</code>, and it maps to table <code>bar</code> on <code>foo_acol</code> and <code>foo_bcol</code>, you would do
 this:</p>
-<pre><code class="language-php">&lt;?php
-class FooRelationships extends MapperRelationships
+<pre><code class="language-php">class FooRelationships extends MapperRelationships
 {
     protected function define()
     {
@@ -482,8 +480,7 @@ database collation, but they are <em>not</em> equivalent in PHP.</p>
 <p>In that kind of situation, you will want to tell the relationship to ignore the
 case of related string key columns when matching related records. You can do so
 with the <code>ignoreCase()</code> method on the relationship definition.</p>
-<pre><code class="language-php">&lt;?php
-class FooRelationships
+<pre><code class="language-php">class FooRelationships
 {
     protected function define()
     {
@@ -542,6 +539,74 @@ links.</p>
 That is, if a native record set (of an arbitrary number of records) refers to a
 total of three different variant types, then Atlas will issue three additional
 queries to fetch the related records.</p>
+<h2 id="1-1-2-6">1.1.2.6. Cascading Deletes</h2>
+<p>Atlas relationships support various form of cascading deletion. That is, when
+you <code>delete()</code> a Record, whether directly or via a <code>persist()</code>
+call, Atlas can automatically modify its related (foreign child) Records
+as desired, either in memory or at the database.</p>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>Cascading deletes cannot operate on many-to-one relationships, since that kind
+of foreign Record is on the parent/owner side. They only operate on one-to-one
+and one-to-many foreign records (i.e., the child/owned side).</p>
+<p>Note also that cascading deleted operate only on loaded relationships; they
+cannot operate on Records not already in memory.</p>
+</blockquote>
+<p>Call one of the following methods on the relationship definition to set up
+cascading deletes:</p>
+<ul>
+<li>
+<p><code>onDeleteInitDeleted()</code>: This works in concert with the native database
+foreign <code>ON DELETE CASCADE</code> constraint. This tells Atlas to presume that the
+database has deleted the related rows, and automatically re-initializes the
+foreign Record in memory to a <code>DELETED</code> status.</p>
+</li>
+<li>
+<p><code>onDeleteSetNull()</code>: When you delete the native Record, all the foreign related
+Record keys for the relationship will get their values set to NULL in memory.
+You will will need to actually write the related Records back to the database
+for the new value to be stored; that happens automatically as part of a
+<code>persist()</code> operation.</p>
+</li>
+<li>
+<p><code>onDeleteSetDelete()</code>: When the the native Record is deleted, Atlas will call
+<code>setDelete()</code> on all the foreign Records in the relationship. This will mark
+the Records for deletion, but they will not actually be deleted until they
+become part of a <code>persist()</code> operation (or until you delete the Record
+yourself).</p>
+</li>
+<li>
+<p><code>onDeleteCascade()</code>: When the native Record is deleted, Atlas will immediately
+delete the foreign record at the database.</p>
+</li>
+</ul>
+<p>For example, to define a relationship so that related Records are marked for
+deletion automatically:</p>
+<pre><code class="language-php">class FooRelationships extends MapperRelationships
+{
+    protected function define()
+    {
+        $this-&gt;oneToMany('bars', Bar::CLASS, ['foo_id' =&gt; 'foo_id'])
+            -&gt;onDeleteSetDelete();
+    }
+}
+</code></pre>
+<p>When a Foo <em>Record</em> gets deleted, all of the related 'bars' in memory will
+be marked for deletion as well; the 'bars' will be deleted when they become
+part of a <code>persist()</code> operation:</p>
+<pre><code class="language-php">// given $foo-&gt;bars ...
+$foo = $atlas-&gt;fetchRecord(Foo::CLASS, ['bars']);
+
+// ... calling delete() will delete $foo, and mark the $foo-&gt;bars
+// for deletion, but will not actually delete $foo-&gt;bars from the
+// database:
+$atlas-&gt;delete($foo);
+
+// ... whereas calling persist() will also delete $foo and mark
+// the $foo-&gt;bars for deletion, but then continue to persist the
+// related records, thus deleting the $foo-&gt;bars marked for deletion:
+$atlas-&gt;persist($foo);
+</code></pre>
 </div>        </div>
     </div>
 </div>

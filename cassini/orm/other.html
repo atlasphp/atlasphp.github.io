@@ -372,8 +372,7 @@
 that they are appropriate to a <em>Mapper</em>. For example, custom <code>fetch*()</code> methods
 are perfectly reasonable, so that you don't have to write the same queries
 over and over:</p>
-<pre><code class="language-php">&lt;?php
-namespace App\DataSource\Content;
+<pre><code class="language-php">namespace App\DataSource\Content;
 
 use Atlas\Mapper\Mapper;
 
@@ -392,8 +391,7 @@ class Content extends Mapper
 <p>Another example would be custom write behaviors, such as incrementing a value
 directly in the database (without going through any events) and modifying the
 appropriate <em>Record</em> in memory:</p>
-<pre><code class="language-php">&lt;?php
-namespace App\DataSource\Content;
+<pre><code class="language-php">namespace App\DataSource\Content;
 
 use Atlas\Mapper\Mapper;
 
@@ -456,16 +454,14 @@ appropriate class name.</p>
             WikiContentRecord.php
 </code></pre>
 <p>A <em>WikiContentRecord</em> might look like this ...</p>
-<pre><code class="language-php">&lt;?php
-namespace App\DataSource\Content;
+<pre><code class="language-php">namespace App\DataSource\Content;
 
 class WikiContentRecord extends ContentRecord
 {
 }
 </code></pre>
 <p>... and the <em>Content</em> <code>getRecordClass()</code> method would look like this:</p>
-<pre><code class="language-php">&lt;?php
-namespace App\DataSource\Content;
+<pre><code class="language-php">namespace App\DataSource\Content;
 
 use Atlas\Mapper\Mapper;
 use Atlas\Table\Row;
@@ -497,8 +493,7 @@ can contain any kind of <em>Record</em>.</p>
 <h2 id="1-1-10-3">1.1.10.3. Managing Many-To-Many Relateds</h2>
 <p>Given the typical example of a <code>blog</code> table, associated to <code>tags</code>, through a
 <code>taggings</code> table, here is how you would add a tag to a blog post:</p>
-<pre><code class="language-php">&lt;?php
-// get a blog post, with taggings and tags
+<pre><code class="language-php">// get a blog post, with taggings and tags
 $blog = $atlas-&gt;fetchRecord(Blog::CLASS, $blog_id, [
     'taggings' =&gt; [
         'tags'
@@ -518,8 +513,7 @@ $tagging = $thread-&gt;taggings-&gt;appendNew([
 $atlas-&gt;persist($tagging);
 </code></pre>
 <p>Similarly, here is how you would remove a tag:</p>
-<pre><code class="language-php">&lt;?php
-// mark the Tagging association for deletion
+<pre><code class="language-php">// mark the Tagging association for deletion
 $blog-&gt;taggings
     -&gt;getOneBy(['name' =&gt; $tag_name)
     -&gt;setDelete();
@@ -536,8 +530,7 @@ written back to the database. To do so, implement or override the appropriate
 <code>insert</code> or <code>update</code> event.  Irrecoverable filtering failures should be thrown
 as exceptions to be caught by your surrounding application or domain logic.</p>
 <p>For example, to check that a value is a valid email address:</p>
-<pre><code class="language-php">&lt;?php
-namespace App\DataSource\Author;
+<pre><code class="language-php">namespace App\DataSource\Author;
 
 use Atlas\Table\Row;
 use Atlas\Table\Table;

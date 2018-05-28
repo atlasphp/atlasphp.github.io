@@ -387,8 +387,7 @@ help create data-source classes for the mapper system.)</p>
 <a href="https://github.com/atlasphp/Atlas.Cli">Atlas.Cli 2.x</a>.</p>
 <p>Then, you can create an <em>Atlas</em> instance by using its static <code>new()</code> method and
 passing your PDO connection parameters:</p>
-<pre><code class="language-php">&lt;?php
-use Atlas\Orm\Atlas;
+<pre><code class="language-php">use Atlas\Orm\Atlas;
 
 $atlas = Atlas::new(
     'mysql:host=localhost;dbname=testdb',
@@ -399,8 +398,7 @@ $atlas = Atlas::new(
 <p>Optionally, you may pass a <em>Transaction</em> class name as the final parameter.
 (By default, <em>Atlas</em> will use an <em>AutoCommit</em> strategy, where transactions have
 to be managed manually.)</p>
-<pre><code class="language-php">&lt;?php
-use Atlas\Orm\Atlas;
+<pre><code class="language-php">use Atlas\Orm\Atlas;
 use Atlas\Orm\Transaction\AutoTransact;
 
 $atlas = Atlas::new(
@@ -412,8 +410,7 @@ $atlas = Atlas::new(
 </code></pre>
 <p>Alternatively, use the <em>AtlasBuilder</em> if you need to define a custom factory
 callable, such as for <em>TableEvents</em> and <em>MapperEvents</em> classes.</p>
-<pre><code class="language-php">&lt;?php
-use Atlas\Orm\AtlasBuilder;
+<pre><code class="language-php">use Atlas\Orm\AtlasBuilder;
 use Atlas\Orm\Transaction\BeginOnRead;
 
 $builder = new AtlasBuilder(

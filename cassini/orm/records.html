@@ -373,21 +373,18 @@
 <h2 id="1-1-4-1">1.1.4.1. Creating and Inserting a Record</h2>
 <p>Create a new Record using the <code>newRecord()</code> method. You can assign data using
 properties, or pass an array of initial data to populate into the Record.</p>
-<pre><code class="language-php">&lt;?php
-$thread = $atlas-&gt;newRecord(Thread::CLASS, [
+<pre><code class="language-php">$thread = $atlas-&gt;newRecord(Thread::CLASS, [
         'title' =&gt; 'New Thread Title',
 ]);
 </code></pre>
 <p>You can assign a value via a property, which maps to a column name.</p>
-<pre><code class="language-php">&lt;?php
-$date = new \DateTime();
+<pre><code class="language-php">$date = new \DateTime();
 $thread-&gt;date_added = $date-&gt;format('Y-m-d H:i:s');
 </code></pre>
 <p>You can insert a single Record back to the database by using the <code>Atlas::insert()</code>
 method, which will pick the appropriate Mapper for the Record to perform the
 write.</p>
-<pre><code class="language-php">&lt;?php
-$atlas-&gt;insert($thread);
+<pre><code class="language-php">$atlas-&gt;insert($thread);
 </code></pre>
 <blockquote>
 <p><strong>Warning:</strong></p>
@@ -401,8 +398,7 @@ Record, and on all the loaded relationships for that Record.</p>
 <p>In the following example, assume a Thread Record has a <code>manyToOne</code> relationship
 with an Author Record using the <code>author_id</code> column. The relationship is named
 <code>author</code>. (See the section on relationships for more information.)</p>
-<pre><code class="language-php">&lt;?php
-$author = $atlas-&gt;fetchRecord(Author::CLASS, 4);
+<pre><code class="language-php">$author = $atlas-&gt;fetchRecord(Author::CLASS, 4);
 $thread = $atlas-&gt;newRecord(Thread::CLASS,
     [
         'title' =&gt; 'New Thread Title',
@@ -423,8 +419,7 @@ method. This can, however, be achieved using the <code>persist()</code> method. 
 discussed later in this chapter.</p>
 </blockquote>
 <p>The following will fail.</p>
-<pre><code class="language-php">&lt;?php
-$author = $atlas-&gt;newRecord(Author::CLASS,
+<pre><code class="language-php">$author = $atlas-&gt;newRecord(Author::CLASS,
     [
         'first_name' =&gt; 'Sterling',
         'last_name' =&gt; 'Archer'
@@ -441,8 +436,7 @@ $atlas-&gt;insert($thread);
 </code></pre>
 <h2 id="1-1-4-2">1.1.4.2. Updating an Existing Record</h2>
 <p>Updating an existing record works the same as <code>insert()</code>.</p>
-<pre><code class="language-php">&lt;?php
-// fetch an existing record by primary key
+<pre><code class="language-php">// fetch an existing record by primary key
 $thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
 
 // Modify the title
@@ -458,8 +452,7 @@ method call in a try/catch block.</p>
 </blockquote>
 <p>As with <code>insert()</code>, foreign keys are also updated, but only for existing related
 records.</p>
-<pre><code class="language-php">&lt;?php
-$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
+<pre><code class="language-php">$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
 $author = $atlas-&gt;fetchRecord(Author::CLASS, 4);
 
 // Modify the author
@@ -470,8 +463,7 @@ $atlas-&gt;update($thread);
 </code></pre>
 <h2 id="1-1-4-3">1.1.4.3. Deleting a Record</h2>
 <p>Deleting a record works the same as inserting or updating.</p>
-<pre><code class="language-php">&lt;?php
-$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
+<pre><code class="language-php">$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
 $atlas-&gt;delete($thread);
 </code></pre>
 <blockquote>
@@ -497,8 +489,7 @@ using the Record::setDelete() method;</li>
 </li>
 <li>persist one-to-one and one-to-many relateds loaded on the native Record.</li>
 </ul>
-<pre><code class="language-php">&lt;?php
-$atlas-&gt;persist($record);
+<pre><code class="language-php">$atlas-&gt;persist($record);
 </code></pre>
 <blockquote>
 <p><strong>Warning:</strong></p>
@@ -517,16 +508,14 @@ database level; Atlas has no control over this.</p>
 <h2 id="1-1-4-5">1.1.4.5. Marking Records for Deletion</h2>
 <p>You may also mark records for deletion and they will be removed from the
 database as part of <code>persist()</code>.</p>
-<pre><code class="language-php">&lt;?php
-$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
+<pre><code class="language-php">$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
 // Mark the record for deletion
 $thread-&gt;setDelete();
 $atlas-&gt;persist($thread);
 </code></pre>
 <p>You can also mark several related Records for deletion and when the native
 Record is persisted, they will be deleted from the database.</p>
-<pre><code class="language-php">&lt;?php
-// Assume a oneToMany relationship between a thread and its comments
+<pre><code class="language-php">// Assume a oneToMany relationship between a thread and its comments
 // Select the thread and related comments
 $thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3,
     [
