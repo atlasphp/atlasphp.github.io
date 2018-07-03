@@ -359,25 +359,25 @@
 <em>TableEvents</em> methods are invoked automatically at different points in the
 <em>Table</em> interactions:</p>
 <pre><code class="language-php">// runs after any Select query is created
-function modifySelect(Table $table, TableSelect $select)
+function modifySelect(Table $table, TableSelect $select) : void
 
 // runs after a newly-selected Row is populated
-function modifySelectedRow(Table $table, Row $row)
+function modifySelectedRow(Table $table, Row $row) : void
 
 // runs after any Insert query is created
-function modifyInsert(Table $table, Insert $insert)
+function modifyInsert(Table $table, Insert $insert) : void
 
 // runs after any Update query is created
-function modifyUpdate(Table $table, Update $update)
+function modifyUpdate(Table $table, Update $update) : void
 
 // runs after any Delete query is created
-function modifyDelete(Table $table, Delete $delete)
+function modifyDelete(Table $table, Delete $delete) : void
 
 // runs before a Row-specific Insert query is created
-function beforeInsertRow(Table $table, Row $row)
+function beforeInsertRow(Table $table, Row $row) : ?array
 
 // runs after the Row-specific Insert query is created, but before it is performed
-function modifyInsertRow(Table $table, Row $row, Insert $insert)
+function modifyInsertRow(Table $table, Row $row, Insert $insert) : void
 
 // runs after the Row-specific Insert query is performed
 function afterInsertRow(
@@ -385,13 +385,13 @@ function afterInsertRow(
     Row $row,
     Insert $insert,
     PDOStatement $pdoStatement
-)
+) : void
 
 // runs before the Row-specific Update query is created
-function beforeUpdateRow(Table $table, Row $row)
+function beforeUpdateRow(Table $table, Row $row) : ?array
 
 // runs after the Row-specific Update query is created, but before it is performed
-function modifyUpdateRow(Table $table, Row $row, Update $update)
+function modifyUpdateRow(Table $table, Row $row, Update $update) : void
 
 // runs after the Row-specific Update query is performed
 function afterUpdateRow(
@@ -399,13 +399,13 @@ function afterUpdateRow(
     Row $row,
     Update $update,
     PDOStatement $pdoStatement
-)
+) : void
 
 // runs before the Row-specific Delete query is created
-function beforeDeleteRow(Table $table, Row $row)
+function beforeDeleteRow(Table $table, Row $row) : void
 
 // runs after the Row-specific Delete query is created, but before it is performed
-function modifyDeleteRow(Table $table, Row $row, Delete $delete)
+function modifyDeleteRow(Table $table, Row $row, Delete $delete) : void
 
 // runs after the Row-specific Delete query is performed
 function afterDeleteRow(
@@ -413,7 +413,7 @@ function afterDeleteRow(
     Row $row,
     Delete $delete,
     PDOStatement $pdoStatement
-)
+) : void
 </code></pre>
 <p>For example, when you call <code>Table::updateRow()</code>, these events run in this order:</p>
 <ul>
@@ -432,7 +432,7 @@ function afterDeleteRow(
 </ul>
 <p>Note that merely calling <code>update()</code> to get a table-wide Update query will only
 run the <code>modifyUpdate()</code> method, as it is not a row-specific interaction.</p>
-<p><em>TableEvents</em> are be the place to put behaviors such as setting <code>inserted_at</code> or
+<p><em>TableEvents</em> are the place to put behaviors such as setting <code>inserted_at</code> or
 <code>updated_at</code> values, etc:</p>
 <pre><code class="language-php">namespace Blog\DataSource\Posts;
 
