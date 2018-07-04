@@ -499,7 +499,7 @@ particular type.</p>
 <p>In the following example, a <code>comments</code> table has a <code>commentable_id</code> column as
 the foreign key value, but is restricted to "video" values on a discriminator
 column named <code>commentable_type</code>.</p>
-<pre><code class="language-php">class Issue extends Mapper
+<pre><code class="language-php">class Video extends Mapper
 {
     protected function define()
     {
