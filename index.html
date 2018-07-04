@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
 <title>Atlas Database Framework for PHP</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
+    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
 <link rel="stylesheet" href="/style.css" />
@@ -336,30 +337,99 @@
 </nav>
 </header>
 <div class="container">
-    <ol class="breadcrumb">
-                        <li class="active">Atlas Database Framework for PHP</li>
-            </ol>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-1">Atlas</h1>
+            <h2 class="display-2">Simple. Sensible. SQL.</h2>
+            <p class="lead">
+                Atlas is a database framework for PHP composed of several
+                packages "stacked" onto each other. You can pick exactly the
+                functionality you need right now, and add new functionality only
+                as you need it.
+            </p>
+        </div>
+    </div>
+
     <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Object-Relational Manager</h1>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        A data mapper ORM for your persistence layer, not your
+                        domain layer. The flagship package in the Atlas family.
+                        Supports MySQL, PostgreSQL, SQLite, and SQL Server.
+                    </p>
+                    <p>
+                        <i class="fas fa-book"></i> <a href="/cassini/orm/">Docs</a>
+                        <i class="fab fa-github"></i> <a href="https://github.com/atlasphp/Atlas.Orm/tree/3.x">Code</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Table Data Gateway</h1>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        A table data gateway implementation, for when a full-fledged
+                        persistence ORM seems too much. Supports MySQL, PostgreSQL,
+                        SQLite, and SQL Server.
+                    </p>
+                    <p>
+                        <i class="fas fa-book"></i> <a href="/cassini/table/">Docs</a>
+                        <i class="fab fa-github"></i> <a href="https://github.com/atlasphp/Atlas.Table/">Code</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                <div class="col-md-12">
-
-<h1>Atlas Database Framework for PHP</h1>
-
-<ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.</span>&nbsp;&nbsp;<a href="/cassini/">Cassini (v3)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.1.</span>&nbsp;&nbsp;<a href="/cassini/orm/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.2.</span>&nbsp;&nbsp;<a href="/cassini/skeleton/">Skeleton Generator</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.3.</span>&nbsp;&nbsp;<a href="/cassini/table/">Table Data Gateway</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.4.</span>&nbsp;&nbsp;<a href="/cassini/query/">Query System</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.5.</span>&nbsp;&nbsp;<a href="/cassini/info/">Schema Information</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">1.6.</span>&nbsp;&nbsp;<a href="/cassini/pdo/">PDO Connection</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.</span>&nbsp;&nbsp;<a href="/boggs/">Boggs (v2)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.1.</span>&nbsp;&nbsp;<a href="/boggs/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">2.2.</span>&nbsp;&nbsp;<a href="/boggs/skeleton/">Skeleton Generator</a></div></div></li></ul></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.</span>&nbsp;&nbsp;<a href="/albers/">Albers (v1)</a></div></div><ul class="list-toc"><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.1.</span>&nbsp;&nbsp;<a href="/albers/mapper/">ORM</a></div></div></li><li class="list-group-item"><div class="row clearfix"><div class="col-sm-9"><span class="text-number">3.2.</span>&nbsp;&nbsp;<a href="/albers/skeleton/">Skeleton Generator</a></div></div></li></ul></li></ul><div id="section-main"></div>        </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Query System</h1>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        Build and perform SELECT, INSERT, UPDATE, and DELETE queries
+                        through a fluent interface using standard SQL vocabulary.
+                        Supports all database drivers for PDO.
+                    </p>
+                    <p>
+                        <i class="fas fa-book"></i> <a href="/cassini/query/">Docs</a>
+                        <i class="fab fa-github"></i> <a href="https://github.com/atlasphp/Atlas.Query/">Code</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h1 class="panel-title">PDO Wrapper</h1>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        A straightforward PDO connection wrapper to provide
+                        convenience methods for fetching and yielding database
+                        results. Supports all database drivers for PDO.
+                    </p>
+                    <p>
+                        <i class="fas fa-book"></i> <a href="/cassini/pdo/">Docs</a>
+                        <i class="fab fa-github"></i> <a href="https://github.com/atlasphp/Atlas.Pdo/">Code</a>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <footer>
-    <div class="links">
-        <div class="container">
-            <div class="row">
-                <div class="prev col-xs-6">
-                                    </div>
-                <div class="next col-xs-6">
-                                            <a href="/cassini/">Next</a>                                    </div>
-            </div>
-        </div>
-    </div>
     <div id="copyright">
         <div class="container">
             <div class="row">
@@ -370,6 +440,7 @@
         </div>
     </div>
 </footer>
+
 </div>
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
