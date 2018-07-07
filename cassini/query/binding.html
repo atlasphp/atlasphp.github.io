@@ -400,7 +400,7 @@ type after the value:</p>
 </code></pre>
 <p>If you bind an array inline, Atlas.Query will set a bind each element separately
 with its own placeholder, comma-separate the placeholders, and wrap them in
-parentheses. This makes using an IN() condition very cnvenienent.</p>
+parentheses. This makes using an IN() condition very convenient.</p>
 <pre><code class="language-php">$bar_value = ['foo', 'bar', 'baz'];
 
 // SELECT * FROM foo WHERE bar IN (:__1__, :__2__, :__3__)
