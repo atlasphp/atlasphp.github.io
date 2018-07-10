@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
 <title>Getting Started</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
+    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
 <link rel="stylesheet" href="/style.css" />
@@ -378,7 +379,7 @@ classes using the <a href="/cassini/skeleton">skeleton generator</a>.</p>
 the static <code>new()</code> method and pass your PDO connection parameters:</p>
 <pre><code class="language-php">use Atlas\Table\TableLocator;
 
-$tableLocator = TableLocator::new('sqlite::memory:')
+$tableLocator = TableLocator::new('sqlite::memory:');
 </code></pre>
 <blockquote>
 <p><strong>Tip:</strong></p>
@@ -387,7 +388,7 @@ $tableLocator = TableLocator::new('sqlite::memory:')
 <p>You can then use the locator to retrieve a <em>Table</em> by its class name.</p>
 <pre><code class="language-php">use Atlas\Testing\DataSource\Thread\ThreadTable;
 
-$threadTable = $tableLocator-&gt;get(ThreadTable::CLASS)
+$threadTable = $tableLocator-&gt;get(ThreadTable::CLASS);
 </code></pre>
 <p>From there you can select, insert, update, and delete <em>Row</em> objects on a table,
 or work with table-level query objects.</p>
