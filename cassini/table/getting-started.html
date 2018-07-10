@@ -379,7 +379,7 @@ classes using the <a href="/cassini/skeleton">skeleton generator</a>.</p>
 the static <code>new()</code> method and pass your PDO connection parameters:</p>
 <pre><code class="language-php">use Atlas\Table\TableLocator;
 
-$tableLocator = TableLocator::new('sqlite::memory:')
+$tableLocator = TableLocator::new('sqlite::memory:');
 </code></pre>
 <blockquote>
 <p><strong>Tip:</strong></p>
@@ -388,7 +388,7 @@ $tableLocator = TableLocator::new('sqlite::memory:')
 <p>You can then use the locator to retrieve a <em>Table</em> by its class name.</p>
 <pre><code class="language-php">use Atlas\Testing\DataSource\Thread\ThreadTable;
 
-$threadTable = $tableLocator-&gt;get(ThreadTable::CLASS)
+$threadTable = $tableLocator-&gt;get(ThreadTable::CLASS);
 </code></pre>
 <p>From there you can select, insert, update, and delete <em>Row</em> objects on a table,
 or work with table-level query objects.</p>
