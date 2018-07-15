@@ -355,7 +355,10 @@
                 <a href="#1-1-1-1" title="Installation">Installation</a>
             </li>
                                 <li>
-                <a href="#1-1-1-2" title="Instantiating&#x20;Atlas">Instantiating Atlas</a>
+                <a href="#1-1-1-2" title="Skeleton&#x20;Generation">Skeleton Generation</a>
+            </li>
+                                <li>
+                <a href="#1-1-1-3" title="Instantiating&#x20;Atlas">Instantiating Atlas</a>
             </li>
             </ul>
 </nav>
@@ -377,10 +380,11 @@ to your <code>composer.json</code> file, then call <code>composer update</code>.
 </code></pre>
 <p>(The <code>atlas/cli</code> package provides the <code>atlas-skeleton</code> command-line tool to
 help create data-source classes for the mapper system.)</p>
-<h2 id="1-1-1-2">1.1.1.2. Instantiating Atlas</h2>
-<p>First, you will need to create the prerequsite data-source classes using
-<a href="https://github.com/atlasphp/Atlas.Cli">Atlas.Cli 2.x</a>.</p>
-<p>Then, you can create an <em>Atlas</em> instance by using its static <code>new()</code> method and
+<h2 id="1-1-1-2">1.1.1.2. Skeleton Generation</h2>
+<p>Next, you will need to create the prerequsite data-source classes using
+<a href="/cassini/skeleton/usage.html">Atlas.Cli 2.x</a>.</p>
+<h2 id="1-1-1-3">1.1.1.3. Instantiating Atlas</h2>
+<p>Now you can create an <em>Atlas</em> instance by using its static <code>new()</code> method and
 passing your PDO connection parameters:</p>
 <pre><code class="language-php">use Atlas\Orm\Atlas;
 
