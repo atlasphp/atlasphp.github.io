@@ -371,7 +371,7 @@ as <a href="https://packagist.org/packages/atlas/orm">atlas/orm</a>. Add the fol
 to your <code>composer.json</code> file, then call <code>composer update</code>.</p>
 <pre><code class="language-json">{
     "require": {
-        "atlas/orm": "~3.0"
+        "atlas/orm": "~3.0",
     },
     "require-dev": {
         "atlas/cli": "~2.0"
@@ -380,6 +380,13 @@ to your <code>composer.json</code> file, then call <code>composer update</code>.
 </code></pre>
 <p>(The <code>atlas/cli</code> package provides the <code>atlas-skeleton</code> command-line tool to
 help create data-source classes for the mapper system.)</p>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>If you are using PHPStorm, you may wish to copy the IDE meta file to your
+project to get full autocompletion on Atlas classes:</p>
+<pre><code>cp ./vendor/atlas/orm/resources/phpstorm.meta.php ./.phpstorm.meta.php
+</code></pre>
+</blockquote>
 <h2 id="1-1-1-2">1.1.1.2. Skeleton Generation</h2>
 <p>Next, you will need to create the prerequsite data-source classes using
 <a href="/cassini/skeleton/usage.html">Atlas.Cli 2.x</a>.</p>
