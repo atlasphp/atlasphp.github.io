@@ -363,6 +363,9 @@
                                 <li>
                 <a href="#1-3-3-4" title="Table-Wide&#x20;Operations">Table-Wide Operations</a>
             </li>
+                                <li>
+                <a href="#1-3-3-5" title="Identifier&#x20;Quoting">Identifier Quoting</a>
+            </li>
             </ul>
 </nav>
         </div>
@@ -429,6 +432,13 @@ to work with as you see fit; call <code>perform()</code> on them directly to exe
 query and get back a <em>PDOStatement</em>.</p>
 <p>See the <a href="/cassini/query/">Atlas.Query</a> documentation for more information on
 the insert, update, and delete query objects.</p>
+<h2 id="1-3-3-5">1.3.3.5. Identifier Quoting</h2>
+<p>The <code>insert()</code>, <code>update()</code>, and <code>delete()</code> methods will automatically quote the
+table name in the INTO and FROM clauses.</p>
+<p>In addition, the <em>Insert</em> and <em>Update</em> query objects themselves will
+automatically quote the column names being inserted or updated.</p>
+<p>You can manually quote any other identifiers using the query object's
+<code>quoteIdentifier()</code> method.</p>
 </div>        </div>
     </div>
 </div>

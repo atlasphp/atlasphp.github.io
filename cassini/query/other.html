@@ -380,9 +380,10 @@ be an <code>ORDER BY</code> clause, as the offset clause is a sub-clause of <cod
 </li>
 </ul>
 <h2 id="1-4-7-2">1.4.7.2. Identifier Quoting</h2>
-<p>Table and column identifiers will <em>not</em> be quoted automatically. If you need
-quotes around unusual or reserved identifiers, you will need to add them
-yourself.</p>
+<p>You can apply identifier quoting as needed by using the <code>quoteIdentifier()</code>
+method (available on all query objects).</p>
+<p>INSERT and UPDATE queries will automatically quote the column name that is being
+inserted or updated. No other automatic quoting of identifiers is applied.</p>
 <h2 id="1-4-7-3">1.4.7.3. Table Prefixes</h2>
 <p>One frequently-requested feature for this package is support for "automatic
 table prefixes" on all queries.  This feature sounds great in theory, but in
