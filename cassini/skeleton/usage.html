@@ -360,6 +360,9 @@
                                 <li>
                 <a href="#1-2-1-3" title="Custom&#x20;Transformations">Custom Transformations</a>
             </li>
+                                <li>
+                <a href="#1-2-1-4" title="Custom&#x20;Templates">Custom Templates</a>
+            </li>
             </ul>
 </nav>
         </div>
@@ -486,6 +489,74 @@ return [
     },
 ];
 </code></pre>
+<h2 id="1-2-1-4">1.2.1.4. Custom Templates</h2>
+<p>You can override the templates used by the skeleton generator and provide your
+own instead. This lets you customize the code generation; for example, to add
+your own common methods or to extend intercessory classes.</p>
+<p>First, take a look at the default templates in the Atlas.Cli <code>resources/templates/</code>
+directory:</p>
+<ul>
+<li>Type.tpl</li>
+<li>TypeEvents.tpl</li>
+<li>TypeFields.tpl</li>
+<li>TypeRecord.tpl</li>
+<li>TypeRecordSet.tpl</li>
+<li>TypeRelationships.tpl</li>
+<li>TypeRow.tpl</li>
+<li>TypeSelect.tpl</li>
+<li>TypeTable.tpl</li>
+<li>TypeTableEvents.tpl</li>
+<li>TypeTableSelect.tpl</li>
+</ul>
+<p>For each persistence model type name, the word "Type" in the filename will be
+replaced with the type; <code>.tpl</code> will be replaced with <code>.php</code>. For example, a
+<code>threads</code> table will become a <code>Thread</code> type, so the resulting files will be
+<code>Thread.php</code>, <code>ThreadEvents.php</code>, and so on.</p>
+<p>To override a default template, create a custom template file of the same name
+in a directory of your own choosing. Then, in the skeleton config file, set
+a 'templates' key to that directory:</p>
+<pre><code class="language-php">// /path/to/skeleton-config.php
+return [
+    'pdo' =&gt; [
+        'mysql:dbname=testdb;host=localhost',
+        'username',
+        'password',
+    ],
+    'namespace' =&gt; 'App\\DataSource',
+    'directory' =&gt; './src/App/DataSource',
+    'templates' =&gt; '/path/to/custom-templates-dir'
+];
+</code></pre>
+<p>When you run the skeleton command, it will look there first for each template,
+and then use the default template only if there is not a custom one available.</p>
+<p>The skeleton file will replace these tokens in the template file with these
+values:</p>
+<ul>
+<li>
+<code>{NAMESPACE}</code> =&gt; The namespace value from the config file.</li>
+<li>
+<code>{TYPE}</code> =&gt; The persistence model type.</li>
+<li>
+<code>{DRIVER}</code> =&gt; The database driver type.</li>
+<li>
+<code>{NAME}</code> =&gt; The table name.</li>
+<li>
+<code>{COLUMN_NAMES}</code> =&gt; An array of column names from the table.</li>
+<li>
+<code>{COLUMN_DEFAULTS}</code> =&gt; An add of column default values from the table.</li>
+<li>
+<code>{AUTOINC_COLUMN}</code> =&gt; The name of the autoincrement column, if any.</li>
+<li>
+<code>{PRIMARY_KEY}</code> =&gt; An array of primary key column names.</li>
+<li>
+<code>{COLUMNS}</code> =&gt; An array of the full column descriptions.</li>
+<li>
+<code>{AUTOINC_SEQUENCE}</code> =&gt; The name of the auotincrement sequence, if any.</li>
+<li>
+<code>{PROPERTIES}</code> =&gt; A partial docblock of properties for a Row.</li>
+<li>
+<code>{FIELDS}</code> =&gt; A partial docblock of field names for a Record.</li>
+</ul>
 </div>        </div>
     </div>
 </div>
