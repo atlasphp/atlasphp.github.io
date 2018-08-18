@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <meta name="HandheldFriendly" content="True"/>
 <title>Atlas Database Framework for PHP</title>
-    
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 <link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
@@ -16,7 +16,7 @@
 <body data-spy="scroll" data-target="#sideNav" data-offset="50" class="bbt-theme-cerulean">
 <div class="page-wrapper">
     <header>
-    
+
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="box-header container">
         <form class="form-search navbar-form navbar-right" role="search">
@@ -44,16 +44,16 @@
                     </div>
 
         <div class="collapse navbar-collapse" id="js-navbar-collapse">
-            
-    
+
+
     <ul class="nav navbar-nav">
                         <li>
     <a href="/cassini/">Cassini (v3)</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/cassini/orm/">ORM</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/cassini/orm/getting-started.html">Getting Started</a>
@@ -104,7 +104,7 @@
     </li>
                         <li>
     <a href="/cassini/skeleton/">Skeleton Generator</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/cassini/skeleton/usage.html">Usage</a>
@@ -115,7 +115,7 @@
     </li>
                         <li>
     <a href="/cassini/table/">Table Data Gateway</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/cassini/table/getting-started.html">Getting Started</a>
@@ -138,7 +138,7 @@
     </li>
                         <li>
     <a href="/cassini/query/">Query System</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/cassini/query/getting-started.html">Getting Started</a>
@@ -173,7 +173,7 @@
     </li>
                         <li>
     <a href="/cassini/info/">Schema Information</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/cassini/info/usage.html">Usage</a>
@@ -184,7 +184,7 @@
     </li>
                         <li>
     <a href="/cassini/pdo/">PDO Connection</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/cassini/pdo/connection.html">PDO Connection</a>
@@ -202,11 +202,11 @@
     </li>
                         <li>
     <a href="/boggs/">Boggs (v2)</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/boggs/mapper/">ORM</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/boggs/mapper/getting-started.html">Getting Started</a>
@@ -253,7 +253,7 @@
     </li>
                         <li>
     <a href="/boggs/skeleton/">Skeleton Generator</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/boggs/skeleton/getting-started.html">Atlas.Cli 1.x</a>
@@ -267,11 +267,11 @@
     </li>
                         <li>
     <a href="/albers/">Albers (v1)</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/albers/mapper/">ORM</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/albers/mapper/getting-started.html">Getting Started</a>
@@ -318,7 +318,7 @@
     </li>
                         <li>
     <a href="/albers/skeleton/">Skeleton Generator</a>
-    
+
     <ul class="dropdown-menu">
                         <li>
     <a href="/albers/skeleton/getting-started.html">Atlas.Cli 1.x</a>
@@ -342,10 +342,9 @@
             <h1 class="display-1">Atlas</h1>
             <h2 class="display-2">Simple. Sensible. SQL.</h2>
             <p class="lead">
-                Atlas is a database framework for PHP composed of several
-                packages "stacked" onto each other. You can pick exactly the
-                functionality you need right now, and add new functionality only
-                as you need it.
+                Atlas is a database framework for PHP to help you work with your
+                <strong>persistence</strong> model, while providing a path to
+                refactor towards a richer <strong>domain</strong> model as needed.
             </p>
         </div>
     </div>
@@ -364,7 +363,46 @@
                     </p>
                     <p>
                         <i class="fas fa-book"></i> <a href="/cassini/orm/">Docs</a>
-                        <i class="fab fa-github"></i> <a href="https://github.com/atlasphp/Atlas.Orm/tree/3.x">Code</a>
+                        <i class="fab fa-github"></i> <a href="https://github.com/atlasphp/Atlas.Orm/">Code</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Skeleton Generator</h1>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        A command-line interface to generate all of the necessary
+                        Atlas classes to model your existing database tables in PHP.
+                        Supports MySQL, PostgreSQL, SQLite, and SQL Server.
+                    </p>
+                    <p>
+                        <i class="fas fa-book"></i> <a href="/cassini/skeleton/">Docs</a>
+                        <i class="fab fa-github"></i> <a href="https://github.com/atlasphp/Atlas.Cli/">Code</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Data Mapper</h1>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        The core of the Atlas.Orm package, the data mapper helps
+                        you define relationships between table data gateways so
+                        you can retrieve Record objects with all their related rows.
+                        Supports MySQL, PostgreSQL, SQLite, and SQL Server.
+                    </p>
+                    <p>
+                        <i class="fas fa-book"></i> <a href="/cassini/orm/">Docs</a>
+                        <i class="fab fa-github"></i> <a href="https://github.com/atlasphp/Atlas.Mapper/">Code</a>
                     </p>
                 </div>
             </div>
@@ -429,96 +467,176 @@
     </div>
 
     <div class="row">
+        <div class="col-md-1"></div>
 
-        <p>
-            Atlas helps developers to get started about as easily as they would with Active
-            Record for their *persistence* model, and provides a path to refactor more
-            easily towards a richer *domain* model as needed.
-        </p>
+        <div class="col-md-10">
+            <h3>Why Atlas?</h3>
 
-        <p>
-            Atlas uses a table data gateway for the underlying table Rows, then composes
-            those Rows into Records and RecordSets via a data mapper. Simple methods can be
-            added, as they become necessary, to the Record and RecordSet persistence model
-            objects. (Rows do not have behavior.) The domain logic layer (e.g. a service
-            layer, application service, or use case) can then manipulate the Record objects.
-        </p>
+            <p>
+                Atlas helps developers to get started about as easily as they would with Active
+                Record for their <strong>persistence</strong> model, and provides a path to refactor more
+                easily towards a richer <strong>domain</strong> model as needed.
+            </p>
 
-        <p>
-            A persistence model alone should get the application a long way, especially at
-            the beginning of a project. The Row, Record, and RecordSet objects are
-            disconnected from the database, which should make the refactoring and
-            integration process a lot cleaner than with Active Record.
-        </p>
+            <h3>What Is A Persistence Model?</h3>
 
-        <p>As a domain model grows within the application,
-            <a href="http://www.mehdi-khalili.com/orm-anti-patterns-part-4-persistence-domain-model">Mehdi Khalili</a>
-            shows that the refactoring process can then move along one of two paths:</p>
+            <p>
+                A persistence model is a model of your database, not your
+                business domain. More specifically, it is an object-oriented
+                representation of the tables and rows in the database.
+            </p>
 
-        <ul>
-            <li>
-                "Domain Model composed of Persistence Model". That is, the domain objects
-                use Atlas persistence model Record objects internally, but do not expose
-                them. The domain objects can manipulate the persistence model objects
-                internally as much as they wish. For example, a domain object might have a
-                <code>getAddress()</code> method that reads from the internal Record.
-            </li>
+            <p>
+                Very often, a developer does not have a good, clean domain model
+                to work with, especially early in the project. But there is
+                almost always a database of some sort. Atlas models that
+                database structure so you can use it more easily in PHP code.
+            </p>
 
-            <li>
-                "DDD on top of ORM". Here, Repositories map the persistence model objects to
-                and from domain objects. This provides a full decoupling of the domain model
-                from the persistence model, but is more time-consuming to develop.
-            </li>
-        </ul>
+            <h3>Why Use A Persistence Model?</h3>
 
-        <p>
-            Finally, Atlas supports <strong>composite primary keys</strong> and
-            <strong>composite foreign keys</strong>. Performance in these cases
-            is sure to be slower, but it is in fact supported. (For some legacy
-            systems, composite keys are absolutely necessary.)
-        </p>
+            <p>
+                A persistence model alone should get your appplication a long
+                way, especially at the beginning of a project. The Row, Record,
+                and RecordSet objects in Atlas are disconnected from the database, which
+                should make the refactoring and integration process a lot
+                cleaner than with Active Record.
+            </p>
 
-        <p>Other rationalizations, essentially based around things <em>not</em> desired:</p>
+            <p>
+                Because Atlas works with your database schema as-it-is,
+                and not as-the-ORM-thinks it-should-be, Atlas is a very good
+                fit for projects with pre-existing databases. (Indeed, Atlas
+                supports both <strong>composite primary keys</strong> and
+                <strong>composite foreign keys</strong> -- for some legacy
+                systems, composite keys are absolutely necessary.)
+            </p>
 
-        <ul>
+            <h3>How Does Atlas Work?</h3>
 
-            <li>
-                No annotations. (Code should be in code, not in comments.)
-            </li>
+            <p>
+                At a high level, Atlas is mini-framework built from a stack of
+                packages, where any "lower" package can be used indepdendently
+                of the the ones "above" it. This means you can pick the exact
+                level of functionality you need right now, and expand to the
+                next greater set of functionality only as is becomes necessary.
+            </p>
 
-            <li>
-                No lazy-loading. Lazy-loading is seductive, but eventually is more trouble
-                than it's worth. Atlas doesn't make it available at all, so it cannot be
-                invoked accidentally.
-            </li>
+            <p>
+                The package hierarchy, from bottom to top, looks like this:
+            </p>
 
-            <li>
-                No data-type abstractions. Data-type abstraction seems great at first, but
-                it too ends up not being worth the trouble. Therefore, the actual underlying
-                database types are exposed and available as much as possible.
-            </li>
-        </ul>
+            <ul>
+                <li>
+                    <p><a href="https://github.com/atlasphp/Atlas.Pdo">Atlas.Pdo</a> provides a database Connection object and a ConnectionLocator. If all you need is convenience wrapper around PDO with fetch and yield methods, this is the package for you.</p>
+                </li>
+                <li>
+                    <p><a href="https://github.com/atlasphp/Atlas.Query">Atlas.Query</a> is a query builder that wraps an Atlas.Pdo Connection. If you just want to build and perform SQL queries using an object-oriented approach, the Atlas query objects can handle that.</p>
+                </li>
+                <li>
+                   <p><a href="https://github.com/atlasphp/Atlas.Table">Atlas.Table</a> is a table data gateway implementation that uses Atlas.Query under the hood. If you don't need a full data mapper system and only want to interact with individual tables and their row objects, this will do the trick.</p>
+                </li>
+                <li>
+                    <p><a href="https://github.com/atlasphp/Atlas.Mapper">Atlas.Mapper</a> is a data mapper implementation that models the relationships between tables. It allows you to build Record and RecordSet objects whose Row objects map naturally back to Table objects; you can write them back to the database one by one, or persist an entire Record graph back to the database in one go.</p>
+                </li>
+                <li>
+                    <p><a href="https://github.com/atlasphp/Atlas.Orm">Atlas.Orm</a> is the overarching ORM package; it provides a convenience wrapper around the Mapper system, as well as several strategies for transaction management.</p>
+                </li>
+            </ul>
 
-        <p>Possible deal-breakers for potential users:</p>
+            <p>
+                Thus, Atlas uses a table data gateway for the underlying table Rows, then composes
+                those Rows into Records and RecordSets via a data mapper; the PDO connection and query
+                system move the data back and forth between PHP and the database.
 
-        <ul>
-            <li>
-                Atlas uses code generation, though only in a very limited way. It turns out
-                that code generation is useful for building the SQL table classes. Each table
-                is described as a PHP class, one that returns things like table name, column
-                names, etc. This is the only substantial class that gets generated by Atlas;
-                the others are empty extensions of parent classes.
-            </li>
+            <h3>From Persistence To Domain</h3>
 
-            <li>
-                Atlas uses base Row, Record, and RecordSet classes, instead of plain-old PHP
-                objects. If this were a domain modeling system, a base class would be
-                unacceptable. Because Atlas is a *persistence* modeling system, base classes
-                are less objectionable, but for some this may be undesired.
-            </li>
-        </ul>
+            <p>
+                At the beginning, your domain logic layer (e.g. service layer,
+                application service, interactor, use case, etc.) can manipulate
+                the Atlas persistence objects (Records and RecordSets) directly.
+                You can add simple behavior methods to your Records and
+                RecordSets as well.
+            </p>
 
-      </div>
+            <p>
+                Then, as a domain model grows within your application,
+                <a href="http://www.mehdi-khalili.com/orm-anti-patterns-part-4-persistence-domain-model">Mehdi Khalili</a>
+                shows that the refactoring process can move along one of two paths:
+            </p>
+
+            <ul>
+                <li>
+                    "Domain Model composed of Persistence Model". That is, the domain objects
+                    can use Atlas persistence model Record objects internally, but do not expose
+                    them. The domain objects can manipulate the persistence model objects
+                    internally as much as they wish. For example, a domain object might have a
+                    <tt>getAddress()</tt> method that reads from the internal Record.
+                </li>
+
+                <li>
+                    "DDD on top of ORM". Here, Repositories map the persistence model objects to
+                    and from domain objects. This provides a full decoupling of the domain model
+                    from the persistence model, but is more time-consuming to develop.
+                </li>
+            </ul>
+
+            <h3>Other Considerations</h3>
+
+            <p>Here some further considerations regarding Atlas:</p>
+
+            <ul>
+                <li>
+                    <strong>PHPStorm IDE auto-completion.</strong> When you use
+                    the <tt>phpstorm.meta.php</tt> resource included in relevant
+                    packages, PHPStorm will autocomplete methods and properties
+                    from your Mapper, Record, RecordSet, et al. classes.
+                </li>
+
+                <li>
+                    <strong>No annotations.</strong> Code should be in code, not
+                    in comments.
+                </li>
+
+                <li>
+                    <strong>No lazy-loading.</strong> Lazy-loading is seductive,
+                    but eventually is more trouble than it's worth. Atlas
+                    doesn't make it available at all, so it cannot be invoked
+                    accidentally.
+                </li>
+
+                <li>
+                    <strong>No data-type abstractions.</strong> Data-type abstraction seems great at first, but
+                    it too ends up not being worth the trouble. Therefore, the actual underlying
+                    database types are exposed and available as much as possible.
+                </li>
+            </ul>
+
+            <h3>Contra-Indications</h3>
+
+            <p>You may not find Atlas suitable for your needs because of the following:</p>
+
+            <ul>
+                <li>
+                    Atlas uses code generation, though only in a very limited way. It turns out
+                    that code generation is useful for some boilerplate code. For example, each table
+                    is described as a PHP class, one that returns things like table name, column
+                    names, etc. Since the table class should change only when the database
+                    changes, code generation makes sense here; however, some developers may
+                    be against code generation just on principle alone.
+                </li>
+
+                <li>
+                    Atlas uses base Row, Record, and RecordSet classes, instead of plain-old PHP
+                    objects. If this were a domain modeling system, a base class would be
+                    unacceptable. Because Atlas is a <strong>persistence</strong> modeling system, base classes
+                    are less objectionable, but for some this may be undesired.
+                </li>
+            </ul>
+
+        </div>
+        <div class="col-md-1"></div>
+    </div>
 </div>
 
 <footer>

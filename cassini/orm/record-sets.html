@@ -467,10 +467,9 @@ deletion will automatically be detached.</p>
 <h2 id="1-1-5-7">1.1.5.7. Persisting A RecordSet</h2>
 <p>You can persist each Record in a RecordSet by calling the <em>Atlas</em> method
 <code>persistRecordSet()</code>:</p>
-<pre><code class="language-php">$deletedRecords = $atlas-&gt;persistRecordSet($threadRecordSet);
+<pre><code class="language-php">$atlas-&gt;persistRecordSet($threadRecordSet);
 </code></pre>
-<p>This will insert, update, or delete each Record in the RecordSet as appropriate,
-then detach all deleted Records and return them as their own RecordSet.</p>
+<p>This will insert, update, or delete each Record in the RecordSet as appropriate.</p>
 </div>        </div>
     </div>
 </div>

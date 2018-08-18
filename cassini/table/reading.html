@@ -360,6 +360,9 @@
                                 <li>
                 <a href="#1-3-2-3" title="Query&#x20;Construction">Query Construction</a>
             </li>
+                                <li>
+                <a href="#1-3-2-4" title="Identifier&#x20;Quoting">Identifier Quoting</a>
+            </li>
             </ul>
 </nav>
         </div>
@@ -402,6 +405,13 @@ $threadRows = $threadTable
 <p>The <code>Table::select()</code> method returns a query object that you access to all the
 underlying SQL query methods. See the <a href="/cassini/query">query system</a>
 documentation for more information.</p>
+<h2 id="1-3-2-4">1.3.2.4. Identifier Quoting</h2>
+<p>The <code>select()</code> method will automatically quote the table name in the FROM
+clause.</p>
+<p>In addition, the <code>fetchRow()</code> and <code>fetchRows()</code> methods will automatically quote
+the primary key column names in the WHERE clause.</p>
+<p>You can manually quote any other identifiers using the <em>Select</em> object's
+<code>quoteIdentifier()</code> method.</p>
 </div>        </div>
     </div>
 </div>

@@ -366,7 +366,10 @@
                                                                                                                                                         <li>
                 <a href="#1-6-1-5" title="Yielding&#x20;Results">Yielding Results</a>
             </li>
-                                                                        </ul>
+                                                                                            <li>
+                <a href="#1-6-1-6" title="Query&#x20;Logging">Query Logging</a>
+            </li>
+            </ul>
 </nav>
         </div>
                 <div class="col-md-9">
@@ -507,6 +510,60 @@ foreach ($connection-&gt;yieldObjects($stm, $bind, $class, $args) as $object) {
     // ...
 }
 </code></pre>
+<h2 id="1-6-1-6">1.6.1.6. Query Logging</h2>
+<p>It is sometimes useful to see a log of all queries passing through a
+<em>Connection</em>. To do so, call its <code>logQueries()</code> method, issue your queries, and
+then call <code>getQueries()</code>.</p>
+<pre><code class="language-php">// start logging
+$connection-&gt;logQueries(true);
+
+// at this point, all query(), exec(), perform(), fetch*(), and yield*()
+// queries will be logged.
+
+// get the query log entries
+$queries = $connection-&gt;getQueries();
+
+// stop logging
+$connection-&gt;logQueries(false);
+</code></pre>
+<p>Each query log entry will be an array with these keys:</p>
+<ul>
+<li>
+<code>start</code>: when the query started</li>
+<li>
+<code>finish</code>: when the query finished</li>
+<li>
+<code>duration</code>: how long the query took</li>
+<li>
+<code>statement</code>: the query statement string</li>
+<li>
+<code>values</code>: the array of bound values</li>
+<li>
+<code>trace</code>: an exception trace showing where the query was issued</li>
+</ul>
+<p>You may wish to set a custom logger on the <em>Connection</em>. To do so, call
+<code>setQueryLogger()</code> and pass a callable with the signature
+<code>function (array $entry) : void</code>.</p>
+<pre><code class="language-php">class CustomDebugger
+{
+    public function __invoke(array $entry) : void
+    {
+        // call an injected logger to record the entry
+    }
+}
+
+$customDebugger = new CustomDebugger();
+$connection-&gt;setQueryLogger($customDebugger);
+$connection-&gt;logQueries(true);
+
+// now the Connection will send query log entries to the CustomDebugger
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>If you set a custom logger, the <em>Connection</em> will no longer retain its own
+query log entries; they will all go to the custom logger. This means that
+<code>getQueries()</code> on the <em>Connection</em> not show any new entries.</p>
+</blockquote>
 </div>        </div>
     </div>
 </div>
