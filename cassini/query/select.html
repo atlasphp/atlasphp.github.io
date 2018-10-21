@@ -411,9 +411,9 @@ $select
 <code>where()</code> will implicitly AND the subsequent condition.</p>
 <pre><code class="language-php">// WHERE bar &gt; :__1__ AND zim &gt;= :__2__ AND baz :__3__
 $select
-    -&gt;where('bar &gt; 1', $bar_value)
-    -&gt;where('zim &gt;= 2', $zim_value)
-    -&gt;andWhere('baz &lt; 3', $baz_value);
+    -&gt;where('bar &gt; ', $bar_value)
+    -&gt;where('zim &gt;= ', $zim_value)
+    -&gt;andWhere('baz &lt; ', $baz_value);
 </code></pre>
 <p>Use <code>orWhere()</code> to OR the subsequent condition.</p>
 <pre><code class="language-php">// WHERE bar &gt; :__1__ OR zim &gt;= :__2__

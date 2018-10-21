@@ -386,37 +386,36 @@ do so. Instead, use the <code>atlas-skeleton</code> command to read the table in
 from the database. You can read more about that in the
 <a href="https://github.com/atlasphp/Atlas.Cli/blob/1.x/docs/getting-started.md">atlas/cli docs</a>.</p>
 <h2 id="2-1-1-3">2.1.1.3. Instantiating Atlas</h2>
-<p>Create an Atlas instance using the AtlasContainer.</p>
-<p>The container accepts a <a href="http://php.net/manual/en/pdo.construct.php">PDO</a>, <a href="https://github.com/auraphp/Aura.Sql/blob/3.x/docs/getting-started.md">ExtendedPdo</a> or <a href="https://github.com/auraphp/Aura.Sql/blob/3.x/docs/connection-locator.md">ConnectionLocator</a> instance or you
-can enter connection parameters and the container creates a connection for you.</p>
+<p>Create an Atlas instance using the AtlasBuilder.</p>
+<p>The builder accepts a <a href="http://php.net/manual/en/pdo.construct.php">PDO</a>,
+<a href="https://github.com/auraphp/Aura.Sql/blob/3.x/docs/getting-started.md">ExtendedPdo</a>,
+or <a href="https://github.com/auraphp/Aura.Sql/blob/3.x/docs/connection-locator.md">ConnectionLocator</a>
+instance, or you can enter connection parameters and the builder will create a
+connection for you.</p>
 <pre><code class="language-php">&lt;?php
-$atlasContainer = new AtlasContainer(new PDO(...));
+$atlasBuilder = new AtlasBuilder(new PDO(...));
 // or
-$atlasContainer = new AtlasContainer(new ExtendedPdo(...));
+$atlasBuilder = new AtlasBuilder(new ExtendedPdo(...));
 // or
-$atlasContainer = new AtlasContainer(new ConnectionLocator(...));
+$atlasBuilder = new AtlasBuilder(new ConnectionLocator(...));
 // or
-$atlasContainer = new AtlasContainer(
+$atlasBuilder = new AtlasBuilder(
     'mysql:host=localhost;dbname=testdb',
     'username',
     'password'
 );
 </code></pre>
-<p>Next, set the available mapper classes into the container.</p>
+<p>Then get a new Atlas instance out of the builder:</p>
 <pre><code class="language-php">&lt;?php
-$atlasContainer-&gt;setMappers([
-    AuthorMapper::CLASS,
-    ReplyMapper::CLASS,
-    SummaryMapper::CLASS,
-    TagMapper::CLASS,
-    ThreadMapper::CLASS,
-    TaggingMapper::CLASS,
-]);
+$atlas = $atlasBuilder-&gt;newAtlas();
 </code></pre>
-<p>Finally, get back the Atlas instance out of the container.</p>
-<pre><code class="language-php">&lt;?php
-$atlas = $atlasContainer-&gt;getAtlas();
-</code></pre>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>Atlas 2.5.x and earlier use the older AtlasContainer to build an Atlas
+object. The older approach requires you to register all mappers with the
+container using its setMappers() method, whereas the newer AtlasBuilder
+in 2.6.x lazy-loads them on demand.</p>
+</blockquote>
 </div>        </div>
     </div>
 </div>
