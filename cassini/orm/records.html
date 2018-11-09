@@ -366,6 +366,12 @@
                                 <li>
                 <a href="#1-1-4-5" title="Marking&#x20;Records&#x20;for&#x20;Deletion">Marking Records for Dele...</a>
             </li>
+                                <li>
+                <a href="#1-1-4-6" title="Adding&#x20;Many-To-Many&#x20;Relateds">Adding Many-To-Many Rela...</a>
+            </li>
+                                <li>
+                <a href="#1-1-4-7" title="Removing&#x20;Many-To-Many&#x20;Relateds">Removing Many-To-Many Re...</a>
+            </li>
             </ul>
 </nav>
         </div>
@@ -375,7 +381,7 @@
 <p>Create a new Record using the <code>newRecord()</code> method. You can assign data using
 properties, or pass an array of initial data to populate into the Record.</p>
 <pre><code class="language-php">$thread = $atlas-&gt;newRecord(Thread::CLASS, [
-        'title' =&gt; 'New Thread Title',
+    'title' =&gt; 'New Thread Title',
 ]);
 </code></pre>
 <p>You can assign a value via a property, which maps to a column name.</p>
@@ -510,33 +516,72 @@ database level; Atlas has no control over this.</p>
 <p>You may also mark records for deletion and they will be removed from the
 database as part of <code>persist()</code>.</p>
 <pre><code class="language-php">$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
+
 // Mark the record for deletion
 $thread-&gt;setDelete();
 $atlas-&gt;persist($thread);
 </code></pre>
 <p>You can also mark several related Records for deletion and when the native
 Record is persisted, they will be deleted from the database.</p>
-<pre><code class="language-php">// Assume a oneToMany relationship between a thread and its comments
-// Select the thread and related comments
+<pre><code class="language-php">// Assume a oneToMany relationship between a thread and its replies
+// Select the thread and related replies
 $thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3,
     [
-        'comments'
+        'replies'
     ]
 );
 
-// Mark each related comment for deletion
-foreach ($thread-&gt;comments as $comment) {
-    $comment-&gt;setDelete();
+// Mark each related reply for deletion
+foreach ($thread-&gt;replies as $reply) {
+    $reply-&gt;setDelete();
 }
 
-// Persist the thread and the comments are also deleted
+// Persist the thread and the replies are also deleted
 $atlas-&gt;persist($thread);
 </code></pre>
-<blockquote>
-<p><strong>Note:</strong></p>
-<p>Related Record objects that get deleted as part of <code>persist()</code> will be
-removed from the native Record object and replaced with a boolean <code>false</code>.</p>
-</blockquote>
+<h2 id="1-1-4-6">1.1.4.6. Adding Many-To-Many Relateds</h2>
+<p>Given the <a href="./relationships.html">relationships example</a>, here is how you would add
+a tag to a thread:</p>
+<pre><code class="language-php">// fetch a thread with its tags
+$thread = $atlas-&gt;fetchRecord(Thread::CLASS, $thread_id,
+    [
+        'tags',
+    ]
+);
+
+// fetch a collection of all tags
+$tags = $atlas
+    -&gt;select(Tag::CLASS)
+    -&gt;fetchRecordSet();
+
+// get a tag by name from the collection
+$tag = $tags-&gt;getOneBy(['name' =&gt; $tag_name]);
+
+// add the tag to the thread
+$thread-&gt;tags[] = $tag;
+
+// persist the whole thread record
+$atlas-&gt;persist($thread);
+</code></pre>
+<p>Note that you do not need to manage the taggings yourself. At <code>persist()</code> time,
+Atlas will call <code>setDelete()</code> on any taggings that no longer have an associated
+tag, and will add new taggings for tags that are not already associated (and add
+the thread and tag objects to the new tagging object automatically).</p>
+<h2 id="1-1-4-7">1.1.4.7. Removing Many-To-Many Relateds</h2>
+<p>If you delete a many-to-many related record, it will delete that record from
+the database, not merely disassociate it from the native record.</p>
+<p>Instead, <strong>detach</strong> the many-to-many related record. This will remove the
+"through" association automatically at persist() time, leaving the foreign
+record in the database.</p>
+<p>For example:</p>
+<pre><code class="language-php">// detach (not delete!) a tag from the thread
+$thread-&gt;tags-&gt;detachOneBy(['name' =&gt; $tag_name);
+
+// persist the whole thread record
+$atlas-&gt;persist($thread);
+</code></pre>
+<p>Note again that you do not need to manage the taggings yourself; Atlas will
+do so for you.</p>
 </div>        </div>
     </div>
 </div>

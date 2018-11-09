@@ -367,7 +367,10 @@
                 <a href="#1-1-2-5" title="Variant&#x20;Relationships">Variant Relationships</a>
             </li>
                                 <li>
-                <a href="#1-1-2-6" title="Cascading&#x20;Deletes">Cascading Deletes</a>
+                <a href="#1-1-2-6" title="Many-To-Many&#x20;Relationships">Many-To-Many Relationshi...</a>
+            </li>
+                                <li>
+                <a href="#1-1-2-7" title="Cascading&#x20;Deletes">Cascading Deletes</a>
             </li>
             </ul>
 </nav>
@@ -378,21 +381,18 @@
 calling one of these relationship-definition methods:</p>
 <ul>
 <li>
+<code>oneToOne($field, $mapperClass)</code> (aka "has one")</li>
+<li>
+<code>oneToOneBidi($field, $mapperClass)</code> for a bidirectional relationship</li>
+<li>
+<code>oneToMany($field, $mapperClass)</code> (aka "has many")</li>
+<li>
 <code>manyToOne($field, $mapperClass)</code> (aka "belongs to")</li>
 <li>
 <code>manyToOneVariant($field, $typeCol)</code> (aka "polymorphic association")</li>
 <li>
-<code>oneToMany($field, $mapperClass)</code> (aka "has many")</li>
-<li>
-<code>oneToOne($field, $mapperClass)</code> (aka "has one")</li>
-<li>
-<code>oneToOneBidi($field, $mapperClass)</code> for a bidirectional relationship</li>
+<code>manyToMany($field, $mapperClass, $throughField)</code> (aka "has many through")</li>
 </ul>
-<blockquote>
-<p>Note that many-to-many is not supported as a direct relationship. All
-many-to-many retrievals must occur explicitly through the association mapping
-table, which is what happens at the SQL level anyway.</p>
-</blockquote>
 <p>The <code>$field</code> will become a field name on the returned Record object.</p>
 <p>Here is an example:</p>
 <pre><code class="language-php">namespace App\DataSource\Thread;
@@ -540,7 +540,51 @@ links.</p>
 That is, if a native record set (of an arbitrary number of records) refers to a
 total of three different variant types, then Atlas will issue three additional
 queries to fetch the related records.</p>
-<h2 id="1-1-2-6">1.1.2.6. Cascading Deletes</h2>
+<h2 id="1-1-2-6">1.1.2.6. Many-To-Many Relationships</h2>
+<p>The many-to-many relationship retrieves foreign records via an association
+table (a.k.a. a "through" relationship). This is typically modeled as a
+one-to-many from the native mapper to the related "through" mapper, where the
+"through" mapper itself has a many-to-one relationship to the foreign mapper.</p>
+<p>When setting up a many-to-many relationship, make sure the "through" mapper has
+a many-to-one relationship to both sides of the relationship. For example,
+given a <code>threads</code> table, related to <code>tags</code>, through a <code>taggings</code> table:</p>
+<pre><code class="language-php">class ThreadRelationships extends MapperRelationships
+{
+    protected function define()
+    {
+        // the "through" relationship that joins threads and tags
+        $this-&gt;oneToMany('taggings', Tagging::CLASS);
+
+        // the "foreign" relationship "through" taggings
+        $this-&gt;manyToMany('tags', Tag::CLASS, 'taggings');
+    }
+}
+
+class TaggingRelationships extends MapperRelationships
+{
+    protected function define()
+    {
+        // the threads side of the association mapping
+        $this-&gt;manyToOne('threads', Thread::CLASS);
+
+        // the tags side of the association mapping
+        $this-&gt;manyToOne('tags', Tag::CLASS);
+    }
+}
+
+class TagRelationships extends MapperRelationships
+{
+    protected function define()
+    {
+        // the "through" relationship that joins threads and tags
+        $this-&gt;oneToMany('taggings', Tagging::CLASS);
+
+        // the "foreign" relationship "through" taggings
+        $this-&gt;manyToMany('threads', Thread::CLASS, 'taggings');
+    }
+}
+</code></pre>
+<h2 id="1-1-2-7">1.1.2.7. Cascading Deletes</h2>
 <p>Atlas relationships support various form of cascading deletion. That is, when
 you <code>delete()</code> a Record, whether directly or via a <code>persist()</code>
 call, Atlas can automatically modify its related (foreign child) Records

@@ -363,7 +363,7 @@
                                 <li>
                 <a href="#1-1-3-4" title="Fetching&#x20;Related&#x20;Records&#x20;and&#x20;RecordSets">Fetching Related Records...</a>
             </li>
-                                                                    <li>
+                                                        <li>
                 <a href="#1-1-3-5" title="Returning&#x20;Data&#x20;in&#x20;Other&#x20;Formats">Returning Data in Other ...</a>
             </li>
                                 <li>
@@ -471,6 +471,7 @@ which related fields to retrieve.</p>
         'author',
         'summary',
         'replies',
+        'tags',
     ]
 );
 
@@ -481,6 +482,7 @@ $threadRecordSet = $atlas-&gt;fetchRecordSet(
         'author',
         'summary',
         'replies',
+        'tags',
     ]
 );
 </code></pre>
@@ -492,6 +494,7 @@ $threadRecordSet = $atlas-&gt;fetchRecordSet(
         'author',
         'summary',
         'replies',
+        'tags',
     ])
     -&gt;fetchRecord();
 
@@ -502,10 +505,11 @@ $threadRecordSet = $atlas
         'author',
         'summary',
         'replies',
+        'tags',
     ])
     -&gt;fetchRecordSet();
 </code></pre>
-<p>The related field will be populated like so:</p>
+<p>The related fields will be populated like so:</p>
 <ul>
 <li>
 <p>If the related field was not specified as part of the <code>with</code> specification,
@@ -516,6 +520,13 @@ data.</p>
 <p>If the related field was part of the <code>with</code> specification, but there was no
 related data to be found at the database, the field will be <code>false</code> (for
 to-one relationships) or an empty RecordSet (for to-many relationships).</p>
+</li>
+<li>
+<p>If you specify <code>with()</code> on a many-to-many relationship but do not explicitly
+fetch with the "through" relationship, Atlas will automatically and implicitly
+fetch it for you. Given the above example, that means both "taggings" and
+"tags" will appear in the Record. (You can include "taggings" in the <code>with</code>
+specification explicitly if you want to.)</p>
 </li>
 </ul>
 <h3 id="1-1-3-4-1">1.1.3.4.1. Nested Relationships</h3>
@@ -561,8 +572,9 @@ instead of using a column name, you use the relationship name defined in the
         'author',
         'summary',
         'replies' =&gt; [
-            'author'
-        ]
+            'author',
+        ],
+        'tags',
     ])
     -&gt;fetchRecord();
 
@@ -572,25 +584,9 @@ foreach ($threadRecord-&gt;replies as $reply) {
 }
 </code></pre>
 <p>If you specify <code>with()</code> on a one-to-one or many-to-one relationship that returns
-no result, the related field will be populated with <code>false</code>. If you specify
-<code>with()</code> on a one-to-many relationship that returns no result, the field will be
-populated with an empty RecordSet collection.</p>
-<h3 id="1-1-3-4-3">1.1.3.4.3. Many-To-Many Relationships</h3>
-<p>While Atlas does not support direct many-to-many relationships, it does support
-them indirectly through nested relationshps. (This is what actually happens
-at the SQL level anyway.)</p>
-<p>For example, to access each tag associated with a thread, go through the
-taggings relationship:</p>
-<pre><code class="language-php">$threadRecord = $atlas-&gt;fetchRecord(Thread::CLASS, '1', [
-    'taggings' =&gt; [
-        'tag'
-    ]
-]);
-
-foreach ($threadRecord-&gt;taggings as $tagging) {
-    echo $tagging-&gt;tag;
-}
-</code></pre>
+no result, the related field will be populated with <code>false</code>.</p>
+<p>If you specify <code>with()</code> on a one-to-many relationship that returns no result,
+the field will be populated with an empty RecordSet collection.</p>
 <h2 id="1-1-3-5">1.1.3.5. Returning Data in Other Formats</h2>
 <p>You can return a Record or a RecordSet as an <code>array</code> rather than a Record or
 RecordSet object using the <code>getArrayCopy()</code> method.</p>

@@ -462,14 +462,14 @@ been marked for deletion.</p>
 <p>You might only want to mark some of the Records for deletion:</p>
 <pre><code class="language-php">$threadRecordSet-&gt;getAllBy(['author_id' =&gt; 1])-&gt;setDelete();
 </code></pre>
-<p>When you persist a RecordSet relationship, all of its Records marked for
-deletion will automatically be detached.</p>
 <h2 id="1-1-5-7">1.1.5.7. Persisting A RecordSet</h2>
 <p>You can persist each Record in a RecordSet by calling the <em>Atlas</em> method
 <code>persistRecordSet()</code>:</p>
 <pre><code class="language-php">$atlas-&gt;persistRecordSet($threadRecordSet);
 </code></pre>
 <p>This will insert, update, or delete each Record in the RecordSet as appropriate.</p>
+<p>After persisting a RecordSet, you can detach all of the deleted records in the
+set by calling its <code>detachDeleted()</code> method.</p>
 </div>        </div>
     </div>
 </div>

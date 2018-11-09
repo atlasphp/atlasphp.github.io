@@ -358,13 +358,10 @@
                 <a href="#1-1-10-2" title="Single&#x20;Table&#x20;Inheritance">Single Table Inheritance</a>
             </li>
                                 <li>
-                <a href="#1-1-10-3" title="Managing&#x20;Many-To-Many&#x20;Relateds">Managing Many-To-Many Re...</a>
+                <a href="#1-1-10-3" title="Automated&#x20;Validation">Automated Validation</a>
             </li>
                                 <li>
-                <a href="#1-1-10-4" title="Automated&#x20;Validation">Automated Validation</a>
-            </li>
-                                <li>
-                <a href="#1-1-10-5" title="Query&#x20;Logging">Query Logging</a>
+                <a href="#1-1-10-4" title="Query&#x20;Logging">Query Logging</a>
             </li>
             </ul>
 </nav>
@@ -494,39 +491,7 @@ define <em>MapperRelationships</em> for the mapper as whole, to cover all its re
 types.</p>
 <p>Note also that there can only be one <em>RecordSet</em> class per <em>Mapper</em>, though it
 can contain any kind of <em>Record</em>.</p>
-<h2 id="1-1-10-3">1.1.10.3. Managing Many-To-Many Relateds</h2>
-<p>Given the typical example of a <code>blog</code> table, associated to <code>tags</code>, through a
-<code>taggings</code> table, here is how you would add a tag to a blog post:</p>
-<pre><code class="language-php">// get a blog post, with taggings and tags
-$blog = $atlas-&gt;fetchRecord(Blog::CLASS, $blog_id, [
-    'taggings' =&gt; [
-        'tags'
-    ]
-]);
-
-// get all tags in the system
-$tags = $atlas-&gt;fetchRecordSet(Tags::CLASS);
-
-// create the new tagging association, with the related blog and tag objects
-$tagging = $thread-&gt;taggings-&gt;appendNew([
-    'blog' =&gt; $blog,
-    'tag' =&gt; $tags-&gt;getOneBy(['name' =&gt; $tag_name])
-]);
-
-// persist the whole blog record, which will insert the tagging
-$atlas-&gt;persist($tagging);
-</code></pre>
-<p>Similarly, here is how you would remove a tag:</p>
-<pre><code class="language-php">// mark the Tagging association for deletion
-$blog-&gt;taggings
-    -&gt;getOneBy(['name' =&gt; $tag_name)
-    -&gt;setDelete();
-
-// persist the whole record with the tagging relateds,
-// which will delete the tagging and detach the related record
-$atlas-&gt;persist($thread);
-</code></pre>
-<h2 id="1-1-10-4">1.1.10.4. Automated Validation</h2>
+<h2 id="1-1-10-3">1.1.10.3. Automated Validation</h2>
 <p>You will probably want to apply some sort of filtering (validation and
 sanitizing) to <em>Row</em> (and to a lesser extent <em>Record</em>) objects before they get
 written back to the database. To do so, implement or override the appropriate
@@ -564,7 +529,7 @@ class AuthorTableEvents extends TableEvents
 <p>For detailed reporting of validation failures, consider writing your own
 extended exception class to retain a list of the fields and error messages,
 perhaps with the object being validated.</p>
-<h2 id="1-1-10-5">1.1.10.5. Query Logging</h2>
+<h2 id="1-1-10-4">1.1.10.4. Query Logging</h2>
 <p>To enable query logging, call the Atlas <code>logQueries()</code> method. Issue your
 queries, and then call <code>getQueries()</code> to get back the log entries.</p>
 <pre><code class="language-php">// start logging
