@@ -401,12 +401,10 @@ $connectionLocator-&gt;setWriteFactory('master', Connection::factory(
 
 // read (slave) #1
 $connectionLocator-&gt;setReadFactory('slave1', Connection::factory(
-    return new Connection(
-        'mysql:host=slave1.db.localhost;dbname=database',
-        'username',
-        'password'
-    );
-});
+    'mysql:host=slave1.db.localhost;dbname=database',
+    'username',
+    'password'
+));
 
 // read (slave) #2
 $connectionLocator-&gt;setReadFactory('slave2', Connection::factory(
@@ -432,7 +430,7 @@ $connectionLocator-&gt;setReadFactory('slave3', Connection::factory(
 <p><code>getRead()</code> will return a random read <em>Connection</em>; after the first call, <code>getRead()</code> will always return the same <em>Connection</em>. (If no read <em>Connections</em> are defined, it will return the default connection.)</p>
 </li>
 <li>
-<p><code>getWrite()</code> will return a random write <em>Connection</em>; after the first call, <code>getWrite()</code> will always return the same <em>Connection</em>. (If no read <em>Connections</em> are defined, it will return the default connection.)</p>
+<p><code>getWrite()</code> will return a random write <em>Connection</em>; after the first call, <code>getWrite()</code> will always return the same <em>Connection</em>. (If no write <em>Connections</em> are defined, it will return the default connection.)</p>
 </li>
 </ul>
 <pre><code class="language-php">$read = $connectionLocator-&gt;getRead();
