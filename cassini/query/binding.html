@@ -423,18 +423,18 @@ $select
 </code></pre>
 <h2 id="1-4-2-2">1.4.2.2. 
 <code>sprintf()</code> Inline Binding</h2>
-<p>If you need to bind more than one value into a condition, use <code>bindSprintf()</code>
-instead of <code>bindInline()</code>. Pass an expression string formatted for
+<p>If you need to bind more than one value into a condition, you can use an
+<code>sprintf</code> variation of implicit binding. Pass an expression string formatted for
 <a href="https://www.php.net/sprintf"><code>sprintf</code></a> along with the values to bind:</p>
 <pre><code class="language-php">// SELECT * FROM foo WHERE bar BETWEEN :__1__ AND :__2__
 $select
     -&gt;columns('*')
     -&gt;from('foo')
-    -&gt;where($select-&gt;bindSprintf(
+    -&gt;whereSprintf(
         'bar BETWEEN %s AND %s',
         $low_value,
         $high_value
-    ));
+    );
 </code></pre>
 <p>Note that you should use only <code>%s</code> in the format string, since it is the
 <em>placeholder token</em> that will be interpolated into the expression, not the
