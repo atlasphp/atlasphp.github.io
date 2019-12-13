@@ -354,7 +354,7 @@
                                 <li>
                 <a href="#1-4-3-1" title="Building&#x20;The&#x20;Query">Building The Query</a>
             </li>
-                                                                                                                                                                                <li>
+                                                                                                                                                                    <li>
                 <a href="#1-4-3-2" title="Resetting&#x20;Query&#x20;Elements">Resetting Query Elements</a>
             </li>
                                 <li>
@@ -406,7 +406,7 @@ $select
     )-&gt;catJoin(' AND d.baz = ', $baz_value);
 </code></pre>
 <h3 id="1-4-3-1-4">1.4.3.1.4. WHERE</h3>
-<p>(These <code>WHERE</code> methods support <a href="binding.html">inline value binding</a> via optional trailing arguments.)</p>
+<p>(All <code>WHERE</code> methods support <a href="binding.html">implicit and sprintf() inline value binding</a>.)</p>
 <p>To add <code>WHERE</code> conditions, use the <code>where()</code> method. Additional calls to
 <code>where()</code> will implicitly AND the subsequent condition.</p>
 <pre><code class="language-php">// WHERE bar &gt; :__1__ AND zim &gt;= :__2__ AND baz :__3__
@@ -430,19 +430,20 @@ $select
     -&gt;catWhere('foo = 88')
     -&gt;catWhere(' AND bar &lt; ', $bar_value)
     -&gt;catWhere(')');
-
 </code></pre>
-<h4 id="1-4-3-1-4-1">1.4.3.1.4.1. Explicit Inline Binding</h4>
-<p>For some conditions, using <code>sprintf()</code> combined with explicit inline binding
-may be advisable:</p>
-<pre><code class="language-php">// WHERE foo BETWEEN :__1__ AND :__2__
-$select-&gt;where(sprintf(
-    'foo BETWEEN %s AND %s',
-    $select-&gt;bindInline($low_value),
-    $select-&gt;bindInline($high_value)
-));
+<p>Each of the WHERE-related methods has a <code>bindSprintf()</code>-related method suffixed
+with <code>format</code>:</p>
+<pre><code class="language-php">// WHERE bar BETWEEN :__1__ AND :__2__
+// AND baz BETWEEN :__3__ AND :__4__
+// OR dib BETWEEN :__5__ AND :__6___
+// ...
+$select
+    -&gt;whereSprintf('bar BETWEEN %s AND %s', $bar_low, $bar_high)
+    -&gt;andWhereSprintf('baz BETWEEN %s AND %s', $baz_low, $baz_high)
+    -&gt;orWhereSprintf('dib BETWEEN %s AND %s', $dib_low, $dib_high)
+    -&gt;catWhereFomat(...);
 </code></pre>
-<h4 id="1-4-3-1-4-2">1.4.3.1.4.2. Convenience Equality</h4>
+<h4 id="1-4-3-1-4-1">1.4.3.1.4.1. Convenience Equality</h4>
 <p>There is an additional <code>whereEquals()</code> convenience method that adds a series of
 <code>AND</code>ed equality conditions for you based on an array of key-value pairs.</p>
 <p>Given an array value, the condition will be <code>IN ()</code>. Given a null value, the
@@ -467,7 +468,7 @@ $select
     -&gt;groupBy('bar', 'baz');
 </code></pre>
 <h3 id="1-4-3-1-6">1.4.3.1.6. HAVING</h3>
-<p>(All <code>HAVING</code> methods support <a href="binding.html">inline value binding</a> via optional trailing arguments.)</p>
+<p>(All <code>HAVING</code> methods support <a href="binding.html">implicit and sprintf() inline value binding</a>.)</p>
 <p>The <code>HAVING</code> methods work just like their equivalent WHERE methods:</p>
 <ul>
 <li>
@@ -475,7 +476,13 @@ $select
 <li>
 <code>orHaving()</code> ORs a HAVING condition</li>
 <li>
-<code>catHaving()</code> concatenates onto the end of the most-recent HAVING condition.</li>
+<code>catHaving()</code> concatenates onto the end of the most-recent HAVING condition</li>
+<li>
+<code>havingSprintf()</code> and <code>andHavingSprintf()</code> AND a HAVING condition with sprintf()</li>
+<li>
+<code>orHavingSprintf()</code> ORs a HAVING condition with sprintf()</li>
+<li>
+<code>catHavingSprintf()</code> concatenates onto the end of the most-recent HAVING condition with sprintf()</li>
 </ul>
 <h3 id="1-4-3-1-7">1.4.3.1.7. ORDER BY</h3>
 <p>To add <code>ORDER BY</code> expressions, use the <code>orderBy()</code> method and pass each

@@ -396,7 +396,7 @@ and unescaped expression.</p>
 $update-&gt;raw('bar', 'NOW()');
 </code></pre>
 <h3 id="1-4-5-1-3">1.4.5.1.3. WHERE</h3>
-<p>(All <code>WHERE</code> methods support <a href="binding.html">inline value binding</a> via optional trailing arguments.)</p>
+<p>(All <code>WHERE</code> methods support <a href="binding.html">implicit and sprintf() inline value binding</a>.)</p>
 <p>The <em>Update</em> <code>WHERE</code> methods work just like their equivalent <em>Select</em> methods:</p>
 <ul>
 <li>
@@ -404,7 +404,13 @@ $update-&gt;raw('bar', 'NOW()');
 <li>
 <code>orWhere()</code> ORs a WHERE condition</li>
 <li>
-<code>catWhere()</code> concatenates onto the end of the most-recent WHERE condition.</li>
+<code>catWhere()</code> concatenates onto the end of the most-recent WHERE condition</li>
+<li>
+<code>whereSprintf()</code> and <code>andWhereSprintf()</code> AND a WHERE condition with sprintf()</li>
+<li>
+<code>orWhereSprintf()</code> ORs a WHERE condition with sprintf()</li>
+<li>
+<code>catWhereSprintf()</code> concatenates onto the end of the most-recent WHERE condition with sprintf()</li>
 </ul>
 <h3 id="1-4-5-1-4">1.4.5.1.4. ORDER BY</h3>
 <p>Some databases (notably MySQL) recognize an <code>ORDER BY</code> clause. You can add one
@@ -446,7 +452,12 @@ $update
 <h2 id="1-4-5-2">1.4.5.2. Performing The Query</h2>
 <p>Once you have built the query, call the <code>perform()</code> method to execute it and
 get back a <em>PDOStatement</em>.</p>
-<pre><code class="language-php">$result = $select-&gt;perform(); // : PDOStatement
+<pre><code class="language-php">$pdoStatement = $update-&gt;perform();
+</code></pre>
+<p>If you added a <code>RETURNING</code> clause with the <code>returning()</code> method, you can
+retrieve those column values with the returned <em>PDOStatement</em>:</p>
+<pre><code class="language-php">$pdoStatement = $update-&gt;perform();
+$values = $pdoStatement-&gt;fetch(); // : array
 </code></pre>
 </div>        </div>
     </div>

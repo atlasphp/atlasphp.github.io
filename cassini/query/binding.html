@@ -355,7 +355,8 @@
                 <a href="#1-4-2-1" title="Implicit&#x20;Inline&#x20;Binding">Implicit Inline Binding</a>
             </li>
                                 <li>
-                <a href="#1-4-2-2" title="Explicit&#x20;Inline&#x20;Binding">Explicit Inline Binding</a>
+                <a href="#1-4-2-2" title="&#x0A;&lt;code&gt;sprintf&#x28;&#x29;&lt;&#x2F;code&gt;&#x20;Inline&#x20;Binding">
+<code>sprintf()</code> ...</a>
             </li>
                                 <li>
                 <a href="#1-4-2-3" title="Explicit&#x20;Parameter&#x20;Binding">Explicit Parameter Bindi...</a>
@@ -420,19 +421,24 @@ $select
         -&gt;from('dib')
     );
 </code></pre>
-<h2 id="1-4-2-2">1.4.2.2. Explicit Inline Binding</h2>
-<p>If you need to bind more than one value into a condition, use <code>sprintf()</code>
-combined with the <code>bindInline()</code> method:</p>
+<h2 id="1-4-2-2">1.4.2.2. 
+<code>sprintf()</code> Inline Binding</h2>
+<p>If you need to bind more than one value into a condition, use <code>bindSprintf()</code>
+instead of <code>bindInline()</code>. Pass an expression string formatted for
+<a href="https://www.php.net/sprintf"><code>sprintf</code></a> along with the values to bind:</p>
 <pre><code class="language-php">// SELECT * FROM foo WHERE bar BETWEEN :__1__ AND :__2__
 $select
     -&gt;columns('*')
     -&gt;from('foo')
-    -&gt;where(sprintf(
+    -&gt;where($select-&gt;bindSprintf(
         'bar BETWEEN %s AND %s',
-        $select-&gt;bindInline($low_value),
-        $select-&gt;bindInline($high_value)
+        $low_value,
+        $high_value
     ));
 </code></pre>
+<p>Note that you should use only <code>%s</code> in the format string, since it is the
+<em>placeholder token</em> that will be interpolated into the expression, not the
+<em>actual value</em>.</p>
 <h2 id="1-4-2-3">1.4.2.3. Explicit Parameter Binding</h2>
 <p>You can still use the normal PDO binding approach, where you explicitly set
 named parameters in conditions, and then bind the values with a separate call:</p>
