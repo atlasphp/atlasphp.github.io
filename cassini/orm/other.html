@@ -363,6 +363,9 @@
                                 <li>
                 <a href="#1-1-10-4" title="Query&#x20;Logging">Query Logging</a>
             </li>
+                                <li>
+                <a href="#1-1-10-5" title="Custom&#x20;Factory&#x20;Callable">Custom Factory Callable</a>
+            </li>
             </ul>
 </nav>
         </div>
@@ -581,6 +584,42 @@ $atlas-&gt;logQueries(true);
 query log entries; they will all go to the custom logger. This means that
 <code>getQueries()</code> on the <em>Atlas</em> instance will not show any new entries.</p>
 </blockquote>
+<h2 id="1-1-10-5">1.1.10.5. Custom Factory Callable</h2>
+<p>The <em>AtlasBuilder</em> let you specify a custom factory callable to create the
+dependencies for each <em>Table</em> and <em>Mapper</em> instance. The default factory
+callable looks like this:</p>
+<pre><code class="language-php">/**
+ * @var string $class A fully-qualified class name.
+ * @return object
+ */
+function (string $class) {
+    return new $class();
+}
+</code></pre>
+<p>Although this callable may in future be used for any kind of <em>Table</em> or <em>Mapper</em>
+dependency, in practice it is currently limited to <em>Events</em> classes.</p>
+<p>If your <em>Events</em> instances need dependency injection, you can replace the
+default factory with your own callable; the <em>AtlasBuilder</em> will use it to create
+any new <em>Events</em> instances.  This gives you full control over how the <em>Events</em>
+objects are instantiated.</p>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>The base <em>TableEvents</em> and <em>MapperEvents</em> classes have no constructors, so you
+are free to write your own in your generated <em>Events</em> classes.</p>
+</blockquote>
+<p>For example, to use a PSR-11 container to create <em>Events</em> objects:</p>
+<pre><code class="language-php">$atlasBuilder = new \Atlas\Orm\AtlasBuilder(...);
+
+/** @var \Psr\Container\ContainerInterface $container */
+$atlasBuilder-&gt;setFactory(function (string $class) use ($container) {
+    return $container-&gt;get($class);
+});
+
+$atlas = $atlasBuilder-&gt;newAtlas();
+
+// Atlas will now use $container to create
+// TableEvents and MapperEvents instances.
+</code></pre>
 </div>        </div>
     </div>
 </div>
