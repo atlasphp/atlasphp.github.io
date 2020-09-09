@@ -416,6 +416,14 @@ function afterDeleteRow(
     PDOStatement $pdoStatement
 ) : void
 </code></pre>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>The methods <code>beforeInsertRow()</code> and <code>beforeUpdateRow()</code> optionally return an
+array. If they return an array, that array's key-value pairs will be used for
+the insert or update. Otherwise, the difference between the Row's previous
+values and its current values will be calculated, and their difference will be
+used for the insert or update.</p>
+</blockquote>
 <p>For example, when you call <code>Table::updateRow()</code>, these events run in this order:</p>
 <ul>
 <li>

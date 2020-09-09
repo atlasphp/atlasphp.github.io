@@ -491,6 +491,12 @@ $select
     -&gt;orderBy('foo')
     -&gt;orderBy('bar', 'baz');
 </code></pre>
+<p>By default, results are ordered in ascending order (ASC).
+To sort in descending order, use the DESC keyword:</p>
+<pre><code class="language-php">// ORDER BY foo DESC
+$select
+    -&gt;orderBy('foo DESC')
+</code></pre>
 <h3 id="1-4-3-1-8">1.4.3.1.8. LIMIT, OFFSET, and Paging</h3>
 <p>To set a <code>LIMIT</code> and <code>OFFSET</code>, use the <code>limit()</code> and <code>offset()</code> methods.</p>
 <pre><code class="language-php">// LIMIT 10 OFFSET 40
@@ -540,7 +546,7 @@ $select
 $select
     -&gt;columns('id', 'name')
     -&gt;from('foo')
-    -&gt;union()
+    -&gt;unionAll()
     -&gt;columns('id', 'name')
     -&gt;from('bar');
 </code></pre>

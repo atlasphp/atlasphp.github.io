@@ -498,42 +498,10 @@ afterDelete(TableInterface $table,
             Delete $delete,
             PDOStatement $pdoStatement)
 </code></pre>
-<p>Here is a simple example with the assumption that the Record object has a
-<code>validate()</code> method and a <code>getErrors()</code> method. See the section on <a href="behavior.html">Adding Logic
-to Records and RecordSets</a>.</p>
-<pre><code class="language-php">&lt;?php
-namespace Blog\DataSource\Posts;
-
-use Atlas\Orm\Table\TableEvents;
-use Atlas\Orm\Table\TableInterface;
-use Atlas\Orm\Table\Row;
-use Atlas\Orm\Exception;
-
-/**
- * @inheritdoc
- */
-class PostsTableEvents extends TableEvents
-{
-    public function beforeUpdate(TableInterface $table, Row $row)
-    {
-        if (! $record-&gt;validate())
-            throw new Exception('Update Error');
-        }
-
-    }
-}
-</code></pre>
-<p>And you might have something like this in your code:</p>
-<pre><code class="language-php">&lt;?php
-$success = $atlas-&gt;update($post);
-if ($sucess) {
-    echo "Post updated";
-} else {
-    foreach ($post-&gt;getErrors as $error) {
-        echo $error . '&lt;br/&gt;';
-    }
-}
-</code></pre>
+<p>If the <code>beforeInsert()</code> method returns an array, that array will be used for the
+insert data; otherwise, <code>Row::getArrayCopy()</code> will be used.</p>
+<p>If the <code>beforeUpdate()</code> method returns an array, that array will be used for the
+update data; otherwise, <code>Row::getArrayDiff()</code> will be used.</p>
 </div>        </div>
     </div>
 </div>
