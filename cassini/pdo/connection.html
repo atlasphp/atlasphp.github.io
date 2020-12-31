@@ -369,6 +369,9 @@
                                                                                             <li>
                 <a href="#1-6-1-6" title="Query&#x20;Logging">Query Logging</a>
             </li>
+                                                        <li>
+                <a href="#1-6-1-7" title="Persistent&#x20;Connections">Persistent Connections</a>
+            </li>
             </ul>
 </nav>
         </div>
@@ -535,12 +538,23 @@ $connection-&gt;logQueries(false);
 <li>
 <code>duration</code>: how long the query took</li>
 <li>
+<code>performed</code>: whether or not the query was actually perfomed; useful
+for seeing if a <code>COMMIT</code> actually occurred</li>
+<li>
 <code>statement</code>: the query statement string</li>
 <li>
 <code>values</code>: the array of bound values</li>
 <li>
 <code>trace</code>: an exception trace showing where the query was issued</li>
 </ul>
+<h3 id="1-6-1-6-1">1.6.1.6.1. Logged Statements</h3>
+<p>When queries are not being logged, <code>Connection::prepare()</code> will return a normal
+<em>PDOStatement</em>. However, when queries <em>are</em> being logged, <code>Connection::prepare()</code>
+will return an <em>Atlas\Pdo\LoggedStatement</em> instance instead.</p>
+<p>The <em>LoggedStatement</em> is an extension of <em>PDOStatement</em>, so it works the same
+way, but it has the added behavior of recording to the log when its <code>execute()</code>
+method is called.</p>
+<h3 id="1-6-1-6-2">1.6.1.6.2. Custom Loggers</h3>
 <p>You may wish to set a custom logger on the <em>Connection</em>. To do so, call
 <code>setQueryLogger()</code> and pass a callable with the signature
 <code>function (array $entry) : void</code>.</p>
@@ -564,6 +578,15 @@ $connection-&gt;logQueries(true);
 query log entries; they will all go to the custom logger. This means that
 <code>getQueries()</code> on the <em>Connection</em> not show any new entries.</p>
 </blockquote>
+<h2 id="1-6-1-7">1.6.1.7. Persistent Connections</h2>
+<p><strong>Unlogged</strong> persistent <em>Connection</em> instances are fully supported, via the
+<a href="https://www.php.net/manual/en/pdo.connections.php"><code>PDO::ATTR_PERSISTENT</code></a>
+option at construction time.</p>
+<p><strong>Logged</strong> persistent <em>Connection</em> instances are <em>almost</em> fully supported. The
+only exception to full support is that, on calling <code>Connection::prepare()</code>, the
+returned statement instance (<em>PersistentLoggedStatement</em>) does not honor the
+<code>PDOStatement::bindColumn()</code> method. All other methods and behaviors are fully
+supported.</p>
 </div>        </div>
     </div>
 </div>
