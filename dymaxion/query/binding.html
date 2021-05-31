@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<meta name="HandheldFriendly" content="True"/>
+<title>Value Binding</title>
+    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cerulean/bootstrap.min.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-base16-ateliersulphurpool.light.css" />
+<link rel="stylesheet" href="https://tobiju.github.io/share/prismjs/prism-linenumbers.css" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body data-spy="scroll" data-target="#sideNav" data-offset="50" class="bbt-theme-cerulean">
+<div class="page-wrapper">
+    <header>
+    
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="box-header container">
+        <form class="form-search navbar-form navbar-right" role="search">
+            <div class="form-group">
+                <input type="text"
+                       placeholder="Search"
+                       class="js-search-input form-control"
+                       data-roothref="/">
+
+                <div class="js-search-results"></div>
+            </div>
+        </form>
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#js-navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+                            <a class="navbar-brand" href="/">
+                    <img alt="logo" src="https://raw.githubusercontent.com/atlasphp/atlasphp.github.io/master/images/atlas.png" title="Home">
+                </a>
+                    </div>
+
+        <div class="collapse navbar-collapse" id="js-navbar-collapse">
+            
+    
+    <ul class="nav navbar-nav">
+                        <li>
+    <a href="/dymaxion/">Dymaxion (v4)</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/dymaxion/table/">Table Data Gateway</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/dymaxion/table/getting-started.html">Getting Started</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/table/reading.html">Reading From The Table</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/table/writing.html">Writing To The Table</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/table/events.html">Table Events</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/query/">Query System</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/dymaxion/query/getting-started.html">Getting Started</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/query/binding.html">Value Binding</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/query/select.html">SELECT</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/query/insert.html">INSERT</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/query/update.html">UPDATE</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/query/delete.html">DELETE</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/query/other.html">Other Topics</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/pdo/">PDO Connection</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/dymaxion/pdo/connection.html">PDO Connection</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/pdo/connection-locator.html">Connection Locator</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/pdo/upgrade.html">Upgrade Notes</a>
+
+    </li>
+            </ul>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/cassini/">Cassini (v3)</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/orm/">ORM</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/orm/getting-started.html">Getting Started</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/orm/relationships.html">Mapper Relationships</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/orm/reading.html">Fetching Records and RecordSets</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/orm/records.html">Working with Records</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/orm/record-sets.html">Working with RecordSets</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/orm/transactions.html">Transactions</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/orm/behavior.html">Record and RecordSet Behaviors</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/orm/events.html">Events</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/orm/direct.html">Direct Queries</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/orm/other.html">Other Topics</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/orm/domain.html">Domain Models</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/cassini/skeleton/">Skeleton Generator</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/skeleton/usage.html">Usage</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/cassini/table/">Table Data Gateway</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/table/getting-started.html">Getting Started</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/table/reading.html">Reading From The Table</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/table/writing.html">Writing To The Table</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/table/events.html">Table Events</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/cassini/query/">Query System</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/query/getting-started.html">Getting Started</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/query/binding.html">Value Binding</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/query/select.html">SELECT</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/query/insert.html">INSERT</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/query/update.html">UPDATE</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/query/delete.html">DELETE</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/query/other.html">Other Topics</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/cassini/info/">Schema Information</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/info/usage.html">Usage</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/cassini/pdo/">PDO Connection</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/cassini/pdo/connection.html">PDO Connection</a>
+
+    </li>
+                        <li>
+    <a href="/cassini/pdo/connection-locator.html">Connection Locator</a>
+
+    </li>
+            </ul>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/boggs/">Boggs (v2)</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/boggs/mapper/">ORM</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/boggs/mapper/getting-started.html">Getting Started</a>
+
+    </li>
+                        <li>
+    <a href="/boggs/mapper/relationships.html">Mapper Relationships</a>
+
+    </li>
+                        <li>
+    <a href="/boggs/mapper/reading.html">Fetching Records and RecordSets</a>
+
+    </li>
+                        <li>
+    <a href="/boggs/mapper/records.html">Working with Records</a>
+
+    </li>
+                        <li>
+    <a href="/boggs/mapper/record-sets.html">Working with RecordSets</a>
+
+    </li>
+                        <li>
+    <a href="/boggs/mapper/transactions.html">Transactions (Unit of Work)</a>
+
+    </li>
+                        <li>
+    <a href="/boggs/mapper/behavior.html">Record and RecordSet Behaviors</a>
+
+    </li>
+                        <li>
+    <a href="/boggs/mapper/events.html">Events</a>
+
+    </li>
+                        <li>
+    <a href="/boggs/mapper/direct.html">Direct Queries</a>
+
+    </li>
+                        <li>
+    <a href="/boggs/mapper/domain.html">Domain Models</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/boggs/skeleton/">Skeleton Generator</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/boggs/skeleton/getting-started.html">Atlas.Cli 1.x</a>
+
+    </li>
+            </ul>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/albers/">Albers (v1)</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/albers/mapper/">ORM</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/albers/mapper/getting-started.html">Getting Started</a>
+
+    </li>
+                        <li>
+    <a href="/albers/mapper/relationships.html">Mapper Relationships</a>
+
+    </li>
+                        <li>
+    <a href="/albers/mapper/reading.html">Fetching Records and RecordSets</a>
+
+    </li>
+                        <li>
+    <a href="/albers/mapper/records.html">Working with Records</a>
+
+    </li>
+                        <li>
+    <a href="/albers/mapper/record-sets.html">Working with RecordSets</a>
+
+    </li>
+                        <li>
+    <a href="/albers/mapper/transactions.html">Transactions (Unit of Work)</a>
+
+    </li>
+                        <li>
+    <a href="/albers/mapper/behavior.html">Record and RecordSet Behaviors</a>
+
+    </li>
+                        <li>
+    <a href="/albers/mapper/events.html">Events</a>
+
+    </li>
+                        <li>
+    <a href="/albers/mapper/direct.html">Direct Queries</a>
+
+    </li>
+                        <li>
+    <a href="/albers/mapper/domain.html">Domain Models</a>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
+    <a href="/albers/skeleton/">Skeleton Generator</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/albers/skeleton/getting-started.html">Atlas.Cli 1.x</a>
+
+    </li>
+            </ul>
+
+    </li>
+            </ul>
+
+    </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+</header>
+<div class="container">
+    <ol class="breadcrumb">
+                        <li><a href="/">Atlas Database Framework for PHP</a></li>
+                                <li><a href="/dymaxion/">Dymaxion (v4)</a></li>
+                                <li><a href="/dymaxion/query/">Query System</a></li>
+                                <li class="active">Value Binding</li>
+            </ol>
+    <div class="row">
+
+                <div class="col-md-3">
+            <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
+    <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
+                                <li>
+                <a href="#1-2-2" title="Value&#x20;Binding">Value Binding</a>
+            </li>
+                                <li>
+                <a href="#1-2-2-1" title="Implicit&#x20;Inline&#x20;Binding">Implicit Inline Binding</a>
+            </li>
+                                <li>
+                <a href="#1-2-2-2" title="&#x0A;&lt;code&gt;sprintf&#x28;&#x29;&lt;&#x2F;code&gt;&#x20;Inline&#x20;Binding">
+<code>sprintf()</code> ...</a>
+            </li>
+                                <li>
+                <a href="#1-2-2-3" title="Explicit&#x20;Parameter&#x20;Binding">Explicit Parameter Bindi...</a>
+            </li>
+            </ul>
+</nav>
+        </div>
+                <div class="col-md-9">
+<div id="section-main"><h1 id="1-2-2">1.2.2. Value Binding</h1>
+<p>Atlas.Query allows you to bind values to the SQL statement in various ways.</p>
+<h2 id="1-2-2-1">1.2.2.1. Implicit Inline Binding</h2>
+<p>Many Atlas.Query methods allow for inline binding of values. This means that the
+provided value will be represented by an auto-generated placeholder name in the
+query string, and the value itself will be retained for binding into that
+placeholder at query execution time.</p>
+<p>For example, given this query ...</p>
+<pre><code class="language-php">$select
+    -&gt;columns('*')
+    -&gt;from('foo')
+    -&gt;where('bar = ', $bar_value); // binds $bar_value inline
+</code></pre>
+<p>... a subsequent call to <code>getStatement()</code> will return:</p>
+<pre><code class="language-sql">SELECT *
+FROM foo
+WHERE bar = :_1_1_
+</code></pre>
+<p>(The first part of the auto-generated placeholder name will increment each time
+a new query is created; the second part will increment for each inline value
+bound to that query.)</p>
+<p>If <code>$bar_value</code> is <code>foo-bar</code>, calling <code>getBindValues()</code> will return:</p>
+<pre><code class="language-php">[
+    ':_1_1_' =&gt; ['foo-bar', \PDO::PARAM_STR],
+]
+</code></pre>
+<p>Note that the placeholder is automatically recognized as a string; the same will
+be true for nulls, integers, and floats.</p>
+<p>If you want to explicitly bind the value as some other type, you can pass that
+type after the value:</p>
+<pre><code class="language-php">$select
+    -&gt;columns('*')
+    -&gt;from('foo')
+    -&gt;where('bar = ', $bar_value, \PDO::PARAM_LOB);
+</code></pre>
+<p>If you bind an array inline, Atlas.Query will set a bind each element separately
+with its own placeholder, comma-separate the placeholders, and wrap them in
+parentheses. This makes using an IN() condition very convenient.</p>
+<pre><code class="language-php">$bar_value = ['foo', 'bar', 'baz'];
+
+// SELECT * FROM foo WHERE bar IN (:_1_1_, :_1_2_, :_1_3_)
+$select
+    -&gt;columns('*')
+    -&gt;from('foo')
+    -&gt;where('bar IN ', $bar_value);
+</code></pre>
+<p>Finally, if the inline value is itself a Select object, it will be converted to
+a string via <code>getStatement()</code> and returned surrounded in parentheses:</p>
+<pre><code class="language-php">// SELECT * FROM foo WHERE bar IN (SELECT baz FROM dib)
+$select
+    -&gt;columns('*')
+    -&gt;from('foo')
+    -&gt;where('bar IN ', $select-&gt;subSelect()
+        -&gt;columns('baz')
+        -&gt;from('dib')
+    );
+</code></pre>
+<h2 id="1-2-2-2">1.2.2.2. 
+<code>sprintf()</code> Inline Binding</h2>
+<p>If you need to bind more than one value into a condition, you can use an
+<code>sprintf</code> variation of implicit binding. Pass an expression string formatted for
+<a href="https://www.php.net/sprintf"><code>sprintf</code></a> along with the values to bind:</p>
+<pre><code class="language-php">// SELECT * FROM foo WHERE bar BETWEEN :_1_1_ AND :_1_2_
+$select
+    -&gt;columns('*')
+    -&gt;from('foo')
+    -&gt;whereSprintf(
+        'bar BETWEEN %s AND %s',
+        $low_value,
+        $high_value
+    );
+</code></pre>
+<p>Note that you should use only <code>%s</code> in the format string, since it is the
+<em>placeholder token</em> that will be interpolated into the expression, not the
+<em>actual value</em>.</p>
+<h2 id="1-2-2-3">1.2.2.3. Explicit Parameter Binding</h2>
+<p>You can still use the normal PDO binding approach, where you explicitly set
+named parameters in conditions, and then bind the values with a separate call:</p>
+<pre><code class="language-php">$select
+    -&gt;columns('*')
+    -&gt;from('foo')
+    -&gt;where('bar = :bar')
+    -&gt;orWhere('baz = :baz')
+    -&gt;bindValue('bar', $bar_value);
+    -&gt;bindValue('baz', $baz_value);
+</code></pre>
+<p>These too will automatically recognize strings, nulls, integers, and floats,
+and set the approporate PDO parameter type. If you want to explicitly bind the
+value as some other type, pass an option third parameter to <code>bindValue()</code>:</p>
+<pre><code class="language-php">$select
+    -&gt;columns('*')
+    -&gt;from('foo')
+    -&gt;where('bar = :bar')
+    -&gt;orWhere('baz = :baz')
+    -&gt;bindValue('bar', $bar_value, \PDO::PARAM_LOB);
+    -&gt;bindValue('baz', $baz_value);
+</code></pre>
+<p>You can also bind multiple values at once ...</p>
+<pre><code class="language-php">$select
+    -&gt;columns('*')
+    -&gt;from('foo')
+    -&gt;where('bar = :bar')
+    -&gt;orWhere('baz = :baz')
+    -&gt;bindValues([
+        'bar' =&gt; $bar_value,
+        'baz' =&gt; $baz_value
+    );
+</code></pre>
+<p>... but in that case you will not be able to explicitly set the parameter types.</p>
+<p>The automatic binding of array elements, as with implicit inline binding, <strong>does
+not work</strong> with explicit parameter binding.</p>
+</div>        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="links">
+        <div class="container">
+            <div class="row">
+                <div class="prev col-xs-6">
+                                            <a href="/dymaxion/query/getting-started.html">Previous</a>                                    </div>
+                <div class="next col-xs-6">
+                                            <a href="/dymaxion/query/select.html">Next</a>                                    </div>
+            </div>
+        </div>
+    </div>
+    <div id="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>&copy; 2015-2018, Atlas for PHP</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/0.6.0/lunr.min.js"></script>
+<script src="http://bartaz.github.io/sandbox.js/jquery.highlight.js"></script>
+<script src="https://tobiju.github.io/share/prismjs/main.js"></script>
+<script src="https://tobiju.github.io/share/prismjs/prism.js"></script>
+<script type="text/javascript">
+
+    function Search() {
+        this.store = {};
+        this.index = lunr(function () {
+            this.ref('id');
+            this.field('title', {boost: 10});
+            this.field('content');
+        });
+        this.searchResults = $('.js-search-results').addClass('list-search-results');
+    }
+
+    Search.prototype = {
+        constructor: Search,
+        init: function () {
+            this.createIndex();
+            this.bindEvents();
+        },
+        createIndex: function () {
+            var $this = this,
+                indexFilePath = $('.js-search-input').data('roothref') + 'index.json';
+
+            $.getJSON(indexFilePath, function (data) {
+                $.each(data, function (key, item) {
+                    $this.index.add({
+                        id: item.id,
+                        title: item.title,
+                        content: item.content
+                    });
+
+                    $this.store[item.id] = {
+                        href: item.id,
+                        title: item.title,
+                        content: item.content
+                    }
+                });
+            });
+        },
+        bindEvents: function () {
+            var $this = this;
+
+            $('html')
+                .on('click', function (event) {
+                    $this.close($(this), event);
+                });
+
+            $('.js-search-input, .js-search-results')
+                .on('click', function (event) {
+                    $this.click($(this), event);
+                });
+
+            $('.js-search-input')
+                .on('focus', function (event) {
+                    $this.focus($(this), event);
+                })
+                .on('keyup', function (event) {
+                    $this.search($(this), event)
+                })
+                .on('keydown', function (event) {
+                    if ($('.js-search-results ul').is(':visible')){
+                        $this.navigation($(this), event)
+                    }
+                })
+        },
+        click: function (element, event) {
+            event.stopPropagation();
+        },
+        focus: function (element, event) {
+            this.searchInputWidth = element.css('width');
+            element.animate({
+                'width': 600
+            }, 500);
+            $('#js-navbar-collapse > ul').fadeOut();
+        },
+        close: function (element, event) {
+            var $this = this;
+
+            $('.js-search-results').hide();
+            $('.js-search-input').animate({
+                'width': $this.searchInputWidth
+            }, 500);
+            $('#js-navbar-collapse > ul').fadeIn();
+        },
+        search: function (element, event) {
+            var $this = this;
+
+            if (event.keyCode == 13 || event.keyCode == 38 || event.keyCode == 40) {
+                return;
+            }
+
+            var query = element.val(),
+                results = $this.index.search(query);
+
+            if (!results.length) {
+                $this.searchResults.empty();
+                return;
+            }
+
+            var resultsList = results.reduce(function (ul, result) {
+                var item = $this.store[result.ref];
+                var title = $('<b>').text(item.title);
+
+                var cropText = $this.cropText(item.content, query);
+                if (cropText.length === 0) {
+                    cropText = $('<p>').html(item.content.substring(0, 120) + "...");
+                }
+                var content = content = $('<p>').html(cropText);
+
+                var div = $('<div>')
+                    .append(title)
+                    .append(content);
+                var a = $('<a>').attr('href', item.href)
+                    .append(div);
+                var li = $('<li>')
+                    .append(a);
+                ul.append(li);
+
+                return ul;
+            }, $('<ul>'));
+
+            this.searchResults.html(resultsList);
+
+            $('.js-search-results').show();
+            $(".js-search-results li:first-child").addClass('selected');
+        },
+        cropText: function (content, query) {
+            var cropedText = '',
+                re = new RegExp("\\s?(.{0,30})?" + query + ".*?\\b(.{0,30}.)?\\s?", "gi");
+
+            $.each(content.match(re), function (key, value) {
+                cropedText += '...' + value + '...';
+            });
+
+            return cropedText;
+        },
+        navigation: function (element, event) {
+            var selected = null,
+                listSelector = ".js-search-results ul",
+                listItemSelector = listSelector + " li",
+                selectedListItemSelector = listItemSelector + ".selected",
+                selectedListItemSelectorAnchor = listItemSelector + ".selected a";
+
+            // enter
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                this.close();
+                window.location.replace($(selectedListItemSelectorAnchor).attr('href'));
+            }
+
+            // up
+            if (event.keyCode == 38) {
+                selected = $(selectedListItemSelector);
+                $(listItemSelector).removeClass("selected");
+
+                if (selected.prev().length == 0) {
+                    selected.siblings().last().addClass("selected");
+                } else {
+                    selected.prev().addClass("selected");
+                }
+
+                selected = $(selectedListItemSelector);
+                this.scrollListUp(selected);
+            }
+
+            // down
+            if (event.keyCode == 40) {
+                selected = $(selectedListItemSelector);
+                $(listItemSelector).removeClass("selected");
+
+                if (selected.next().length == 0) {
+                    selected.siblings().first().addClass("selected");
+                } else {
+                    selected.next().addClass("selected");
+                }
+
+                selected = $(selectedListItemSelector);
+                this.scrollListDown(selected);
+            }
+        },
+        scrollListDown: function (element) {
+            var ul = element.parent(),
+                ulHeight = ul.height(),
+                ulBottomPosition = ulHeight + ul.scrollTop(),
+                liBottomPosition = element.position().top + element.height();
+
+            if (liBottomPosition > ulBottomPosition) {
+                ul.scrollTop(liBottomPosition - ulHeight);
+            }
+
+            if (element.is(':first-child')) {
+                ul.scrollTop(0);
+            }
+        },
+        scrollListUp: function (element) {
+            var ul = element.parent(),
+                ulTopPosition = ul.scrollTop(),
+                liTopPosition = element.position().top;
+
+            if (liTopPosition < ulTopPosition) {
+                ul.scrollTop(element.position().top);
+            }
+
+            if (element.is(':last-child')) {
+                ul.scrollTop(element.position().top - element.height());
+            }
+        }
+    };
+
+    $(function () {
+        var search = new Search();
+        search.init();
+    });
+</script>
+</body>
+</html>

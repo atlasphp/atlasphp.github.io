@@ -1,0 +1,7 @@
+{
+    "title": "Dymaxion (v4)",
+    "content": [
+        {"pdo": "https://raw.githubusercontent.com/atlasphp/Atlas.Pdo/2.x/docs/_bookdown.json"}
+    ],
+    "tocDepth": "2"
+}
