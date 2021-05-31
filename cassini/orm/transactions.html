@@ -48,6 +48,32 @@
     
     <ul class="nav navbar-nav">
                         <li>
+    <a href="/dymaxion/">Dymaxion (v4)</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/dymaxion/pdo/">PDO Connection</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/dymaxion/pdo/connection.html">PDO Connection</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/pdo/connection-locator.html">Connection Locator</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/pdo/upgrade.html">Upgrade Notes</a>
+
+    </li>
+            </ul>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/">Cassini (v3)</a>
     
     <ul class="dropdown-menu">
@@ -349,22 +375,22 @@
             <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
     <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
                                 <li>
-                <a href="#1-1-6" title="Transactions">Transactions</a>
+                <a href="#2-1-6" title="Transactions">Transactions</a>
             </li>
                                 <li>
-                <a href="#1-1-6-1" title="Manual&#x20;Transaction&#x20;Management">Manual Transaction Manag...</a>
+                <a href="#2-1-6-1" title="Manual&#x20;Transaction&#x20;Management">Manual Transaction Manag...</a>
             </li>
                                 <li>
-                <a href="#1-1-6-2" title="Other&#x20;Transaction&#x20;Strategies">Other Transaction Strate...</a>
+                <a href="#2-1-6-2" title="Other&#x20;Transaction&#x20;Strategies">Other Transaction Strate...</a>
             </li>
             </ul>
 </nav>
         </div>
                 <div class="col-md-9">
-<div id="section-main"><h1 id="1-1-6">1.1.6. Transactions</h1>
+<div id="section-main"><h1 id="2-1-6">2.1.6. Transactions</h1>
 <p>Atlas always starts in "autocommit" mode, which means that each interaction with
 the database is its own micro-transaction (cf. <a href="https://secure.php.net/manual/en/pdo.transactions.php">https://secure.php.net/manual/en/pdo.transactions.php</a>).</p>
-<h2 id="1-1-6-1">1.1.6.1. Manual Transaction Management</h2>
+<h2 id="2-1-6-1">2.1.6.1. Manual Transaction Management</h2>
 <p>You can manage transactions manually by calling these methods on the Atlas object:</p>
 <pre><code class="language-php">// begins a transaction on BOTH the read connection
 // AND the write connection
@@ -379,7 +405,7 @@ $atlas-&gt;rollBack();
 <p>Once you perform a write operation (insert, update, delete, or persist), Atlas
 will lock to the write connection. That is, all reads will occur against the
 write connection for the rest of the Atlas object's lifetime.</p>
-<h2 id="1-1-6-2">1.1.6.2. Other Transaction Strategies</h2>
+<h2 id="2-1-6-2">2.1.6.2. Other Transaction Strategies</h2>
 <p>If you find that manually managing transactions proves tedious, Atlas comes with
 three alternative transaction strategy classes:</p>
 <ul>

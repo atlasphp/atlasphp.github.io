@@ -52,64 +52,6 @@
     
     <ul class="dropdown-menu">
                         <li>
-    <a href="/dymaxion/table/">Table Data Gateway</a>
-    
-    <ul class="dropdown-menu">
-                        <li>
-    <a href="/dymaxion/table/getting-started.html">Getting Started</a>
-
-    </li>
-                        <li>
-    <a href="/dymaxion/table/reading.html">Reading From The Table</a>
-
-    </li>
-                        <li>
-    <a href="/dymaxion/table/writing.html">Writing To The Table</a>
-
-    </li>
-                        <li>
-    <a href="/dymaxion/table/events.html">Table Events</a>
-
-    </li>
-            </ul>
-
-    </li>
-                        <li>
-    <a href="/dymaxion/query/">Query System</a>
-    
-    <ul class="dropdown-menu">
-                        <li>
-    <a href="/dymaxion/query/getting-started.html">Getting Started</a>
-
-    </li>
-                        <li>
-    <a href="/dymaxion/query/binding.html">Value Binding</a>
-
-    </li>
-                        <li>
-    <a href="/dymaxion/query/select.html">SELECT</a>
-
-    </li>
-                        <li>
-    <a href="/dymaxion/query/insert.html">INSERT</a>
-
-    </li>
-                        <li>
-    <a href="/dymaxion/query/update.html">UPDATE</a>
-
-    </li>
-                        <li>
-    <a href="/dymaxion/query/delete.html">DELETE</a>
-
-    </li>
-                        <li>
-    <a href="/dymaxion/query/other.html">Other Topics</a>
-
-    </li>
-            </ul>
-
-    </li>
-                        <li>
     <a href="/dymaxion/pdo/">PDO Connection</a>
     
     <ul class="dropdown-menu">
@@ -433,40 +375,48 @@
             <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
     <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
                                 <li>
-                <a href="#1-3-1" title="PDO&#x20;Connection">PDO Connection</a>
+                <a href="#1-1-1" title="PDO&#x20;Connection">PDO Connection</a>
             </li>
                                 <li>
-                <a href="#1-3-1-1" title="Installation">Installation</a>
+                <a href="#1-1-1-1" title="Installation">Installation</a>
             </li>
                                 <li>
-                <a href="#1-3-1-2" title="Instantiation">Instantiation</a>
+                <a href="#1-1-1-2" title="Instantiation">Instantiation</a>
             </li>
                                 <li>
-                <a href="#1-3-1-3" title="Calling&#x20;PDO&#x20;Methods">Calling PDO Methods</a>
+                <a href="#1-1-1-3" title="Calling&#x20;PDO&#x20;Methods">Calling PDO Methods</a>
             </li>
                                 <li>
-                <a href="#1-3-1-4" title="Fetching&#x20;Results">Fetching Results</a>
+                <a href="#1-1-1-4" title="Performing&#x20;Queries">Performing Queries</a>
+            </li>
+                                <li>
+                <a href="#1-1-1-5" title="Fetching&#x20;Results">Fetching Results</a>
             </li>
                                                                                                                                                         <li>
-                <a href="#1-3-1-5" title="Yielding&#x20;Results">Yielding Results</a>
+                <a href="#1-1-1-6" title="Yielding&#x20;Results">Yielding Results</a>
             </li>
                                                                                             <li>
-                <a href="#1-3-1-6" title="Query&#x20;Logging">Query Logging</a>
+                <a href="#1-1-1-7" title="Explicit&#x20;Bind&#x20;Value&#x20;Types">Explicit Bind Value Type...</a>
+            </li>
+                                <li>
+                <a href="#1-1-1-8" title="Query&#x20;Logging">Query Logging</a>
             </li>
                                                         <li>
-                <a href="#1-3-1-7" title="Persistent&#x20;Connections">Persistent Connections</a>
+                <a href="#1-1-1-9" title="Persistent&#x20;Connections">Persistent Connections</a>
             </li>
             </ul>
 </nav>
         </div>
                 <div class="col-md-9">
-<div id="section-main"><h1 id="1-3-1">1.3.1. PDO Connection</h1>
-<h2 id="1-3-1-1">1.3.1.1. Installation</h2>
-<p>This package is installable and autoloadable via <a href="https://getcomposer.org/">Composer</a> as <a href="https://packagist.org/packages/atlas/pdo">atlas/pdo</a>.</p>
+<div id="section-main"><h1 id="1-1-1">1.1.1. PDO Connection</h1>
+<h2 id="1-1-1-1">1.1.1.1. Installation</h2>
+<p>This package is installable and autoloadable via <a href="https://getcomposer.org/">Composer</a>
+as <a href="https://packagist.org/packages/atlas/pdo">atlas/pdo</a>.</p>
 <pre><code>composer require atlas/pdo ^2.0
 </code></pre>
-<h2 id="1-3-1-2">1.3.1.2. Instantiation</h2>
-<p>The easiest way to create a <em>Connection</em> is to use its static  <code>new()</code> method, either with <em>PDO</em> connection arguments, or with an actual <em>PDO</em> instance:</p>
+<h2 id="1-1-1-2">1.1.1.2. Instantiation</h2>
+<p>The easiest way to create a <em>Connection</em> is to use its static  <code>new()</code> method,
+either with <em>PDO</em> connection arguments, or with an actual <em>PDO</em> instance:</p>
 <pre><code class="language-php">use Atlas\Pdo\Connection;
 
 // pass PDO constructor arguments ...
@@ -479,7 +429,9 @@ $connection = Connection::new(
 // ... or a PDO instance.
 $connection = Connection::new($pdo);
 </code></pre>
-<p>If you need a callable factory to create a <em>Connection</em> and its PDO instance at a later time, such as in a service container, you can use the <code>Connection::factory()</code> method:</p>
+<p>If you need a callable factory to create a <em>Connection</em> and its PDO instance at
+a later time, such as in a service container, you can use the
+<code>Connection::factory()</code> method:</p>
 <pre><code class="language-php">use Atlas\Pdo\Connection;
 
 // get a callable factory that creates a Connection
@@ -488,7 +440,8 @@ $factory = Connection::factory('sqlite::memory:');
 // later, call the factory to instantiate the Connection
 $connection = $factory();
 </code></pre>
-<p>If you want to make sure certain SQL queries are run at connection time, you can create your own callable factory:</p>
+<p>If you want to make sure certain SQL queries are run at connection time, you can
+create your own callable factory:</p>
 <pre><code class="language-php">use Atlas\Pdo\Connection;
 
 // define a callable factory that creates a Connection and executes a query
@@ -501,96 +454,112 @@ $factory = function () {
 // later, call the factory to instantiate the Connection
 $connection = $factory();
 </code></pre>
-<h2 id="1-3-1-3">1.3.1.3. Calling PDO Methods</h2>
-<p>The <em>Connection</em> acts as a proxy to the decorated PDO instance, so you can call any method on the <em>Connection</em> that you would normally call on PDO.</p>
-<h2 id="1-3-1-4">1.3.1.4. Fetching Results</h2>
-<p>The <em>Connection</em> provides several <code>fetch*()</code> methods to help reduce boilerplate code. Instead of issuing <code>prepare()</code>, a series of <code>bindValue()</code> calls, <code>execute()</code>, and then <code>fetch*()</code> on a <em>PDOStatement</em>, you can bind values and fetch results in one call on <em>Connection</em> directly.</p>
-<h3 id="1-3-1-4-1">1.3.1.4.1. fetchAll()</h3>
-<p>The plain-old PDO way to fetch all rows looks like this:</p>
-<pre><code class="language-php">use PDO;
-
-$pdo = new PDO('sqlite::memory:');
-
-$stm  = 'SELECT * FROM test WHERE foo = :foo AND bar = :bar';
+<h2 id="1-1-1-3">1.1.1.3. Calling PDO Methods</h2>
+<p>The <em>Connection</em> acts as a proxy to the decorated PDO instance, so you can call
+any method on the <em>Connection</em> that you would normally call on PDO.</p>
+<h2 id="1-1-1-4">1.1.1.4. Performing Queries</h2>
+<p>Instead of issuing <code>prepare()</code>, a series of <code>bindValue()</code> calls, and then
+<code>execute()</code>, you can bind values and get back a <em>PDOStatement</em> result in one
+call using the <em>Connection</em> <code>perform()</code> method:</p>
+<pre><code class="language-php">$stm  = 'SELECT * FROM test WHERE foo = :foo AND bar = :bar';
 $bind = ['foo' =&gt; 'baz', 'bar' =&gt; 'dib'];
-$sth = $pdo-&gt;prepare($stm);
-$sth-&gt;execute($bind);
-$result = $sth-&gt;fetchAll(PDO::FETCH_ASSOC);
+
+$sth = $connection-&gt;perform($stm, $bind);
 </code></pre>
-<p>This is how to do the same thing with an Atlas PDO <em>Connection</em>:</p>
-<pre><code class="language-php">use Atlas\Pdo\Connection;
-
-$connection = Connection::new('sqlite::memory:');
-
-$stm  = 'SELECT * FROM test WHERE foo = :foo AND bar = :bar';
+<h2 id="1-1-1-5">1.1.1.5. Fetching Results</h2>
+<p>The <em>Connection</em> provides several <code>fetch*()</code> methods to help reduce boilerplate
+code; these all use <code>perform()</code> internally.</p>
+<h3 id="1-1-1-5-1">1.1.1.5.1. fetchAffected()</h3>
+<p>The <code>fetchAffected()</code> method returns the number of affected rows.</p>
+<pre><code class="language-php">$stm = "UPDATE test SET incr = incr + 1 WHERE foo = :foo AND bar = :bar";
+$bind = ['foo' =&gt; 'baz', 'bar' =&gt; 'dib'];
+$rowCount = $connection-&gt;fetchAffected($stm, $bind);
+</code></pre>
+<h3 id="1-1-1-5-2">1.1.1.5.2. fetchAll()</h3>
+<p>The <code>fetchAll()</code> method returns a sequential array of all rows; each row is an
+associative array where the keys are the column names.</p>
+<pre><code class="language-php">$stm  = 'SELECT * FROM test WHERE foo = :foo AND bar = :bar';
 $bind = ['foo' =&gt; 'baz', 'bar' =&gt; 'dib'];
 
 $result = $connection-&gt;fetchAll($stm, $bind);
 </code></pre>
-<h3 id="1-3-1-4-2">1.3.1.4.2. fetchAffected()</h3>
-<p>The <code>fetchAffected()</code> method returns the number of affected rows.</p>
-<pre><code class="language-php">$stm = "UPDATE test SET incr = incr + 1 WHERE foo = :foo AND bar = :bar";
-$rowCount = $connection-&gt;fetchAffected($stm, $bind);
-</code></pre>
-<h3 id="1-3-1-4-3">1.3.1.4.3. fetchColumn()</h3>
-<p>The <code>fetchColumn()</code> method returns a sequential array of the first column from all rows.</p>
+<h3 id="1-1-1-5-3">1.1.1.5.3. fetchColumn()</h3>
+<p>The <code>fetchColumn()</code> method returns a sequential array of the first column from
+all rows.</p>
 <pre><code class="language-php">$result = $connection-&gt;fetchColumn($stm, $bind);
 </code></pre>
-<p>You can choose another column number with an optional third argument (columns are zero-indexed):</p>
+<p>You can choose another column number with an optional third argument (columns
+are zero-indexed):</p>
 <pre><code class="language-php">// use column 3 (i.e. the 4th column)
 $result = $connection-&gt;fetchColumn($stm, $bind, 3);
 </code></pre>
-<h3 id="1-3-1-4-4">1.3.1.4.4. fetchGroup()</h3>
-<p>The <code>fetchGroup()</code> method is like fetchUnique() except that the values aren't wrapped in arrays. Instead, single column values are returned as a single dimensional array and multiple columns are returned as an array of arrays.</p>
+<h3 id="1-1-1-5-4">1.1.1.5.4. fetchGroup()</h3>
+<p>The <code>fetchGroup()</code> method is like <code>fetchUnique()</code> except that the values aren't
+wrapped in arrays. Instead, single column values are returned as a single
+dimensional array and multiple columns are returned as an array of arrays.</p>
 <pre><code class="language-php">$result = $connection-&gt;fetchGroup($stm, $bind, $style = PDO::FETCH_COLUMN)
 </code></pre>
-<p>Set <code>$style</code> to <code>PDO::FETCH_NAMED</code> when values are an array (i.e. there are more than two columns in the select).</p>
-<h3 id="1-3-1-4-5">1.3.1.4.5. fetchKeyPair()</h3>
-<p>The <code>fetchKeyPair()</code> method returns an associative array where each key is the first column and each value is the second column</p>
+<p>Set <code>$style</code> to <code>PDO::FETCH_NAMED</code> when values are an array (i.e. there are more
+than two columns in the select).</p>
+<h3 id="1-1-1-5-5">1.1.1.5.5. fetchKeyPair()</h3>
+<p>The <code>fetchKeyPair()</code> method returns an associative array where each key is the
+first column and each value is the second column</p>
 <pre><code class="language-php">$result = $connection-&gt;fetchKeyPair($stm, $bind);
 </code></pre>
-<h3 id="1-3-1-4-6">1.3.1.4.6. fetchObject()</h3>
-<p>The <code>fetchObject()</code> method returns the first row as an object of your choosing; the columns are mapped to object properties. an optional 4th parameter array provides constructor arguments when instantiating the object.</p>
+<h3 id="1-1-1-5-6">1.1.1.5.6. fetchObject()</h3>
+<p>The <code>fetchObject()</code> method returns the first row as an object of your choosing;
+the columns are mapped to object properties. An optional 4th parameter array
+provides constructor arguments when instantiating the object.</p>
 <pre><code class="language-php">$result = $connection-&gt;fetchObject($stm, $bind, 'ClassName', ['ctor_arg_1']);
 </code></pre>
-<h3 id="1-3-1-4-7">1.3.1.4.7. fetchObjects()</h3>
-<p>The <code>fetchObjects()</code> method returns an array of objects of your choosing; the columns are mapped to object properties. An optional 4th parameter array provides constructor arguments when instantiating the object.</p>
+<h3 id="1-1-1-5-7">1.1.1.5.7. fetchObjects()</h3>
+<p>The <code>fetchObjects()</code> method returns an array of objects of your choosing; the
+columns are mapped to object properties. An optional 4th parameter array
+provides constructor arguments when instantiating the object.</p>
 <pre><code class="language-php">$result = $connection-&gt;fetchObjects($stm, $bind, 'ClassName', ['ctor_arg_1']);
 </code></pre>
-<h3 id="1-3-1-4-8">1.3.1.4.8. fetchOne()</h3>
-<p>The <code>fetchOne()</code> method returns the first row as an associative array where the keys are the column names.</p>
+<h3 id="1-1-1-5-8">1.1.1.5.8. fetchOne()</h3>
+<p>The <code>fetchOne()</code> method returns the first row as an associative array where the
+keys are the column names.</p>
 <pre><code class="language-php">$result = $connection-&gt;fetchOne($stm, $bind);
 </code></pre>
-<h3 id="1-3-1-4-9">1.3.1.4.9. fetchUnique()</h3>
-<p>The <code>fetchUnique()</code> method returns an associative array of all rows where the key is the value of the first column, and the row arrays are keyed on the remaining column names.</p>
+<h3 id="1-1-1-5-9">1.1.1.5.9. fetchUnique()</h3>
+<p>The <code>fetchUnique()</code> method returns an associative array of all rows where the
+key is the value of the first column, and the row arrays are keyed on the
+remaining column names.</p>
 <pre><code class="language-php">$result = $connection-&gt;fetchUnique($stm, $bind);
 </code></pre>
-<h3 id="1-3-1-4-10">1.3.1.4.10. fetchValue()</h3>
-<p>The <code>fetchValue()</code> method returns the value of the first row in the first column.</p>
+<h3 id="1-1-1-5-10">1.1.1.5.10. fetchValue()</h3>
+<p>The <code>fetchValue()</code> method returns the value of the first row in the first
+column.</p>
 <pre><code class="language-php">$result = $connection-&gt;fetchValue($stm, $bind);
 </code></pre>
-<h2 id="1-3-1-5">1.3.1.5. Yielding Results</h2>
-<p>The <em>Connection</em> provides several <code>yield*()</code> methods to help reduce memory usage. Whereas <code>fetch*()</code> methods may collect all the query result rows before returning them all at once, the equivalent <code>yield*()</code> methods generate one result row at a time. For example:</p>
-<h3 id="1-3-1-5-1">1.3.1.5.1. yieldAll()</h3>
+<h2 id="1-1-1-6">1.1.1.6. Yielding Results</h2>
+<p>The <em>Connection</em> provides several <code>yield*()</code> methods to help reduce memory
+usage.</p>
+<p>Whereas <code>fetch*()</code> methods may collect all the query result rows before
+returning them all at once, the equivalent <code>yield*()</code> methods generate one
+result row at a time.</p>
+<h3 id="1-1-1-6-1">1.1.1.6.1. yieldAll()</h3>
 <p>This is the yielding equivalent of <code>fetchAll()</code>.</p>
 <pre><code class="language-php">foreach ($connection-&gt;yieldAll($stm, $bind) as $row) {
     // ...
 }
 </code></pre>
-<h3 id="1-3-1-5-2">1.3.1.5.2. yieldColumn()</h3>
+<h3 id="1-1-1-6-2">1.1.1.6.2. yieldColumn()</h3>
 <p>This is the yielding equivalent of <code>fetchColumn()</code>.</p>
 <pre><code class="language-php">
 foreach ($connection-&gt;yieldColumn($stm, $bind) as $val) {
     // ...
 }
 </code></pre>
-<h3 id="1-3-1-5-3">1.3.1.5.3. yieldKeyPair()</h3>
+<h3 id="1-1-1-6-3">1.1.1.6.3. yieldKeyPair()</h3>
 <p>This is the yielding equivalent of <code>fetchKeyPair()</code>.</p>
 <pre><code class="language-php">foreach ($connection-&gt;yieldKeyPair($stm, $bind) as $key =&gt; $val) {
     // ...
 }
 </code></pre>
-<h3 id="1-3-1-5-4">1.3.1.5.4. yieldObjects()</h3>
+<h3 id="1-1-1-6-4">1.1.1.6.4. yieldObjects()</h3>
 <p>This is the yielding equivalent of <code>fetchObjects()</code>.</p>
 <pre><code class="language-php">$class = 'ClassName';
 $args = ['arg0', 'arg1', 'arg2'];
@@ -598,13 +567,32 @@ foreach ($connection-&gt;yieldObjects($stm, $bind, $class, $args) as $object) {
     // ...
 }
 </code></pre>
-<h3 id="1-3-1-5-5">1.3.1.5.5. yieldUnique()</h3>
+<h3 id="1-1-1-6-5">1.1.1.6.5. yieldUnique()</h3>
 <p>This is the yielding equivalent of <code>fetchUnique()</code>.</p>
 <pre><code class="language-php">foreach ($connection-&gt;yieldUnique($stm, $bind) as $key =&gt; $row) {
     // ...
 }
 </code></pre>
-<h2 id="1-3-1-6">1.3.1.6. Query Logging</h2>
+<h2 id="1-1-1-7">1.1.1.7. Explicit Bind Value Types</h2>
+<p>When binding values on a <code>perform()</code>-based query (which includes all <code>fetch*()</code>
+and <code>yield*()</code> queries), the <em>Connection</em> will use <code>PDO::PARAM_STR</code> as the value
+type by default.</p>
+<p>If you want to override the default type, pass the value as an array where
+the first element is the value and the second element is the PDO param type.
+For example:</p>
+<pre><code class="language-php">// PDO::PARAM_STR by default
+$bind['foo'] = 1;
+
+// force to PDO::PARAM_INT
+$bind['foo'] = [1, PDO::PARAM_INT]
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>If you pass a boolean value and force the type to <code>PDO::PARAM_BOOL</code>, the
+<em>Connection</em> will store the value as a string '0' for <code>false</code> or string '1'
+for <code>true</code>. This addresses issues with a long-standing behavior in PDO.</p>
+</blockquote>
+<h2 id="1-1-1-8">1.1.1.8. Query Logging</h2>
 <p>It is sometimes useful to see a log of all queries passing through a
 <em>Connection</em>. To do so, call its <code>logQueries()</code> method, issue your queries, and
 then call <code>getQueries()</code>.</p>
@@ -638,14 +626,14 @@ for seeing if a <code>COMMIT</code> actually occurred</li>
 <li>
 <code>trace</code>: an exception trace showing where the query was issued</li>
 </ul>
-<h3 id="1-3-1-6-1">1.3.1.6.1. Logged Statements</h3>
+<h3 id="1-1-1-8-1">1.1.1.8.1. Logged Statements</h3>
 <p>When queries are not being logged, <code>Connection::prepare()</code> will return a normal
 <em>PDOStatement</em>. However, when queries <em>are</em> being logged, <code>Connection::prepare()</code>
 will return an <em>Atlas\Pdo\LoggedStatement</em> instance instead.</p>
 <p>The <em>LoggedStatement</em> is an extension of <em>PDOStatement</em>, so it works the same
 way, but it has the added behavior of recording to the log when its <code>execute()</code>
 method is called.</p>
-<h3 id="1-3-1-6-2">1.3.1.6.2. Custom Loggers</h3>
+<h3 id="1-1-1-8-2">1.1.1.8.2. Custom Loggers</h3>
 <p>You may wish to set a custom logger on the <em>Connection</em>. To do so, call
 <code>setQueryLogger()</code> and pass a callable with the signature
 <code>function (array $entry) : void</code>.</p>
@@ -669,7 +657,7 @@ $connection-&gt;logQueries(true);
 query log entries; they will all go to the custom logger. This means that
 <code>getQueries()</code> on the <em>Connection</em> not show any new entries.</p>
 </blockquote>
-<h2 id="1-3-1-7">1.3.1.7. Persistent Connections</h2>
+<h2 id="1-1-1-9">1.1.1.9. Persistent Connections</h2>
 <p><strong>Unlogged</strong> persistent <em>Connection</em> instances are fully supported, via the
 <a href="https://www.php.net/manual/en/pdo.connections.php"><code>PDO::ATTR_PERSISTENT</code></a>
 option at construction time.</p>

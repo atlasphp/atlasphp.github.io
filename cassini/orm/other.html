@@ -48,6 +48,32 @@
     
     <ul class="nav navbar-nav">
                         <li>
+    <a href="/dymaxion/">Dymaxion (v4)</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/dymaxion/pdo/">PDO Connection</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/dymaxion/pdo/connection.html">PDO Connection</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/pdo/connection-locator.html">Connection Locator</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/pdo/upgrade.html">Upgrade Notes</a>
+
+    </li>
+            </ul>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/">Cassini (v3)</a>
     
     <ul class="dropdown-menu">
@@ -349,29 +375,29 @@
             <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
     <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
                                 <li>
-                <a href="#1-1-10" title="Other&#x20;Topics">Other Topics</a>
+                <a href="#2-1-10" title="Other&#x20;Topics">Other Topics</a>
             </li>
                                 <li>
-                <a href="#1-1-10-1" title="Adding&#x20;Custom&#x20;Mapper&#x20;Methods">Adding Custom Mapper Met...</a>
+                <a href="#2-1-10-1" title="Adding&#x20;Custom&#x20;Mapper&#x20;Methods">Adding Custom Mapper Met...</a>
             </li>
                                 <li>
-                <a href="#1-1-10-2" title="Single&#x20;Table&#x20;Inheritance">Single Table Inheritance</a>
+                <a href="#2-1-10-2" title="Single&#x20;Table&#x20;Inheritance">Single Table Inheritance</a>
             </li>
                                 <li>
-                <a href="#1-1-10-3" title="Automated&#x20;Validation">Automated Validation</a>
+                <a href="#2-1-10-3" title="Automated&#x20;Validation">Automated Validation</a>
             </li>
                                 <li>
-                <a href="#1-1-10-4" title="Query&#x20;Logging">Query Logging</a>
+                <a href="#2-1-10-4" title="Query&#x20;Logging">Query Logging</a>
             </li>
                                 <li>
-                <a href="#1-1-10-5" title="Custom&#x20;Factory&#x20;Callable">Custom Factory Callable</a>
+                <a href="#2-1-10-5" title="Custom&#x20;Factory&#x20;Callable">Custom Factory Callable</a>
             </li>
             </ul>
 </nav>
         </div>
                 <div class="col-md-9">
-<div id="section-main"><h1 id="1-1-10">1.1.10. Other Topics</h1>
-<h2 id="1-1-10-1">1.1.10.1. Adding Custom Mapper Methods</h2>
+<div id="section-main"><h1 id="2-1-10">2.1.10. Other Topics</h1>
+<h2 id="2-1-10-1">2.1.10.1. Adding Custom Mapper Methods</h2>
 <p>Feel free to add custom methods to your <em>Mapper</em> classes, though do be sure
 that they are appropriate to a <em>Mapper</em>. For example, custom <code>fetch*()</code> methods
 are perfectly reasonable, so that you don't have to write the same queries
@@ -416,7 +442,7 @@ class Content extends Mapper
     }
 }
 </code></pre>
-<h2 id="1-1-10-2">1.1.10.2. Single Table Inheritance</h2>
+<h2 id="2-1-10-2">2.1.10.2. Single Table Inheritance</h2>
 <p>Sometimes you will want to use one <em>Mapper</em> (and its underlying <em>Table</em>) to
 create more than one kind of <em>Record</em>. The <em>Record</em> type is generally specified
 by a column on the table, e.g. <code>record_type</code>. To do so, create <em>Record</em> classes
@@ -494,7 +520,7 @@ define <em>MapperRelationships</em> for the mapper as whole, to cover all its re
 types.</p>
 <p>Note also that there can only be one <em>RecordSet</em> class per <em>Mapper</em>, though it
 can contain any kind of <em>Record</em>.</p>
-<h2 id="1-1-10-3">1.1.10.3. Automated Validation</h2>
+<h2 id="2-1-10-3">2.1.10.3. Automated Validation</h2>
 <p>You will probably want to apply some sort of filtering (validation and
 sanitizing) to <em>Row</em> (and to a lesser extent <em>Record</em>) objects before they get
 written back to the database. To do so, implement or override the appropriate
@@ -532,7 +558,7 @@ class AuthorTableEvents extends TableEvents
 <p>For detailed reporting of validation failures, consider writing your own
 extended exception class to retain a list of the fields and error messages,
 perhaps with the object being validated.</p>
-<h2 id="1-1-10-4">1.1.10.4. Query Logging</h2>
+<h2 id="2-1-10-4">2.1.10.4. Query Logging</h2>
 <p>To enable query logging, call the Atlas <code>logQueries()</code> method. Issue your
 queries, and then call <code>getQueries()</code> to get back the log entries.</p>
 <pre><code class="language-php">// start logging
@@ -584,7 +610,7 @@ $atlas-&gt;logQueries(true);
 query log entries; they will all go to the custom logger. This means that
 <code>getQueries()</code> on the <em>Atlas</em> instance will not show any new entries.</p>
 </blockquote>
-<h2 id="1-1-10-5">1.1.10.5. Custom Factory Callable</h2>
+<h2 id="2-1-10-5">2.1.10.5. Custom Factory Callable</h2>
 <p>The <em>AtlasBuilder</em> let you specify a custom factory callable to create the
 dependencies for each <em>Table</em> and <em>Mapper</em> instance. The default factory
 callable looks like this:</p>

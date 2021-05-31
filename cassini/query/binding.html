@@ -48,6 +48,32 @@
     
     <ul class="nav navbar-nav">
                         <li>
+    <a href="/dymaxion/">Dymaxion (v4)</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/dymaxion/pdo/">PDO Connection</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/dymaxion/pdo/connection.html">PDO Connection</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/pdo/connection-locator.html">Connection Locator</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/pdo/upgrade.html">Upgrade Notes</a>
+
+    </li>
+            </ul>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/">Cassini (v3)</a>
     
     <ul class="dropdown-menu">
@@ -349,25 +375,25 @@
             <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
     <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
                                 <li>
-                <a href="#1-4-2" title="Value&#x20;Binding">Value Binding</a>
+                <a href="#2-4-2" title="Value&#x20;Binding">Value Binding</a>
             </li>
                                 <li>
-                <a href="#1-4-2-1" title="Implicit&#x20;Inline&#x20;Binding">Implicit Inline Binding</a>
+                <a href="#2-4-2-1" title="Implicit&#x20;Inline&#x20;Binding">Implicit Inline Binding</a>
             </li>
                                 <li>
-                <a href="#1-4-2-2" title="&#x0A;&lt;code&gt;sprintf&#x28;&#x29;&lt;&#x2F;code&gt;&#x20;Inline&#x20;Binding">
+                <a href="#2-4-2-2" title="&#x0A;&lt;code&gt;sprintf&#x28;&#x29;&lt;&#x2F;code&gt;&#x20;Inline&#x20;Binding">
 <code>sprintf()</code> ...</a>
             </li>
                                 <li>
-                <a href="#1-4-2-3" title="Explicit&#x20;Parameter&#x20;Binding">Explicit Parameter Bindi...</a>
+                <a href="#2-4-2-3" title="Explicit&#x20;Parameter&#x20;Binding">Explicit Parameter Bindi...</a>
             </li>
             </ul>
 </nav>
         </div>
                 <div class="col-md-9">
-<div id="section-main"><h1 id="1-4-2">1.4.2. Value Binding</h1>
+<div id="section-main"><h1 id="2-4-2">2.4.2. Value Binding</h1>
 <p>Atlas.Query allows you to bind values to the SQL statement in various ways.</p>
-<h2 id="1-4-2-1">1.4.2.1. Implicit Inline Binding</h2>
+<h2 id="2-4-2-1">2.4.2.1. Implicit Inline Binding</h2>
 <p>Many Atlas.Query methods allow for inline binding of values. This means that the
 provided value will be represented by an auto-generated placeholder name in the
 query string, and the value itself will be retained for binding into that
@@ -421,7 +447,7 @@ $select
         -&gt;from('dib')
     );
 </code></pre>
-<h2 id="1-4-2-2">1.4.2.2. 
+<h2 id="2-4-2-2">2.4.2.2. 
 <code>sprintf()</code> Inline Binding</h2>
 <p>If you need to bind more than one value into a condition, you can use an
 <code>sprintf</code> variation of implicit binding. Pass an expression string formatted for
@@ -439,7 +465,7 @@ $select
 <p>Note that you should use only <code>%s</code> in the format string, since it is the
 <em>placeholder token</em> that will be interpolated into the expression, not the
 <em>actual value</em>.</p>
-<h2 id="1-4-2-3">1.4.2.3. Explicit Parameter Binding</h2>
+<h2 id="2-4-2-3">2.4.2.3. Explicit Parameter Binding</h2>
 <p>You can still use the normal PDO binding approach, where you explicitly set
 named parameters in conditions, and then bind the values with a separate call:</p>
 <pre><code class="language-php">$select

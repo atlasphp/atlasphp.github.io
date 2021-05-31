@@ -1,6 +1,7 @@
 {
     "title": "Atlas Database Framework for PHP",
     "content": [
+        "dymaxion/_bookdown.json",
         "cassini/_bookdown.json",
         "boggs/_bookdown.json",
         "albers/_bookdown.json"

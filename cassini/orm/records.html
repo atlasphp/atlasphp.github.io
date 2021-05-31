@@ -48,6 +48,32 @@
     
     <ul class="nav navbar-nav">
                         <li>
+    <a href="/dymaxion/">Dymaxion (v4)</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/dymaxion/pdo/">PDO Connection</a>
+    
+    <ul class="dropdown-menu">
+                        <li>
+    <a href="/dymaxion/pdo/connection.html">PDO Connection</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/pdo/connection-locator.html">Connection Locator</a>
+
+    </li>
+                        <li>
+    <a href="/dymaxion/pdo/upgrade.html">Upgrade Notes</a>
+
+    </li>
+            </ul>
+
+    </li>
+            </ul>
+
+    </li>
+                        <li>
     <a href="/cassini/">Cassini (v3)</a>
     
     <ul class="dropdown-menu">
@@ -349,35 +375,35 @@
             <nav class="nav-left hidden-xs hidden-sm" id="sideNav">
     <ul class="nav nav-stacked" data-spy="affix" data-offset-top="59" role="tablist">
                                 <li>
-                <a href="#1-1-4" title="Working&#x20;with&#x20;Records">Working with Records</a>
+                <a href="#2-1-4" title="Working&#x20;with&#x20;Records">Working with Records</a>
             </li>
                                 <li>
-                <a href="#1-1-4-1" title="Creating&#x20;and&#x20;Inserting&#x20;a&#x20;Record">Creating and Inserting a...</a>
+                <a href="#2-1-4-1" title="Creating&#x20;and&#x20;Inserting&#x20;a&#x20;Record">Creating and Inserting a...</a>
             </li>
                                 <li>
-                <a href="#1-1-4-2" title="Updating&#x20;an&#x20;Existing&#x20;Record">Updating an Existing Rec...</a>
+                <a href="#2-1-4-2" title="Updating&#x20;an&#x20;Existing&#x20;Record">Updating an Existing Rec...</a>
             </li>
                                 <li>
-                <a href="#1-1-4-3" title="Deleting&#x20;a&#x20;Record">Deleting a Record</a>
+                <a href="#2-1-4-3" title="Deleting&#x20;a&#x20;Record">Deleting a Record</a>
             </li>
                                 <li>
-                <a href="#1-1-4-4" title="Persisting&#x20;a&#x20;Record">Persisting a Record</a>
+                <a href="#2-1-4-4" title="Persisting&#x20;a&#x20;Record">Persisting a Record</a>
             </li>
                                 <li>
-                <a href="#1-1-4-5" title="Marking&#x20;Records&#x20;for&#x20;Deletion">Marking Records for Dele...</a>
+                <a href="#2-1-4-5" title="Marking&#x20;Records&#x20;for&#x20;Deletion">Marking Records for Dele...</a>
             </li>
                                 <li>
-                <a href="#1-1-4-6" title="Adding&#x20;Many-To-Many&#x20;Relateds">Adding Many-To-Many Rela...</a>
+                <a href="#2-1-4-6" title="Adding&#x20;Many-To-Many&#x20;Relateds">Adding Many-To-Many Rela...</a>
             </li>
                                 <li>
-                <a href="#1-1-4-7" title="Removing&#x20;Many-To-Many&#x20;Relateds">Removing Many-To-Many Re...</a>
+                <a href="#2-1-4-7" title="Removing&#x20;Many-To-Many&#x20;Relateds">Removing Many-To-Many Re...</a>
             </li>
             </ul>
 </nav>
         </div>
                 <div class="col-md-9">
-<div id="section-main"><h1 id="1-1-4">1.1.4. Working with Records</h1>
-<h2 id="1-1-4-1">1.1.4.1. Creating and Inserting a Record</h2>
+<div id="section-main"><h1 id="2-1-4">2.1.4. Working with Records</h1>
+<h2 id="2-1-4-1">2.1.4.1. Creating and Inserting a Record</h2>
 <p>Create a new Record using the <code>newRecord()</code> method. You can assign data using
 properties, or pass an array of initial data to populate into the Record.</p>
 <pre><code class="language-php">$thread = $atlas-&gt;newRecord(Thread::CLASS, [
@@ -441,7 +467,7 @@ $thread = $atlas-&gt;newRecord(Thread::CLASS,
 // Insert will not create the related Author Record. Use persist() instead.
 $atlas-&gt;insert($thread);
 </code></pre>
-<h2 id="1-1-4-2">1.1.4.2. Updating an Existing Record</h2>
+<h2 id="2-1-4-2">2.1.4.2. Updating an Existing Record</h2>
 <p>Updating an existing record works the same as <code>insert()</code>.</p>
 <pre><code class="language-php">// fetch an existing record by primary key
 $thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
@@ -468,7 +494,7 @@ $thread-&gt;author = $author;
 // Save the record back to the database.
 $atlas-&gt;update($thread);
 </code></pre>
-<h2 id="1-1-4-3">1.1.4.3. Deleting a Record</h2>
+<h2 id="2-1-4-3">2.1.4.3. Deleting a Record</h2>
 <p>Deleting a record works the same as inserting or updating.</p>
 <pre><code class="language-php">$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
 $atlas-&gt;delete($thread);
@@ -478,7 +504,7 @@ $atlas-&gt;delete($thread);
 <p>The delete() method will not catch exceptions; you may wish to wrap the
 method call in a try/catch block.</p>
 </blockquote>
-<h2 id="1-1-4-4">1.1.4.4. Persisting a Record</h2>
+<h2 id="2-1-4-4">2.1.4.4. Persisting a Record</h2>
 <p>If you like, you can persist a Record and all of its loaded relationships (and
 all of <em>their</em> loaded relationships, etc.) back to the database using the Atlas
 <code>persist()</code> method. This is good for straightforward relationship structures
@@ -512,7 +538,7 @@ persist them as well.</p>
 <p>The <code>delete()</code> method <strong>will not</strong> attempt to cascade deletion or nullification
 across relateds at the ORM level. Your database may have cascading set up at the
 database level; Atlas has no control over this.</p>
-<h2 id="1-1-4-5">1.1.4.5. Marking Records for Deletion</h2>
+<h2 id="2-1-4-5">2.1.4.5. Marking Records for Deletion</h2>
 <p>You may also mark records for deletion and they will be removed from the
 database as part of <code>persist()</code>.</p>
 <pre><code class="language-php">$thread = $atlas-&gt;fetchRecord(Thread::CLASS, 3);
@@ -539,7 +565,7 @@ foreach ($thread-&gt;replies as $reply) {
 // Persist the thread and the replies are also deleted
 $atlas-&gt;persist($thread);
 </code></pre>
-<h2 id="1-1-4-6">1.1.4.6. Adding Many-To-Many Relateds</h2>
+<h2 id="2-1-4-6">2.1.4.6. Adding Many-To-Many Relateds</h2>
 <p>Given the <a href="./relationships.html">relationships example</a>, here is how you would add
 a tag to a thread:</p>
 <pre><code class="language-php">// fetch a thread with its tags
@@ -567,7 +593,7 @@ $atlas-&gt;persist($thread);
 Atlas will call <code>setDelete()</code> on any taggings that no longer have an associated
 tag, and will add new taggings for tags that are not already associated (and add
 the thread and tag objects to the new tagging object automatically).</p>
-<h2 id="1-1-4-7">1.1.4.7. Removing Many-To-Many Relateds</h2>
+<h2 id="2-1-4-7">2.1.4.7. Removing Many-To-Many Relateds</h2>
 <p>If you delete a many-to-many related record, it will delete that record from
 the database, not merely disassociate it from the native record.</p>
 <p>Instead, <strong>detach</strong> the many-to-many related record. This will remove the
