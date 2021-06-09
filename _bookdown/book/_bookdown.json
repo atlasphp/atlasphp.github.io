@@ -8,6 +8,6 @@
     ],
     "target": "../../",
     "template": "../templates/main.php",
-    "copyright": "&copy; 2015-2018, Atlas for PHP",
+    "copyright": "&copy; 2015-2021, Atlas for PHP",
     "tocDepth": "2"
 }
