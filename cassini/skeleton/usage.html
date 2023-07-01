@@ -447,6 +447,9 @@
                                 <li>
                 <a href="#2-2-1-4" title="Custom&#x20;Templates">Custom Templates</a>
             </li>
+                                <li>
+                <a href="#2-2-1-5" title="Use&#x20;of&#x20;PostgreSQL&#x20;Schemas">Use of PostgreSQL Schema...</a>
+            </li>
             </ul>
 </nav>
         </div>
@@ -641,6 +644,22 @@ values:</p>
 <li>
 <code>{FIELDS}</code> =&gt; A partial docblock of field names for a Record.</li>
 </ul>
+<h2 id="2-2-1-5">2.2.1.5. Use of PostgreSQL Schemas</h2>
+<p>The use of a schema other than <code>public</code> in a PostgreSQL database can be done via a <a href="https://atlasphp.io/cassini/pdo/connection.html#2-6-1-2">custom <code>PDO</code> instance</a>.
+The following example sets the schema to <code>custom_schema</code>:</p>
+<pre><code class="language-php">$pdo = new PDO(
+    'pgsql:dbname=testdb;host=localhost',
+    'username',
+    'password',
+);
+$pdo-&gt;exec('SET search_path TO custom_schema');
+
+return [
+    'pdo'       =&gt; [$pdo],
+    'namespace' =&gt; 'App\\DataSource',
+    'directory' =&gt; './src/App/DataSource',
+];
+</code></pre>
 </div>        </div>
     </div>
 </div>

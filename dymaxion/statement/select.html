@@ -525,18 +525,26 @@ $select
 </code></pre>
 <h4 id="1-2-4-1-4-1">1.2.4.1.4.1. Convenience Equality</h4>
 <p>There is an additional <code>whereEquals()</code> convenience method that adds a series of
-<code>AND</code>ed equality conditions for you based on an array of key-value pairs.</p>
-<p>Given an array value, the condition will be <code>IN ()</code>. Given a null value, the
-condition will be <code>IS NULL</code>. For all other values, the condition will be <code>=</code>. If
-you pass a value without a key, that value will be used as a raw unescaped
-condition.</p>
+<code>AND</code>ed equality conditions for you based on an array of key-value pairs:</p>
+<ul>
+<li>Given an array value, the condition will be <code>IN ()</code>.</li>
+<li>Given an empty array, the condition will be <code>FALSE</code> (which means the query will return no results).</li>
+<li>Given a <code>null</code> value, the condition will be <code>IS NULL</code>.</li>
+<li>For all other values, the condition will be <code>=</code>.</li>
+</ul>
+<p>If you pass a key without a value, that key will be used as a raw unescaped condition.</p>
 <p>For example:</p>
-<pre><code class="language-php">// WHERE foo IN (:_1_1_, :_1_2_, :_1_3_) AND bar IS NULL AND baz = :_1_4_ AND zim = NOW()
+<pre><code class="language-php">// WHERE foo IN (:_1_1_, :_1_2_, :_1_3_)
+// AND bar IS NULL
+// AND baz = :_1_4_
+// AND zim = NOW()
+// AND FALSE
 $select-&gt;whereEquals([
     'foo' =&gt; ['a', 'b', 'c'],
     'bar' =&gt; null,
     'baz' =&gt; 'dib',
-    'zim = NOW()'
+    'zim = NOW()',
+    'gir' =&gt; [],
 ]);
 </code></pre>
 <h3 id="1-2-4-1-5">1.2.4.1.5. GROUP BY</h3>
